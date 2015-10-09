@@ -29,33 +29,33 @@ tfidf <- function(document_term_matrix,
 
   if(only_calculate_corpus_level_statistics){
       return_list = list()
-      return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(to_return[[3]]))
-      return_list$document_frequency = as.numeric(to_return[[3]])
-      return_list$document_word_counts = as.numeric(to_return[[4]])
-      return_list$corpus_term_frequency = as.numeric(to_return[[5]])/sum(document_term_matrix)
-      return_list$tfidf_c = return_list$corpus_term_frequency*return_list$inverse_document_frequency
-      return_list$vocabulary = vocabulary
+      return_list$document_frequency = calculate_document_frequency(document_term_matrix)
+      return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(return_list$document_frequency))
 
+      return_list$document_word_counts = apply(document_term_matrix,1,sum)
+      return_list$corpus_term_frequency = apply(document_term_matrix,2,sum)
+      return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
+      return_list$vocabulary = vocabulary
 
   }else{
       to_return <- Calculate_TFIDF(document_term_matrix)
 
       return_list = list()
 
-      return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(to_return[[3]]))
       return_list$document_frequency = as.numeric(to_return[[3]])
+      return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(to_return[[3]]))
       return_list$document_word_counts = as.numeric(to_return[[4]])
       return_list$corpus_term_frequency = as.numeric(to_return[[5]])/sum(document_term_matrix)
       return_list$document_level_term_frequency = to_return[[2]]
       return_list$tfidf_dw = to_return[[1]]
-      return_list$tfidf_c = return_list$corpus_term_frequency*return_list$inverse_document_frequency
+      return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
       return_list$vocabulary = vocabulary
   }
 
 
   #now generate a rank ordered dataset
   ranking <- order(return_list$tfidf_c, decreasing = T)
-  return_list$tfidf_rankings <- data.frame(tfidf = return_list$tfidf_c[ranking],
+  return_list$tfidf_rankings <- data.frame(tfidf = return_list$tfidf[ranking],
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
                                term_freq = return_list$corpus_term_frequency[ranking],
@@ -76,13 +76,3 @@ tfidf <- function(document_term_matrix,
 
   return(return_list)
 }
-
-
-
-
-
-
-
-
-
-
