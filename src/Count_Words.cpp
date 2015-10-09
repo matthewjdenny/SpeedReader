@@ -7,13 +7,14 @@ using namespace Rcpp;
 List Count_Words(
     int number_of_documents,
     List Document_Words,
-    arma::vec Document_Lengths
+    arma::vec Document_Lengths,
+    int max_vocab_size
 ){
   List to_return(3);
   int total_unique_words = 0;
-  arma::vec unique_word_counts = arma::zeros(250000);
-  std::vector<std::string> unique_words(250000);
-  
+  arma::vec unique_word_counts = arma::zeros(max_vocab_size);
+  std::vector<std::string> unique_words(max_vocab_size);
+
   for(int n = 0; n < number_of_documents; ++n){
     Rcpp::Rcout << "Current Document: " << n << std::endl;
     int length = Document_Lengths[n];
@@ -39,14 +40,14 @@ List Count_Words(
       }
     }
   }
-  
+
   arma::vec word_counts = arma::zeros(total_unique_words);
   std::vector<std::string> words(total_unique_words);
   for(int i = 0; i < total_unique_words; ++i){
     word_counts[i] = unique_word_counts[i];
     words[i] = unique_words[i];
   }
-  
+
   to_return[0] = total_unique_words;
   to_return[1] = words;
   to_return[2] = word_counts;
