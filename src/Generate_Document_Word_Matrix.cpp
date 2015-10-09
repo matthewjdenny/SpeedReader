@@ -3,7 +3,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-arma::mat Generate_Document_Word_Matrix(
+arma::mat Generate_Document_Term_Matrix(
     int number_of_documents,
     int number_of_unique_words,
     std::vector<std::string> unique_words,
