@@ -2,8 +2,11 @@
 
 export(color_word_table)
 export(color_words_by_frequency)
+export(combine_document_term_matrices)
+export(count_words)
 export(distinct_words)
 export(frequency_threshold)
+export(generate_document_term_matrix)
 export(order_by_counts)
 export(tfidf)
 export(topic_coherence)
