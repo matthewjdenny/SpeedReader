@@ -43,21 +43,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // Count_Words
-List Count_Words(int number_of_documents, List Document_Words, arma::vec Document_Lengths);
-RcppExport SEXP SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP) {
+List Count_Words(int number_of_documents, List Document_Words, arma::vec Document_Lengths, int max_vocab_size);
+RcppExport SEXP SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP max_vocab_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< int >::type number_of_documents(number_of_documentsSEXP);
     Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
-    __result = Rcpp::wrap(Count_Words(number_of_documents, Document_Words, Document_Lengths));
+    Rcpp::traits::input_parameter< int >::type max_vocab_size(max_vocab_sizeSEXP);
+    __result = Rcpp::wrap(Count_Words(number_of_documents, Document_Words, Document_Lengths, max_vocab_size));
     return __result;
 END_RCPP
 }
-// Generate_Document_Word_Matrix
-arma::mat Generate_Document_Word_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths);
-RcppExport SEXP SpeedReader_Generate_Document_Word_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP) {
+// Generate_Document_Term_Matrix
+arma::mat Generate_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths);
+RcppExport SEXP SpeedReader_Generate_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -66,7 +67,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<std::string> >::type unique_words(unique_wordsSEXP);
     Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
-    __result = Rcpp::wrap(Generate_Document_Word_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths));
+    __result = Rcpp::wrap(Generate_Document_Term_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths));
     return __result;
 END_RCPP
 }

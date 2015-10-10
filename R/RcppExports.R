@@ -13,11 +13,11 @@ Combine_Document_Term_Matrices <- function(document_word_matrix_list, vocabulari
     .Call('SpeedReader_Combine_Document_Term_Matrices', PACKAGE = 'SpeedReader', document_word_matrix_list, vocabularies, unique_words, number_of_corpora)
 }
 
-Count_Words <- function(number_of_documents, Document_Words, Document_Lengths) {
-    .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths)
+Count_Words <- function(number_of_documents, Document_Words, Document_Lengths, max_vocab_size) {
+    .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths, max_vocab_size)
 }
 
-Generate_Document_Word_Matrix <- function(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths) {
-    .Call('SpeedReader_Generate_Document_Word_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths)
+Generate_Document_Term_Matrix <- function(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths) {
+    .Call('SpeedReader_Generate_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths)
 }
 
