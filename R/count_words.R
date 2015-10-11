@@ -17,16 +17,57 @@ count_words <- function(document_word_list,
     # get the document lengths
     document_lengths <- unlist(lapply(document_word_list, length))
 
+    #if we are adding to a current vocabulary, then initialize everything
+    if(!is.null(existing_vocabulary) & !is.null(existing_word_counts)){
+        add_to_vocabulary <- 1
+        existing_vocabulary <- as.character(existing_vocabulary)
+        existing_word_counts <- as.numeric(existing_word_counts)
+        existing_vocabulary_size <- length(existing_vocabulary)
+    }else{
+        # make sure we pass in something valid
+        add_to_vocabulary <- 0
+        existing_vocabulary <- rep("ERROR",2)
+        existing_word_counts <- rep(0,2)
+        existing_vocabulary_size <- 0
+    }
+
+    # if maximum_vocabulary_size == -1 then set to the sum of all tokens in
+    # all documents.
+    if(maximum_vocabulary_size == -1){
+        maximum_vocabulary_size <- sum(document_lengths) + existing_vocabulary_size
+        if(maximum_vocabulary_size > 2147000000){
+            maximum_vocabulary_size <- 2147000000
+            warning("You have specified a vocabulary size of greater than 2,147,000,000. R can only handle vectors of length 2,147,483,648 so considder switching to another programming language to simply using C++. If you beleive your actual vocabulary size is smaller than this, then set it manually.")
+        }
+    }
+
     counts <- Count_Words(number_of_documents,
                           document_word_list,
                           document_lengths,
-                          maximum_vocabulary_size)
+                          maximum_vocabulary_size,
+                          add_to_vocabulary,
+                          existing_word_counts,
+                          existing_vocabulary,
+                          existing_vocabulary_size)
 
     ordering <- order(counts[[3]],decreasing = TRUE)
 
     result <- list(unique_words = counts[[2]][ordering],
                    word_counts = counts[[3]][ordering],
                    total_unique_words = counts[[1]])
+
+    #check to make sure that we did not inadvertently run out of space in our initially allocated vector.
+    if(counts[[1]] >= (maximum_vocabulary_size -1)){
+        stop("You have specified a maximum_vocabulary_size that is too small. Considder increasing it or setting it to -1, in which case the total number of tokens in all documents will be used.")
+    }
+
+    # let the user know what they are doing incase they thought they were
+    # providing a vocabulary but did not.
+    if(!is.null(existing_vocabulary) & !is.null(existing_word_counts)){
+        cat("You provided an existing vocabulary and this was added to.")
+    }else{
+        cat("You did not provide an existing vocabulary, so a new one was created.")
+    }
 
     return(result)
 }

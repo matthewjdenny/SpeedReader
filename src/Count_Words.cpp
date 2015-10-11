@@ -8,12 +8,27 @@ List Count_Words(
     int number_of_documents,
     List Document_Words,
     arma::vec Document_Lengths,
-    int max_vocab_size
+    int max_vocab_size,
+    int add_to_vocabulary,
+    arma::vec existing_word_counts,
+    std::vector<std::string> existing_vocabulary,
+    int existing_vocabulary_size
 ){
   List to_return(3);
   int total_unique_words = 0;
   arma::vec unique_word_counts = arma::zeros(max_vocab_size);
   std::vector<std::string> unique_words(max_vocab_size);
+
+  // if we are adding to an existing vocabulary, then populate the vector
+  if(add_to_vocabulary == 1){
+      for(int j = 0; j < existing_vocabulary_size; ++j){
+          //break referencing
+          std::string temp = existing_vocabulary[j];
+          unique_words[j] = temp;
+          int temp2 = existing_word_counts[j];
+          unique_word_counts[j] = temp2;
+      }
+  }
 
   for(int n = 0; n < number_of_documents; ++n){
     Rcpp::Rcout << "Current Document: " << n << std::endl;
