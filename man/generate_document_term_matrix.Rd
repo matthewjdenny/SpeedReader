@@ -2,19 +2,19 @@
 % Please edit documentation in R/generate_document_term_matrix.R
 \name{generate_document_term_matrix}
 \alias{generate_document_term_matrix}
-\title{A function to generate a document term matri from a list of document term vectors.}
+\title{A function to generate a document term matrix from a list of document term vectors.}
 \usage{
-generate_document_term_matrix(document_word_list, vocabulary = NULL)
+generate_document_term_matrix(document_term_vector_list, vocabulary = NULL)
 }
 \arguments{
-\item{document_word_list}{A list of term vectors, one per document, that we wish to turn into a document term matrix.}
+\item{document_term_vector_list}{A list of term vectors, one per document, that we wish to turn into a document term matrix.}
 
 \item{vocabulary}{An optional vocabulary vector which will be used to form the document term matrix. Defaults to NULL, in which case a vocabulary vector will be generated internally.}
 }
 \value{
-A list object.
+A dense document term matrix object with the vocabulary as column names.
 }
 \description{
-A function to generate a document term matri from a list of document term vectors.
+A function to generate a document term matrix from a list of document term vectors.
 }
 
