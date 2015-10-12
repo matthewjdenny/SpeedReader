@@ -9,6 +9,10 @@ Calculate_TFIDF <- function(document_word_matrix) {
     .Call('SpeedReader_Calculate_TFIDF', PACKAGE = 'SpeedReader', document_word_matrix)
 }
 
+Col_and_Row_Sums <- function(joint_dist) {
+    .Call('SpeedReader_Col_and_Row_Sums', PACKAGE = 'SpeedReader', joint_dist)
+}
+
 Combine_Document_Term_Matrices <- function(document_word_matrix_list, vocabularies, unique_words, number_of_corpora) {
     .Call('SpeedReader_Combine_Document_Term_Matrices', PACKAGE = 'SpeedReader', document_word_matrix_list, vocabularies, unique_words, number_of_corpora)
 }
@@ -17,7 +21,15 @@ Count_Words <- function(number_of_documents, Document_Words, Document_Lengths, m
     .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size)
 }
 
+Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {
+    .Call('SpeedReader_Fast_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist, non_zero_cols)
+}
+
 Generate_Document_Term_Matrix <- function(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths) {
     .Call('SpeedReader_Generate_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths)
+}
+
+Mutual_Information <- function(joint_dist) {
+    .Call('SpeedReader_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist)
 }
 
