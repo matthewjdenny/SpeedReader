@@ -28,6 +28,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Col_and_Row_Sums
+List Col_and_Row_Sums(arma::mat joint_dist);
+RcppExport SEXP SpeedReader_Col_and_Row_Sums(SEXP joint_distSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::mat >::type joint_dist(joint_distSEXP);
+    __result = Rcpp::wrap(Col_and_Row_Sums(joint_dist));
+    return __result;
+END_RCPP
+}
 // Combine_Document_Term_Matrices
 List Combine_Document_Term_Matrices(List document_word_matrix_list, List vocabularies, std::vector<std::string> unique_words, int number_of_corpora);
 RcppExport SEXP SpeedReader_Combine_Document_Term_Matrices(SEXP document_word_matrix_listSEXP, SEXP vocabulariesSEXP, SEXP unique_wordsSEXP, SEXP number_of_corporaSEXP) {
@@ -60,6 +71,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Fast_Mutual_Information
+double Fast_Mutual_Information(arma::mat joint_dist, arma::vec non_zero_cols);
+RcppExport SEXP SpeedReader_Fast_Mutual_Information(SEXP joint_distSEXP, SEXP non_zero_colsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::mat >::type joint_dist(joint_distSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type non_zero_cols(non_zero_colsSEXP);
+    __result = Rcpp::wrap(Fast_Mutual_Information(joint_dist, non_zero_cols));
+    return __result;
+END_RCPP
+}
 // Generate_Document_Term_Matrix
 arma::mat Generate_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths);
 RcppExport SEXP SpeedReader_Generate_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP) {
@@ -72,6 +95,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
     Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
     __result = Rcpp::wrap(Generate_Document_Term_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths));
+    return __result;
+END_RCPP
+}
+// Mutual_Information
+double Mutual_Information(arma::mat joint_dist);
+RcppExport SEXP SpeedReader_Mutual_Information(SEXP joint_distSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< arma::mat >::type joint_dist(joint_distSEXP);
+    __result = Rcpp::wrap(Mutual_Information(joint_dist));
     return __result;
 END_RCPP
 }
