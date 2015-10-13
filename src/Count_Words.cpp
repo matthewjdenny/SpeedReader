@@ -12,7 +12,9 @@ List Count_Words(
     int add_to_vocabulary,
     arma::vec existing_word_counts,
     std::vector<std::string> existing_vocabulary,
-    int existing_vocabulary_size
+    int existing_vocabulary_size,
+    int using_wordcounts,
+    List Document_Word_Counts
 ){
   List to_return(3);
   int total_unique_words = 0;
@@ -35,18 +37,27 @@ List Count_Words(
     int length = Document_Lengths[n];
     if(length > 0){
       std::vector<std::string> current = Document_Words[n];
+      arma::vec current_counts = Document_Word_Counts[n];
       for(int i = 0; i < length; ++i){
         int already = 0;
         int counter = 0;
         while(already == 0){
           if(counter == total_unique_words){
             unique_words[counter] = current[i];
-            unique_word_counts[counter] += 1;
+            if(using_wordcounts == 1){
+                unique_word_counts[counter] += current_counts[i];
+            }else{
+                unique_word_counts[counter] += 1;
+            }
             total_unique_words += 1;
             already = 1;
           }else{
             if(unique_words[counter] == current[i]){
-              unique_word_counts[counter] += 1;
+                if(using_wordcounts == 1){
+                    unique_word_counts[counter] += current_counts[i];
+                }else{
+                    unique_word_counts[counter] += 1;
+                }
               already  = 1;
             }
           }

@@ -54,8 +54,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Count_Words
-List Count_Words(int number_of_documents, List Document_Words, arma::vec Document_Lengths, int max_vocab_size, int add_to_vocabulary, arma::vec existing_word_counts, std::vector<std::string> existing_vocabulary, int existing_vocabulary_size);
-RcppExport SEXP SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP max_vocab_sizeSEXP, SEXP add_to_vocabularySEXP, SEXP existing_word_countsSEXP, SEXP existing_vocabularySEXP, SEXP existing_vocabulary_sizeSEXP) {
+List Count_Words(int number_of_documents, List Document_Words, arma::vec Document_Lengths, int max_vocab_size, int add_to_vocabulary, arma::vec existing_word_counts, std::vector<std::string> existing_vocabulary, int existing_vocabulary_size, int using_wordcounts, List Document_Word_Counts);
+RcppExport SEXP SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP max_vocab_sizeSEXP, SEXP add_to_vocabularySEXP, SEXP existing_word_countsSEXP, SEXP existing_vocabularySEXP, SEXP existing_vocabulary_sizeSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -67,7 +67,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type existing_word_counts(existing_word_countsSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string> >::type existing_vocabulary(existing_vocabularySEXP);
     Rcpp::traits::input_parameter< int >::type existing_vocabulary_size(existing_vocabulary_sizeSEXP);
-    __result = Rcpp::wrap(Count_Words(number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size));
+    Rcpp::traits::input_parameter< int >::type using_wordcounts(using_wordcountsSEXP);
+    Rcpp::traits::input_parameter< List >::type Document_Word_Counts(Document_Word_CountsSEXP);
+    __result = Rcpp::wrap(Count_Words(number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts));
     return __result;
 END_RCPP
 }
