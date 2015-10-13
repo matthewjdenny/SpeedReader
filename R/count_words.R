@@ -1,47 +1,47 @@
 #' A function to efficiently form aggregate word counts and a common vocabulary vector from an unordered list of document term vectors.
 #'
-#' @param document_word_list A list of string vectors (or a single string vector) from which we wish to find a unique vocabulary and counts for all unique words.
+#' @param document_term_vector_list A list of string vectors (or a single string vector) from which we wish to find a unique vocabulary and counts for all unique words.
 #' @param maximum_vocabulary_size A number larger than maximum vocabulary size we expect to find. Defaults to 1,000,000 but can be adjusted appropriately to conserve memory, or if more unique words are expected. The reason we specify this number beforehand is becasue all word count vectors are pre-allocated to improve performance over a growing vector.
 #' @param existing_vocabulary An existing vocabulary vector we wish to add to. Defaults to NULL in which case a new word count and vocabulry is generated.
 #' @param existing_word_counts A vector of existing word counts that must also be provided if we are specifying existing_vocabulary. Defaults to NULL in which case a new word count and vocabulry is generated.
-#' @param word_count_list A list of vectors of word counts can optionally be provided, in which case we will aggregate over them. This can be useful if we wish to store documents in a memory efficent way. Defaults to NULL.
+#' @param document_term_count_list A list of vectors of word counts can optionally be provided, in which case we will aggregate over them. This can be useful if we wish to store documents in a memory efficent way. Defaults to NULL.
 #' @return A list object with a unique_words field containing a vector of all unique word types, in descending order of their frequency, as well as a word_counts field containing word counts for each of those words, in the same order, and a total_unique_words field -- the size of the vocabulary.
 #' @export
-count_words <- function(document_word_list,
+count_words <- function(document_term_vector_list,
                         maximum_vocabulary_size = 1000000,
                         existing_vocabulary = NULL,
                         existing_word_counts = NULL,
-                        word_count_list = NULL){
+                        document_term_count_list = NULL){
 
-    if(typeof(document_word_list) == "character"){
-        document_word_list <- list(document_word_list)
-    }else if(typeof(document_word_list) != "list"){
-        stop("document_word_list must be a list object containing character vectors or a single character vector.")
+    if(typeof(document_term_vector_list) == "character"){
+        document_term_vector_list <- list(document_term_vector_list)
+    }else if(typeof(document_term_vector_list) != "list"){
+        stop("document_term_vector_list must be a list object containing character vectors or a single character vector.")
     }
 
     # allocate internal variables
-    number_of_documents <- length(document_word_list)
+    number_of_documents <- length(document_term_vector_list)
 
     # get the document lengths
-    document_lengths <- unlist(lapply(document_word_list, length))
+    document_lengths <- unlist(lapply(document_term_vector_list, length))
 
     using_wordcounts <- 0
     # if we are providing word counts
-    if(!is.null(word_count_list)){
+    if(!is.null(document_term_count_list)){
         using_wordcounts <- 1
-        if(typeof(word_count_list) == "numeric"){
-            word_count_list <- as.integer(word_count_list)
-            word_count_list <- list(word_count_list)
-        }else if(typeof(word_count_list) == "integer"){
-            word_count_list <- list(word_count_list)
-        }else if(typeof(word_count_list) != "list"){
-            stop("word_count_list must be a list object containing integer vectors or a single integer or numeric vector.")
+        if(typeof(document_term_count_list) == "numeric"){
+            document_term_count_list <- as.integer(document_term_count_list)
+            document_term_count_list <- list(document_term_count_list)
+        }else if(typeof(document_term_count_list) == "integer"){
+            document_term_count_list <- list(document_term_count_list)
+        }else if(typeof(document_term_count_list) != "list"){
+            stop("document_term_count_list must be a list object containing integer vectors or a single integer or numeric vector.")
         }
-        if(length(word_count_list) != length(document_word_list)){
-            stop("word_count_list and document_word_list must be the same length.")
+        if(length(document_term_count_list) != length(document_term_vector_list)){
+            stop("document_term_count_list and document_term_vector_list must be the same length.")
         }
     }else{
-        word_count_list <- as.list(rep(0,number_of_documents))
+        document_term_count_list <- as.list(rep(0,number_of_documents))
     }
 
     #if we are adding to a current vocabulary, then initialize everything
@@ -69,7 +69,7 @@ count_words <- function(document_word_list,
     }
 
     counts <- Count_Words(number_of_documents,
-                          document_word_list,
+                          document_term_vector_list,
                           document_lengths,
                           maximum_vocabulary_size,
                           add_to_vocabulary,
@@ -77,7 +77,7 @@ count_words <- function(document_word_list,
                           existing_vocabulary,
                           existing_vocabulary_size,
                           using_wordcounts,
-                          word_count_list)
+                          document_term_count_list)
 
     ordering <- order(counts[[3]],decreasing = TRUE)
 
