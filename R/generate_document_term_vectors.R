@@ -49,17 +49,89 @@ generate_document_term_vectors <- function(
         }
     }
 
+    # allocate list objects
+    document_term_vector_list <- vector(mode= "list", length = length(input))
+    document_term_count_list <- vector(mode= "list", length = length(input))
+
+    #**********************#
+    #****** CSV Data ******#
+    #**********************#
+    if(data_type == "csv"){
+
+        # if csv_count_column is not NULL, then warn the user that we are not
+        # keeping sequence
+        if(!is.null(csv_count_column) &  keep_sequence){
+            keep_sequence <- FALSE
+            warning("You provided a csv_count_column so keep_sequence was set to FALSE. If you intended to keep sequence, then set csv_count_column = NULL.")
+        }
+
+        if(!keep_sequence & is.null(csv_count_column)){
+            stop("You must provide a csv_count_column index if keep_sequence == FALSE.")
+        }
+
+        if(keep_sequence){
+            for(i in 1:length(input)){
+                data <- read.csv(file = input[i],
+                                 sep = csv_separator,
+                                 stringsAsFactors = FALSE,
+                                 header = FALSE)
+                document_term_vector_list[[i]] <- as.character(data[,csv_word_column])
+            }
+
+        }else{
+            for(i in 1:length(input)){
+                data <- read.csv(file = input[i],
+                                 sep = csv_separator,
+                                 stringsAsFactors = FALSE,
+                                 header = FALSE)
+                temp <-
+                vocab <- count_words(
+                    list(as.character(data[,csv_word_column])),
+                    maximum_vocabulary_size = -1,
+                    document_term_count_list = list(as.numeric(data[,csv_count_column])))
+                document_term_vector_list[[i]] <- vocab$unique_words
+                document_term_count_list[[i]] <- vocab$word_counts
+            }
+
+        }
+
+
+    }
 
     # return everything
-    document_term_vector_list <- NULL
     if(output_type == "return"){
-        return(document_term_vector_list)
+        if(keep_sequence){
+            return(document_term_vector_list)
+        }else{
+            return_list <- list(
+                document_term_vector_list = document_term_vector_list,
+                document_term_count_list = document_term_count_list
+                                )
+            return(return_list)
+        }
     }else if(output_type == "return"){
-        save(document_term_vector_list,
-             file = paste(output_name,".Rdata", sep = ""))
+        if(keep_sequence){
+            save(document_term_vector_list,
+                 file = paste(output_name,".Rdata", sep = ""))
+        }else{
+            save(list = c("document_term_vector_list",
+                          "document_term_count_list"),
+                 file = paste(output_name,".Rdata", sep = ""))
+        }
     }else{
-        return(document_term_vector_list)
-        save(document_term_vector_list,
-             file = paste(output_name,".Rdata", sep = ""))
+        if(keep_sequence){
+            return(document_term_vector_list)
+            save(document_term_vector_list,
+                 file = paste(output_name,".Rdata", sep = ""))
+        }else{
+            save(list = c("document_term_vector_list",
+                          "document_term_count_list"),
+                 file = paste(output_name,".Rdata", sep = ""))
+            return_list <- list(
+                document_term_vector_list = document_term_vector_list,
+                document_term_count_list = document_term_count_list
+            )
+            return(return_list)
+        }
     }
 }
