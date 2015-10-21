@@ -21,3 +21,4 @@ LinkingTo:
 	Rcpp, 
 	RcppArmadillo
 LazyData: TRUE
+Suggests: testthat
