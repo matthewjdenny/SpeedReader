@@ -8,7 +8,8 @@ generate_document_term_vectors(input, data_type = c("string", "term vector",
   "raw text", "csv"), data_directory = NULL,
   tokenization_method = c("RegEx", "CoreNLP"), output_type = c("return",
   "save", "return and save"), output_name = NULL, csv_separator = ",",
-  csv_word_column = NULL, csv_count_column = NULL, keep_sequence = FALSE)
+  csv_word_column = NULL, csv_count_column = NULL, csv_header = FALSE,
+  keep_sequence = FALSE)
 }
 \arguments{
 \item{input}{A list of strings, term vectors, raw documents, or csv files you wish to turn into document term vectors.}
@@ -28,6 +29,8 @@ generate_document_term_vectors(input, data_type = c("string", "term vector",
 \item{csv_word_column}{If you are providing one csv file per document, then you must specify the index of the column that contains the words. Defaults to NULL.}
 
 \item{csv_count_column}{For memory efficiency, you may want to store only the counts of unique words in csv files. If your data include counts, then you must specify the index of the column that contains the counts. Defaults to NULL.}
+
+\item{csv_header}{Logical indicating whether the csv files provided have a header. Defaults to FALSE.}
 
 \item{keep_sequence}{Logical indicating whether document term vectors should be condensed and counts (FALSE) or whether the full sequence should be maintained for storage (TRUE). Defaults to FALSE as this can be a much more memory efficient representation.}
 }

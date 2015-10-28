@@ -9,6 +9,7 @@
 #' @param csv_separator Defaults to "," but can be set to "*backslash*t" for tab separated values.
 #' @param csv_word_column  If you are providing one csv file per document, then you must specify the index of the column that contains the words. Defaults to NULL.
 #' @param csv_count_column For memory efficiency, you may want to store only the counts of unique words in csv files. If your data include counts, then you must specify the index of the column that contains the counts. Defaults to NULL.
+#' @param csv_header Logical indicating whether the csv files provided have a header. Defaults to FALSE.
 #' @param keep_sequence Logical indicating whether document term vectors should be condensed and counts (FALSE) or whether the full sequence should be maintained for storage (TRUE). Defaults to FALSE as this can be a much more memory efficient representation.
 #' @return A document term vector list.
 #' @export
@@ -22,6 +23,7 @@ generate_document_term_vectors <- function(
     csv_separator = ",",
     csv_word_column = NULL,
     csv_count_column = NULL,
+    csv_header = FALSE,
     keep_sequence = FALSE){
 
     # deal with default values
@@ -69,12 +71,16 @@ generate_document_term_vectors <- function(
             stop("You must provide a csv_count_column index if keep_sequence == FALSE.")
         }
 
+        if(class(input) == "list"){
+            input <- unlist(input)
+        }
+
         if(keep_sequence){
             for(i in 1:length(input)){
                 data <- read.csv(file = input[i],
                                  sep = csv_separator,
                                  stringsAsFactors = FALSE,
-                                 header = FALSE)
+                                 header = csv_header)
                 document_term_vector_list[[i]] <- as.character(data[,csv_word_column])
             }
 
