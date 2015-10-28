@@ -17,8 +17,8 @@ Combine_Document_Term_Matrices <- function(document_word_matrix_list, vocabulari
     .Call('SpeedReader_Combine_Document_Term_Matrices', PACKAGE = 'SpeedReader', document_word_matrix_list, vocabularies, unique_words, number_of_corpora)
 }
 
-Count_Words <- function(number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts) {
-    .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts)
+Count_Words <- function(number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts, print_counter) {
+    .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts, print_counter)
 }
 
 Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {

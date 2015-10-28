@@ -68,6 +68,11 @@ count_words <- function(document_term_vector_list,
         }
     }
 
+    print_counter = 0
+    if(length(number_of_documents) > 1){
+        print_counter = 1
+    }
+
     counts <- Count_Words(number_of_documents,
                           document_term_vector_list,
                           document_lengths,
@@ -77,7 +82,8 @@ count_words <- function(document_term_vector_list,
                           existing_vocabulary,
                           existing_vocabulary_size,
                           using_wordcounts,
-                          document_term_count_list)
+                          document_term_count_list,
+                          print_counter)
 
     ordering <- order(counts[[3]],decreasing = TRUE)
 
@@ -92,10 +98,14 @@ count_words <- function(document_term_vector_list,
 
     # let the user know what they are doing incase they thought they were
     # providing a vocabulary but did not.
-    if(!is.null(existing_vocabulary) & !is.null(existing_word_counts)){
-        cat("You provided an existing vocabulary and this was added to.")
+    if(existing_vocabulary[1] != "ERROR" & existing_word_counts[1] != 0){
+        if(print_counter == 1){
+            cat("You provided an existing vocabulary and this was added to.\n")
+        }
     }else{
-        cat("You did not provide an existing vocabulary, so a new one was created.")
+        if(print_counter == 1){
+            cat("You did not provide an existing vocabulary, so a new one was created.\n")
+        }
     }
 
     return(result)

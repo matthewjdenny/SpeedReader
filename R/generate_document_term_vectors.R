@@ -47,7 +47,7 @@ generate_document_term_vectors <- function(
     # check to make sure an output name is provided if we are saving
     if(output_type != "return"){
         if(is.null(output_name)){
-            stop("You must provide a valid output name if you wish to save output to disk. You do not need to provide the .Rdata extension as this is appended automatically.")
+            stop("You must provide a valid output name if you wish to save output to disk. You do not need to provide the .Rdata extension as this is appended automatically.\n")
         }
     }
 
@@ -64,11 +64,11 @@ generate_document_term_vectors <- function(
         # keeping sequence
         if(!is.null(csv_count_column) &  keep_sequence){
             keep_sequence <- FALSE
-            warning("You provided a csv_count_column so keep_sequence was set to FALSE. If you intended to keep sequence, then set csv_count_column = NULL.")
+            warning("You provided a csv_count_column so keep_sequence was set to FALSE. If you intended to keep sequence, then set csv_count_column = NULL.\n")
         }
 
         if(!keep_sequence & is.null(csv_count_column)){
-            stop("You must provide a csv_count_column index if keep_sequence == FALSE.")
+            stop("You must provide a csv_count_column index if keep_sequence == FALSE.\n")
         }
 
         if(class(input) == "list"){
@@ -86,13 +86,13 @@ generate_document_term_vectors <- function(
 
         }else{
             for(i in 1:length(input)){
+                cat("Reading in file",i,"of",length(input),"\n")
                 data <- read.csv(file = input[i],
                                  sep = csv_separator,
                                  stringsAsFactors = FALSE,
-                                 header = FALSE)
-                temp <-
+                                 header = csv_header)
                 vocab <- count_words(
-                    list(as.character(data[,csv_word_column])),
+                    document_term_vector_list = list(as.character(data[,csv_word_column])),
                     maximum_vocabulary_size = -1,
                     document_term_count_list = list(as.numeric(data[,csv_count_column])))
                 document_term_vector_list[[i]] <- vocab$unique_words

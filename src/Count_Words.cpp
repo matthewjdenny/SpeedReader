@@ -14,7 +14,8 @@ List Count_Words(
     std::vector<std::string> existing_vocabulary,
     int existing_vocabulary_size,
     int using_wordcounts,
-    List Document_Word_Counts
+    List Document_Word_Counts,
+    int print_counter
 ){
   List to_return(3);
   int total_unique_words = 0;
@@ -33,7 +34,9 @@ List Count_Words(
   }
 
   for(int n = 0; n < number_of_documents; ++n){
-    Rcpp::Rcout << "Current Document: " << n << std::endl;
+    if(print_counter == 1){
+        Rcpp::Rcout << "Current Document: " << n << std::endl;
+    }
     int length = Document_Lengths[n];
     if(length > 0){
       std::vector<std::string> current = Document_Words[n];
