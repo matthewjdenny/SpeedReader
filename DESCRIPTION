@@ -12,10 +12,8 @@ Imports:
 	Rcpp,
         ggplot2,
         methods,
-        stringr,
 	slam,
-	readr,
-	ggplot2
+	readr
 Depends: 
         R (>= 3.2.1)
 LinkingTo: 
