@@ -13,7 +13,7 @@ generate_document_term_matrix <- function(document_term_vector_list,
     if(is.null(vocabulary)){
         vocab <- count_words(document_term_vector_list,
                              maximum_vocabulary_size = -1,
-                             document_term_count_list)
+                             document_term_count_list = document_term_count_list)
         vocabulary <- vocab$unique_words
     }
 
