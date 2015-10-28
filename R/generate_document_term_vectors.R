@@ -77,20 +77,18 @@ generate_document_term_vectors <- function(
 
         if(keep_sequence){
             for(i in 1:length(input)){
-                data <- read.csv(file = input[i],
-                                 sep = csv_separator,
-                                 stringsAsFactors = FALSE,
-                                 header = csv_header)
+                data <- readr::read_delim(file = input[i],
+                                        delim = csv_separator,
+                                        col_names = csv_header)
                 document_term_vector_list[[i]] <- as.character(data[,csv_word_column])
             }
 
         }else{
             for(i in 1:length(input)){
                 cat("Reading in file",i,"of",length(input),"\n")
-                data <- read.csv(file = input[i],
-                                 sep = csv_separator,
-                                 stringsAsFactors = FALSE,
-                                 header = csv_header)
+                data <- readr::read_delim(file = input[i],
+                                 delim = csv_separator,
+                                 col_names = csv_header)
                 vocab <- count_words(
                     document_term_vector_list = list(as.character(data[,csv_word_column])),
                     maximum_vocabulary_size = -1,
