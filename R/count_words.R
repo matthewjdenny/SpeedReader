@@ -69,7 +69,7 @@ count_words <- function(document_term_vector_list,
     }
 
     print_counter = 0
-    if(length(number_of_documents) > 1){
+    if(number_of_documents > 1){
         print_counter = 1
     }
 
