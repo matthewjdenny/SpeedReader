@@ -1,4 +1,4 @@
-# SpeedReader
+# SpeedReader [![Travis-CI Build Status](https://travis-ci.org/matthewjdenny/SpeedReader.svg?branch=master)](https://travis-ci.org/matthewjdenny/SpeedReader)
 An R package that provides functions to facilitate high performance text processing in R.
 
 ## Overview
