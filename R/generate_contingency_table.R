@@ -143,7 +143,7 @@ generate_contingency_table  <- function(metadata,
             cat("Currently compiling contingency table row for:",unique_values[i],"\n")
             indexes <- which(metadata[,colindex] == unique_values[i])
             cur <- doc_word_matrix[indexes,]
-            contingency_table[i,] <- col_sums(cur)
+            contingency_table[i,] <- colSums(cur)
         }
         rownames(contingency_table) <- Cateogry_Names
         colnames(contingency_table) <- vocab

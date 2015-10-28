@@ -33,7 +33,7 @@ combine_document_term_matrices <- function(
     unique_words <- unique(unlist(vocabulary_list))
 
     result <- Combine_Document_Term_Matrices(
-        document_word_matrix_list,
+        document_term_matrix_list,
         vocabulary_list,
         unique_words,
         number_of_corpora)

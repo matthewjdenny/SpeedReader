@@ -22,6 +22,9 @@ generate_sparse_large_document_term_matrix <- function(file_directory,
         stop("This function expects N > 1 intermediate files in file_list. Either split this file into smaller constituents or use the generate_document_term_matrix() function.")
     }
 
+    # set global variable to NULL
+    document_term_vector_list = NULL
+
     if(!using_document_term_counts){
         document_term_count_list = NULL
     }

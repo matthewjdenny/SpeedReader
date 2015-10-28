@@ -22,7 +22,7 @@ topic_coherence <- function(top_words,
   }
   if(K > length(top_words)){
       K <- length(top_words)
-      warining(paste("You must select a value for K that is less than length(top_words). K has automatically been set to :",K,sep = " "))
+      warning(paste("You must select a value for K that is less than length(top_words). K has automatically been set to :",K,sep = " "))
   }
   if(length(vocabulary) != ncol(document_term_matrix)){
       stop("The vocaublary vector must have the same number of entries as the number of columns in the document_term_matrix, and the word indicated by entries in the i'th column of document_term_matrix must correspond to the i'th entry in vocabulary.")
