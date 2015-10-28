@@ -1,14 +1,17 @@
 #' A function to parameter estimate plots with 95% confidence bounds for up to two models we wish to compare.
 #'
-#' @param model1
-#' @param model2
-#' @param type
-#' @return Prints the plot.
+#' @param model1 A model object returned by a regression estimation routine in R that we wish to plot the parameter estimates of.
+#' @param model2 A optional second model object returned by a regression estimation routine in R that we wish to plot the parameter estimates of alongside model 1. Defaults to NULL if no comparison model is provided.
+#' @param type The type of model object(s) we are passing to the plotting function. Defaults to "glm/lm", in which case the function expects model output of type "lm" or "glm" to plot. Alternatively, "zero-inflated" may be selected, in which case the function expects model output from the zeroinfl() function available in the pscl package. Finally, a list object may be provided if the user wishes to pass in estimation results that are hand-rolled or do not follow the formatting in one of the above packages. In this case, the list object must contain a $varnames field with variable names as they will displayed in the plots, a $coefficients field with the coefficient values as a numeric vector, and an $se field containing a numeric vector of standard errors for those coefficient values. The function currently does not support comparison between different types of models, but may do so in the future.
+#' @param model1_name The name we wish to give model1 in the legend if plotting two model's parameter estimates together. Defaults to "Model 1".
+#' @param model2_name The name we wish to give model2 in the legend if plotting two model's parameter estimates together. Defaults to "Model 2".
 #' @export
 estimate_plots <- function(model1,
-                          model2 = NULL,
-                          type = c("generic","glm/lm","zero-inflated" )){
-
+                           model2 = NULL,
+                           type = c("glm/lm","zero-inflated", "generic"),
+                           model1_name = "Model 1",
+                           model2_name = "Model 2"){
+    # get the type of model we wish to plot the parameter estimates of.
     type <- type[1]
 
     if(type == "zero-inflated"){
@@ -74,7 +77,7 @@ estimate_plots <- function(model1,
     modelFrame <- data.frame(Variable = mod1names ,
                              Coefficient = mod1coefs,
                              SE = mod1ses,
-                             Model = "Model 1"
+                             Model = model1_name
     )
     data <- data.frame(modelFrame)
 
@@ -82,7 +85,7 @@ estimate_plots <- function(model1,
         ModelFrame2 <- data.frame(Variable = mod2names ,
                                   Coefficient = mod2coefs,
                                   SE = mod2ses,
-                                  Model = "Model 2"
+                                  Model = model2_name
         )
         data <- rbind(data,ModelFrame2)
     }
