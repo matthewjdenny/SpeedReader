@@ -1,0 +1,768 @@
+docid	lc_words	tags	coarse_tags	pattern	numwords	numchars	count
+bill4	labor	NN	Noun	NP	1	5	11
+bill4	labor	NNP	Noun	NP	1	5	8
+bill4	act	NNP	Noun	NP	1	3	8
+bill4	act	NN	Noun	NP	1	3	2
+bill4	dispute	NN	Noun	NP	1	7	10
+bill4	is	VBZ	Verb	VG	1	2	9
+bill4	has	VBZ	Verb	VG	1	3	7
+bill4	june	NNP	Noun	NP	1	4	7
+bill4	carrier	NN	Noun	NP	1	7	6
+bill4	work	NN	Noun	NP	1	4	4
+bill4	work	VB	Verb	VG	1	4	2
+bill4	1993	CD	Noun	NP	1	4	5
+bill4	bargaining	NN	Noun	NP	1	10	5
+bill4	based	VBN	Verb	VG	1	5	5
+bill4	calendar	NNP	Noun	NP	1	8	3
+bill4	calendar	NN	Noun	NP	1	8	2
+bill4	discrimination	NN	Noun	NP	1	14	3
+bill4	discrimination	NNP	Noun	NP	1	14	2
+bill4	disputes	NNS	Noun	NP	1	8	5
+bill4	employee	NN	Noun	NP	1	8	5
+bill4	labor disputes	NN NNS	Noun Noun	NP	2	14	5
+bill4	railway	NNP	Noun	NP	1	7	5
+bill4	railway labor	NNP NNP	Noun Noun	NP	2	13	4
+bill4	railway labor	NNP NN	Noun Noun	NP	2	13	1
+bill4	_______________________________________________________________________	CD	Noun	NP	1	71	2
+bill4	_______________________________________________________________________	NN	Noun	NP	1	71	2
+bill4	b	NN	Noun	NP	1	1	4
+bill4	congress	NNP	Noun	NP	1	8	4
+bill4	labor act	NNP NNP	Noun Noun	NP	2	9	4
+bill4	labor organization	NN NN	Noun Noun	NP	2	18	4
+bill4	labor relations	NNP NNP	Noun Noun	NP	2	15	4
+bill4	labor relations act	NNP NNP NNP	Noun Noun Noun	NP	3	19	4
+bill4	national	NNP	Noun	NP	1	8	4
+bill4	national labor	NNP NNP	Noun Noun	NP	2	14	4
+bill4	national labor relations	NNP NNP NNP	Noun Noun Noun	NP	3	24	4
+bill4	national labor relations act	NNP NNP NNP NNP	Noun Noun Noun Noun	NP	4	28	4
+bill4	organization	NN	Noun	NP	1	12	4
+bill4	railway labor act	NNP NNP NNP	Noun Noun Noun	NP	3	17	4
+bill4	relations	NNP	Noun	NP	1	9	4
+bill4	relations act	NNP NNP	Noun Noun	NP	2	13	4
+bill4	section	NN	Noun	NP	1	7	4
+bill4	15	CD	Noun	NP	1	2	3
+bill4	1993 read	CD VB	Noun Verb	VerbArg	2	9	3
+bill4	5	CD	Noun	NP	1	1	3
+bill4	a	NN	Noun	NP	1	1	3
+bill4	act and the railway	NNP CC DT NNP	Noun O Det Noun	NP	4	19	3
+bill4	act and the railway labor	NNP CC DT NNP NNP	Noun O Det Noun Noun	NP	5	25	3
+bill4	act and the railway labor act	NNP CC DT NNP NNP NNP	Noun O Det Noun Noun Noun	NP	6	29	3
+bill4	act and the railway labor act to prevent	NNP CC DT NNP NNP NNP TO VB	Noun O Det Noun Noun Noun Prep Verb	VerbArg	8	40	3
+bill4	act and the railway labor act to prevent discrimination	NNP CC DT NNP NNP NNP TO VB NN	Noun O Det Noun Noun Noun Prep Verb Noun	VerbArg	9	55	3
+bill4	act to prevent	NNP TO VB	Noun Prep Verb	VerbArg	3	14	3
+bill4	act to prevent discrimination	NNP TO VB NN	Noun Prep Verb Noun	VerbArg	4	29	3
+bill4	amend	VB	Verb	VG	1	5	3
+bill4	amend the national	VB DT NNP	Verb Det Noun	VerbArg	3	18	3
+bill4	amend the national labor	VB DT NNP NNP	Verb Det Noun Noun	VerbArg	4	24	3
+bill4	amend the national labor relations	VB DT NNP NNP NNP	Verb Det Noun Noun Noun	VerbArg	5	34	3
+bill4	amend the national labor relations act	VB DT NNP NNP NNP NNP	Verb Det Noun Noun Noun Noun	VerbArg	6	38	3
+bill4	amend the national labor relations act and the railway	VB DT NNP NNP NNP NNP CC DT NNP	Verb Det Noun Noun Noun Noun O Det Noun	VerbArg	9	54	3
+bill4	amend the national labor relations act and the railway labor	VB DT NNP NNP NNP NNP CC DT NNP NNP	Verb Det Noun Noun Noun Noun O Det Noun Noun	VerbArg	10	60	3
+bill4	amend the national labor relations act and the railway labor act	VB DT NNP NNP NNP NNP CC DT NNP NNP NNP	Verb Det Noun Noun Noun Noun O Det Noun Noun Noun	VerbArg	11	64	3
+bill4	based on participation	VBN IN NN	Verb Prep Noun	VerbArg	3	22	3
+bill4	based on participation in labor	VBN IN NN IN NN	Verb Prep Noun Prep Noun	VerbArg	5	31	3
+bill4	based on participation in labor disputes	VBN IN NN IN NN NNS	Verb Prep Noun Prep Noun Noun	VerbArg	6	40	3
+bill4	class	NN	Noun	NP	1	5	3
+bill4	collective bargaining	JJ NN	Adj Noun	NP	2	21	3
+bill4	commencement	NN	Noun	NP	1	12	3
+bill4	craft	NN	Noun	NP	1	5	3
+bill4	craft or class	NN CC NN	Noun O Noun	NP	3	14	3
+bill4	discrimination based	NN VBN	Noun Verb	VerbArg	2	20	3
+bill4	discrimination based on participation	NN VBN IN NN	Noun Verb Prep Noun	VerbArg	4	37	3
+bill4	discrimination based on participation in labor	NN VBN IN NN IN NN	Noun Verb Prep Noun Prep Noun	VerbArg	6	46	3
+bill4	discrimination based on participation in labor disputes	NN VBN IN NN IN NN NNS	Noun Verb Prep Noun Prep Noun Noun	VerbArg	7	55	3
+bill4	employer	NN	Noun	NP	1	8	3
+bill4	end	NN	Noun	NP	1	3	3
+bill4	individual	NN	Noun	NP	1	10	3
+bill4	june 15	NNP CD	Noun Noun	NP	2	7	3
+bill4	labor act to prevent	NNP NNP TO VB	Noun Noun Prep Verb	VerbArg	4	20	3
+bill4	labor act to prevent discrimination	NNP NNP TO VB NN	Noun Noun Prep Verb Noun	VerbArg	5	35	3
+bill4	labor relations act and the railway	NNP NNP NNP CC DT NNP	Noun Noun Noun O Det Noun	NP	6	35	3
+bill4	labor relations act and the railway labor	NNP NNP NNP CC DT NNP NNP	Noun Noun Noun O Det Noun Noun	NP	7	41	3
+bill4	labor relations act and the railway labor act	NNP NNP NNP CC DT NNP NNP NNP	Noun Noun Noun O Det Noun Noun Noun	NP	8	45	3
+bill4	labor relations act and the railway labor act to prevent	NNP NNP NNP CC DT NNP NNP NNP TO VB	Noun Noun Noun O Det Noun Noun Noun Prep Verb	VerbArg	10	56	3
+bill4	labor relations act and the railway labor act to prevent discrimination	NNP NNP NNP CC DT NNP NNP NNP TO VB NN	Noun Noun Noun O Det Noun Noun Noun Prep Verb Noun	VerbArg	11	71	3
+bill4	national labor relations act and the railway	NNP NNP NNP NNP CC DT NNP	Noun Noun Noun Noun O Det Noun	NP	7	44	3
+bill4	national labor relations act and the railway labor	NNP NNP NNP NNP CC DT NNP NNP	Noun Noun Noun Noun O Det Noun Noun	NP	8	50	3
+bill4	national labor relations act and the railway labor act	NNP NNP NNP NNP CC DT NNP NNP NNP	Noun Noun Noun Noun O Det Noun Noun Noun	NP	9	54	3
+bill4	national labor relations act and the railway labor act to prevent	NNP NNP NNP NNP CC DT NNP NNP NNP TO VB	Noun Noun Noun Noun O Det Noun Noun Noun Prep Verb	VerbArg	11	65	3
+bill4	national labor relations act and the railway labor act to prevent discrimination	NNP NNP NNP NNP CC DT NNP NNP NNP TO VB NN	Noun Noun Noun Noun O Det Noun Noun Noun Prep Verb Noun	VerbArg	12	80	3
+bill4	paragraph	NN	Noun	NP	1	9	2
+bill4	paragraph	NNP	Noun	NP	1	9	1
+bill4	participation	NN	Noun	NP	1	13	3
+bill4	participation in labor	NN IN NN	Noun Prep Noun	NP	3	22	3
+bill4	participation in labor disputes	NN IN NN NNS	Noun Prep Noun Noun	NP	4	31	3
+bill4	placed	VBN	Verb	VG	1	6	3
+bill4	prevent	VB	Verb	VG	1	7	3
+bill4	prevent discrimination	VB NN	Verb Noun	VerbArg	2	22	3
+bill4	railway labor act to prevent	NNP NNP NNP TO VB	Noun Noun Noun Prep Verb	VerbArg	5	28	3
+bill4	railway labor act to prevent discrimination	NNP NNP NNP TO VB NN	Noun Noun Noun Prep Verb Noun	VerbArg	6	43	3
+bill4	read	VB	Verb	VG	1	4	3
+bill4	relations act and the railway	NNP NNP CC DT NNP	Noun Noun O Det Noun	NP	5	29	3
+bill4	relations act and the railway labor	NNP NNP CC DT NNP NNP	Noun Noun O Det Noun Noun	NP	6	35	3
+bill4	relations act and the railway labor act	NNP NNP CC DT NNP NNP NNP	Noun Noun O Det Noun Noun Noun	NP	7	39	3
+bill4	relations act and the railway labor act to prevent	NNP NNP CC DT NNP NNP NNP TO VB	Noun Noun O Det Noun Noun Noun Prep Verb	VerbArg	9	50	3
+bill4	relations act and the railway labor act to prevent discrimination	NNP NNP CC DT NNP NNP NNP TO VB NN	Noun Noun O Det Noun Noun Noun Prep Verb Noun	VerbArg	10	65	3
+bill4	representative	NN	Noun	NP	1	14	3
+bill4	senate	NNP	Noun	NP	1	6	3
+bill4	time	NN	Noun	NP	1	4	3
+bill4	unit	NN	Noun	NP	1	4	3
+bill4	was	VBD	Verb	VG	1	3	3
+bill4	1993 read the second time	CD VB DT JJ NN	Noun Verb Det Adj Noun	VerbArg	5	25	2
+bill4	1st	CD	Noun	NP	1	3	2
+bill4	1st session	CD NN	Noun Noun	NP	2	11	2
+bill4	1st session h.	CD NN NN	Noun Noun Noun	NP	3	14	2
+bill4	1st session h. r.	CD NN NN NNP	Noun Noun Noun Noun	NP	4	17	2
+bill4	22	CD	Noun	NP	1	2	2
+bill4	acting	VBG	Verb	VG	1	6	2
+bill4	acting as the collective bargaining	VBG IN DT JJ NN	Verb Prep Det Adj Noun	VerbArg	5	35	2
+bill4	acting as the collective bargaining representative	VBG IN DT JJ NN NN	Verb Prep Det Adj Noun Noun	VerbArg	6	50	2
+bill4	adding	VBG	Verb	VG	1	6	2
+bill4	adding at the end	VBG IN DT NN	Verb Prep Det Noun	VerbArg	4	17	2
+bill4	amended	VBN	Verb	VG	1	7	2
+bill4	bargaining representative	NN NN	Noun Noun	NP	2	25	2
+bill4	bargaining representative involved	NN NN VBN	Noun Noun Verb	VerbArg	3	34	2
+bill4	bargaining representative involved in the dispute	NN NN VBN IN DT NN	Noun Noun Verb Prep Det Noun	VerbArg	6	49	2
+bill4	bargaining unit	NN NN	Noun Noun	NP	2	15	2
+bill4	based on the fact	VBN IN DT NN	Verb Prep Det Noun	VerbArg	4	17	2
+bill4	be	VB	Verb	VG	1	2	2
+bill4	c	NN	Noun	NP	1	1	2
+bill4	calendar no.	NNP NNP	Noun Noun	NP	2	12	2
+bill4	collective bargaining representative	JJ NN NN	Adj Noun Noun	NP	3	36	2
+bill4	collective bargaining representative involved	JJ NN NN VBN	Adj Noun Noun Verb	VerbArg	4	45	2
+bill4	collective bargaining representative involved in the dispute	JJ NN NN VBN IN DT NN	Adj Noun Noun Verb Prep Det Noun	VerbArg	7	60	2
+bill4	commencement of the dispute	NN IN DT NN	Noun Prep Det Noun	NP	4	27	2
+bill4	conclusion	NN	Noun	NP	1	10	2
+bill4	congress 1st	NNP CD	Noun Noun	NP	2	12	2
+bill4	congress 1st session	NNP CD NN	Noun Noun Noun	NP	3	20	2
+bill4	congress 1st session h.	NNP CD NN NN	Noun Noun Noun Noun	NP	4	23	2
+bill4	congress 1st session h. r.	NNP CD NN NN NNP	Noun Noun Noun Noun Noun	NP	5	26	2
+bill4	connection	NN	Noun	NP	1	10	2
+bill4	day	NN	Noun	NP	1	3	2
+bill4	discrimination during	NNP NNPS	Noun Noun	NP	2	21	2
+bill4	dispute has	NN VBZ	Noun Verb	VerbArg	2	11	2
+bill4	during	NNPS	Noun	NP	1	6	2
+bill4	employment	NN	Noun	NP	1	10	2
+bill4	fact	NN	Noun	NP	1	4	2
+bill4	following	NN	Noun	NP	1	9	1
+bill4	following	VBG	Verb	VG	1	9	1
+bill4	grant	VB	Verb	VG	1	5	2
+bill4	h.	NN	Noun	NP	1	2	2
+bill4	h. r.	NN NNP	Noun Noun	NP	2	5	2
+bill4	has unconditionally	VBZ RB	Verb VerbMod	VG	2	19	2
+bill4	has unconditionally offered	VBZ RB VBN	Verb VerbMod Verb	VG	3	27	2
+bill4	house	NNP	Noun	NP	1	5	2
+bill4	house of representatives	NNP IN NNPS	Noun Prep Noun	NP	3	24	2
+bill4	indicated	VBD	Verb	VG	1	9	1
+bill4	indicated	VBN	Verb	VG	1	9	1
+bill4	indicated a willingness	VBD DT NN	Verb Det Noun	VerbArg	3	23	1
+bill4	indicated a willingness	VBN DT NN	Verb Det Noun	VerbArg	3	23	1
+bill4	inserting	VBG	Verb	VG	1	9	2
+bill4	involved	VBN	Verb	VG	1	8	2
+bill4	involved in the dispute	VBN IN DT NN	Verb Prep Det Noun	VerbArg	4	23	2
+bill4	is acting	VBZ VBG	Verb Verb	VG	2	9	2
+bill4	is acting as the collective bargaining	VBZ VBG IN DT JJ NN	Verb Verb Prep Det Adj Noun	VerbArg	6	38	2
+bill4	is acting as the collective bargaining representative	VBZ VBG IN DT JJ NN NN	Verb Verb Prep Det Adj Noun Noun	VerbArg	7	53	2
+bill4	is amended	VBZ VBN	Verb Verb	VG	2	10	2
+bill4	is working	VBZ VBG	Verb Verb	VG	2	10	2
+bill4	june 22	NNP CD	Noun Noun	NP	2	7	2
+bill4	labor dispute	NN NN	Noun Noun	NP	2	13	2
+bill4	legislative day	JJ NN	Adj Noun	NP	2	15	2
+bill4	no.	NNP	Noun	NP	1	3	2
+bill4	offer	NN	Noun	NP	1	5	2
+bill4	offered	VBN	Verb	VG	1	7	2
+bill4	other employment	JJ NN	Adj Noun	NP	2	16	2
+bill4	perform	VB	Verb	VG	1	7	2
+bill4	performed	VBN	Verb	VG	1	9	2
+bill4	performing	VBG	Verb	VG	1	10	2
+bill4	permanent replacement	JJ NN	Adj Noun	NP	2	21	2
+bill4	placed on the calendar	VBN IN DT NN	Verb Prep Det Noun	VerbArg	4	22	2
+bill4	preference	NN	Noun	NP	1	10	2
+bill4	prevention	NN	Noun	NP	1	10	2
+bill4	prevention of discrimination	NN IN NNP	Noun Prep Noun	NP	3	28	2
+bill4	prevention of discrimination during	NN IN NNP NNPS	Noun Prep Noun Noun	NP	4	35	2
+bill4	r.	NNP	Noun	NP	1	2	2
+bill4	read the second time	VB DT JJ NN	Verb Det Adj Noun	VerbArg	4	20	2
+bill4	replacement	NN	Noun	NP	1	11	2
+bill4	representative involved	NN VBN	Noun Verb	VerbArg	2	23	2
+bill4	representative involved in the dispute	NN VBN IN DT NN	Noun Verb Prep Det Noun	VerbArg	5	38	2
+bill4	representatives	NNPS	Noun	NP	1	15	2
+bill4	return	VB	Verb	VG	1	6	2
+bill4	right	NN	Noun	NP	1	5	2
+bill4	second time	JJ NN	Adj Noun	NP	2	11	2
+bill4	session	NN	Noun	NP	1	7	2
+bill4	session h.	NN NN	Noun Noun	NP	2	10	2
+bill4	session h. r.	NN NN NNP	Noun Noun Noun	NP	3	13	2
+bill4	states	NNPS	Noun	NP	1	6	1
+bill4	states	NNS	Noun	NP	1	6	1
+bill4	u.s.c.	NN	Noun	NP	1	6	2
+bill4	unconditionally offered	RB VBN	VerbMod Verb	VG	2	23	2
+bill4	united	NNP	Noun	NP	1	6	2
+bill4	united states	NNP NNPS	Noun Noun	NP	2	13	1
+bill4	united states	NNP NNS	Noun Noun	NP	2	13	1
+bill4	was an employee	VBD DT NN	Verb Det Noun	VerbArg	3	15	2
+bill4	willingness	NN	Noun	NP	1	11	2
+bill4	willingness to perform	NN TO VB	Noun Prep Verb	VerbArg	3	22	2
+bill4	work for the employer	NN IN DT NN	Noun Prep Det Noun	NP	4	21	1
+bill4	work for the employer	VB IN DT NN	Verb Prep Det Noun	VerbArg	4	21	1
+bill4	work in a craft	NN IN DT NN	Noun Prep Det Noun	NP	4	15	2
+bill4	work in a craft or class	NN IN DT NN CC NN	Noun Prep Det Noun O Noun	NP	6	24	2
+bill4	working	VBG	Verb	VG	1	7	2
+bill4	1	CD	Noun	NP	1	1	1
+bill4	103th	VBP	Verb	VG	1	5	1
+bill4	103th congress	VBP NNP	Verb Noun	VerbArg	2	14	1
+bill4	152	CD	Noun	NP	1	3	1
+bill4	158	CD	Noun	NP	1	3	1
+bill4	158 -lrb- a -rrb-	CD -LRB- DT -RRB-	Noun Lparen Det Rparen	NP	4	17	1
+bill4	16	CD	Noun	NP	1	2	1
+bill4	16 -lrb- legislative day , june 15 -rrb-	CD -LRB- JJ NN , NNP CD -RRB-	Noun Lparen Adj Noun O Noun Noun Rparen	NP	8	40	1
+bill4	17	CD	Noun	NP	1	2	1
+bill4	17 -lrb- legislative day , june 15 -rrb-	CD -LRB- JJ NN , NNP CD -RRB-	Noun Lparen Adj Noun O Noun Noun Rparen	NP	8	40	1
+bill4	1993 read the first time	CD VB DT JJ NN	Noun Verb Det Adj Noun	VerbArg	5	24	1
+bill4	1993 received	CD VBD	Noun Verb	VerbArg	2	13	1
+bill4	1st session h. r. 5	CD NN NN NNP CD	Noun Noun Noun Noun Noun	NP	5	19	1
+bill4	1st session h. r. 5 _______________________________________________________________________	CD NN NN NNP CD CD	Noun Noun Noun Noun Noun Noun	NP	6	91	1
+bill4	2	CD	Noun	NP	1	1	1
+bill4	2 of the railway	CD IN DT NNP	Noun Prep Det Noun	NP	4	16	1
+bill4	2 of the railway labor	CD IN DT NNP NNP	Noun Prep Det Noun Noun	NP	5	22	1
+bill4	2 of the railway labor act	CD IN DT NNP NNP NNP	Noun Prep Det Noun Noun Noun	NP	6	26	1
+bill4	2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb-	CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB-	Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen	NP	11	52	1
+bill4	2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb- is	CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB- VBZ	Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen Verb	VerbArg	12	55	1
+bill4	2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb- is amended	CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB- VBZ VBN	Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen Verb Verb	VerbArg	13	63	1
+bill4	29	CD	Noun	NP	1	2	1
+bill4	29 u.s.c.	CD NN	Noun Noun	NP	2	9	1
+bill4	29 u.s.c. 158	CD NN CD	Noun Noun Noun	NP	3	13	1
+bill4	29 u.s.c. 158 -lrb- a -rrb-	CD NN CD -LRB- DT -RRB-	Noun Noun Noun Lparen Det Rparen	NP	6	27	1
+bill4	30	CD	Noun	NP	1	2	1
+bill4	30 days	CD NNS	Noun Noun	NP	2	7	1
+bill4	45	CD	Noun	NP	1	2	1
+bill4	45 u.s.c.	CD NN	Noun Noun	NP	2	9	1
+bill4	45 u.s.c. 152	CD NN CD	Noun Noun Noun	NP	3	13	1
+bill4	5 _______________________________________________________________________	CD CD	Noun Noun	NP	2	73	1
+bill4	5 placed	CD VBN	Noun Verb	VerbArg	2	8	1
+bill4	5 placed on calendar	CD VBN IN NNP	Noun Verb Prep Noun	VerbArg	4	20	1
+bill4	5 placed on calendar senate	CD VBN IN NNP NNP	Noun Verb Prep Noun Noun	VerbArg	5	27	1
+bill4	5to	NNP	Noun	NP	1	3	1
+bill4	6	CD	Noun	NP	1	1	1
+bill4	8	CD	Noun	NP	1	1	1
+bill4	8 -lrb- a -rrb-	CD -LRB- DT -RRB-	Noun Lparen Det Rparen	NP	4	15	1
+bill4	8 -lrb- a -rrb- of the national	CD -LRB- DT -RRB- IN DT NNP	Noun Lparen Det Rparen Prep Det Noun	NP	7	31	1
+bill4	8 -lrb- a -rrb- of the national labor	CD -LRB- DT -RRB- IN DT NNP NNP	Noun Lparen Det Rparen Prep Det Noun Noun	NP	8	37	1
+bill4	8 -lrb- a -rrb- of the national labor relations	CD -LRB- DT -RRB- IN DT NNP NNP NNP	Noun Lparen Det Rparen Prep Det Noun Noun Noun	NP	9	47	1
+bill4	8 -lrb- a -rrb- of the national labor relations act	CD -LRB- DT -RRB- IN DT NNP NNP NNP NNP	Noun Lparen Det Rparen Prep Det Noun Noun Noun Noun	NP	10	51	1
+bill4	9	CD	Noun	NP	1	1	1
+bill4	9 -lrb- c -rrb-	CD -LRB- NN -RRB-	Noun Lparen Noun Rparen	NP	4	15	1
+bill4	9 -lrb- c -rrb- -lrb- 1 -rrb-	CD -LRB- NN -RRB- -LRB- LS -RRB-	Noun Lparen Noun Rparen Lparen O Rparen	NP	7	29	1
+bill4	_______________________________________________________________________ in the senate	NN IN DT NNP	Noun Prep Det Noun	NP	4	85	1
+bill4	_______________________________________________________________________ in the senate of the united	NN IN DT NNP IN DT NNP	Noun Prep Det Noun Prep Det Noun	NP	7	99	1
+bill4	_______________________________________________________________________ in the senate of the united states	NN IN DT NNP IN DT NNP NNS	Noun Prep Det Noun Prep Det Noun Noun	NP	8	106	1
+bill4	_______________________________________________________________________ in the senate of the united states june	NN IN DT NNP IN DT NNP NNS NNP	Noun Prep Det Noun Prep Det Noun Noun Noun	NP	9	111	1
+bill4	_______________________________________________________________________ in the senate of the united states june 16	NN IN DT NNP IN DT NNP NNS NNP CD	Noun Prep Det Noun Prep Det Noun Noun Noun Noun	NP	10	114	1
+bill4	_______________________________________________________________________ in the senate of the united states june 16 -lrb- legislative day , june 15 -rrb-	NN IN DT NNP IN DT NNP NNS NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Prep Det Noun Prep Det Noun Noun Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	17	152	1
+bill4	_______________________________________________________________________ june	NN NNP	Noun Noun	NP	2	76	1
+bill4	_______________________________________________________________________ june 22	NN NNP CD	Noun Noun Noun	NP	3	79	1
+bill4	act -lrb- 45 u.s.c. 152 -rrb-	NNP -LRB- CD NN CD -RRB-	Noun Lparen Noun Noun Noun Rparen	NP	6	29	1
+bill4	act -lrb- 45 u.s.c. 152 -rrb- is	NNP -LRB- CD NN CD -RRB- VBZ	Noun Lparen Noun Noun Noun Rparen Verb	VerbArg	7	32	1
+bill4	act -lrb- 45 u.s.c. 152 -rrb- is amended	NNP -LRB- CD NN CD -RRB- VBZ VBN	Noun Lparen Noun Noun Noun Rparen Verb Verb	VerbArg	8	40	1
+bill4	act may be	NN MD VB	Noun VerbMod Verb	VerbArg	3	10	1
+bill4	act may be cited	NN MD VB VBN	Noun VerbMod Verb Verb	VerbArg	4	16	1
+bill4	act to amend	NN TO VB	Noun Prep Verb	VerbArg	3	12	1
+bill4	act to amend the national	NN TO VB DT NNP	Noun Prep Verb Det Noun	VerbArg	5	25	1
+bill4	act to amend the national labor	NN TO VB DT NNP NNP	Noun Prep Verb Det Noun Noun	VerbArg	6	31	1
+bill4	act to amend the national labor relations	NN TO VB DT NNP NNP NNP	Noun Prep Verb Det Noun Noun Noun	VerbArg	7	41	1
+bill4	act to amend the national labor relations act	NN TO VB DT NNP NNP NNP NNP	Noun Prep Verb Det Noun Noun Noun Noun	VerbArg	8	45	1
+bill4	act to amend the national labor relations act and the railway	NN TO VB DT NNP NNP NNP NNP CC DT NNP	Noun Prep Verb Det Noun Noun Noun Noun O Det Noun	VerbArg	11	61	1
+bill4	act to amend the national labor relations act and the railway labor	NN TO VB DT NNP NNP NNP NNP CC DT NNP NNP	Noun Prep Verb Det Noun Noun Noun Noun O Det Noun Noun	VerbArg	12	67	1
+bill4	act to amend the national labor relations act and the railway labor act	NN TO VB DT NNP NNP NNP NNP CC DT NNP NNP NNP	Noun Prep Verb Det Noun Noun Noun Noun O Det Noun Noun Noun	VerbArg	13	71	1
+bill4	act.sec	NNP	Noun	NP	1	7	1
+bill4	action	NN	Noun	NP	1	6	1
+bill4	activities	NNS	Noun	NP	1	10	1
+bill4	activities for the purpose	NNS IN DT NN	Noun Prep Det Noun	NP	4	26	1
+bill4	activities for the purpose of collective bargaining	NNS IN DT NN IN JJ NN	Noun Prep Det Noun Prep Adj Noun	NP	7	51	1
+bill4	activities for the purpose of collective bargaining or other mutual aid	NNS IN DT NN IN JJ NN CC JJ JJ NN	Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun	NP	11	71	1
+bill4	activities for the purpose of collective bargaining or other mutual aid or protection	NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN	Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun	NP	13	85	1
+bill4	activities for the purpose of collective bargaining or other mutual aid or protection through that labor	NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN IN DT NN	Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun	NP	16	104	1
+bill4	activities for the purpose of collective bargaining or other mutual aid or protection through that labor organization	NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN IN DT NN NN	Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun Noun	NP	17	117	1
+bill4	actto	NN	Noun	NP	1	5	1
+bill4	actto amend	NN VB	Noun Verb	VerbArg	2	11	1
+bill4	actto amend the national	NN VB DT NNP	Noun Verb Det Noun	VerbArg	4	24	1
+bill4	agent	NN	Noun	NP	1	5	1
+bill4	agent of the carrier	NN IN DT NN	Noun Prep Det Noun	NP	4	20	1
+bill4	aid	NN	Noun	NP	1	3	1
+bill4	aid or protection	NN CC NN	Noun O Noun	NP	3	17	1
+bill4	aid or protection through that labor	NN CC NN IN DT NN	Noun O Noun Prep Det Noun	NP	6	36	1
+bill4	aid or protection through that labor organization	NN CC NN IN DT NN NN	Noun O Noun Prep Det Noun Noun	NP	7	49	1
+bill4	america	NNP	Noun	NP	1	7	1
+bill4	america in congress	NNP IN NNP	Noun Prep Noun	NP	3	19	1
+bill4	america in congress assembled	NNP IN NNP VBD	Noun Prep Noun Verb	VerbArg	4	29	1
+bill4	anderson	NNP	Noun	NP	1	8	1
+bill4	assembled	VBD	Verb	VG	1	9	1
+bill4	assist	VB	Verb	VG	1	6	1
+bill4	attest	VB	Verb	VG	1	6	1
+bill4	authorizations	NNS	Noun	NP	1	14	1
+bill4	authorizations by a majority	NNS IN DT NN	Noun Prep Det Noun	NP	4	28	1
+bill4	authorizations by a majority of the unit	NNS IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	40	1
+bill4	authorizations by a majority of the unit employees	NNS IN DT NN IN DT NN NNS	Noun Prep Det Noun Prep Det Noun Noun	NP	8	50	1
+bill4	bargain	VB	Verb	VG	1	7	1
+bill4	bargain collectively	VB RB	Verb VerbMod	VG	2	20	1
+bill4	bargain collectively through the labor	VB RB IN DT NN	Verb VerbMod Prep Det Noun	VerbArg	5	38	1
+bill4	bargain collectively through the labor organization	VB RB IN DT NN NN	Verb VerbMod Prep Det Noun Noun	VerbArg	6	51	1
+bill4	bargaining or other mutual aid	NN CC JJ JJ NN	Noun O Adj Adj Noun	NP	5	30	1
+bill4	bargaining or other mutual aid or protection	NN CC JJ JJ NN CC NN	Noun O Adj Adj Noun O Noun	NP	7	44	1
+bill4	bargaining or other mutual aid or protection through that labor	NN CC JJ JJ NN CC NN IN DT NN	Noun O Adj Adj Noun O Noun Prep Det Noun	NP	10	63	1
+bill4	bargaining or other mutual aid or protection through that labor organization	NN CC JJ JJ NN CC NN IN DT NN NN	Noun O Adj Adj Noun O Noun Prep Det Noun Noun	NP	11	76	1
+bill4	bargaining unit work	NN NN NN	Noun Noun Noun	NP	3	20	1
+bill4	bargaining unit work for the employer	NN NN NN IN DT NN	Noun Noun Noun Prep Det Noun	NP	6	37	1
+bill4	bargaining unit work for the employer during the labor	NN NN NN IN DT NN IN DT NN	Noun Noun Noun Prep Det Noun Prep Det Noun	NP	9	54	1
+bill4	bargaining unit work for the employer during the labor dispute	NN NN NN IN DT NN IN DT NN NN	Noun Noun Noun Prep Det Noun Prep Det Noun Noun	NP	10	62	1
+bill4	based on the fact that the individual	VBN IN DT NN IN DT NN	Verb Prep Det Noun Prep Det Noun	VerbArg	7	37	1
+bill4	basis	NN	Noun	NP	1	5	1
+bill4	basis of written	NN IN VBN	Noun Prep Verb	VerbArg	3	16	1
+bill4	basis of written authorizations	NN IN VBN NNS	Noun Prep Verb Noun	VerbArg	4	31	1
+bill4	basis of written authorizations by a majority	NN IN VBN NNS IN DT NN	Noun Prep Verb Noun Prep Det Noun	VerbArg	7	45	1
+bill4	basis of written authorizations by a majority of the unit	NN IN VBN NNS IN DT NN IN DT NN	Noun Prep Verb Noun Prep Det Noun Prep Det Noun	VerbArg	10	57	1
+bill4	basis of written authorizations by a majority of the unit employees	NN IN VBN NNS IN DT NN IN DT NN NNS	Noun Prep Verb Noun Prep Det Noun Prep Det Noun Noun	VerbArg	11	67	1
+bill4	be cited	VB VBN	Verb Verb	VG	2	8	1
+bill4	bills	NNS	Noun	NP	1	5	1
+bill4	bills 103th	NNS VBP	Noun Verb	VerbArg	2	11	1
+bill4	bills 103th congress	NNS VBP NNP	Noun Verb Noun	VerbArg	3	20	1
+bill4	board	NNP	Noun	NP	1	5	1
+bill4	board has	NNP VBZ	Noun Verb	VerbArg	2	9	1
+bill4	board has not	NNP VBZ RB	Noun Verb VerbMod	VerbArg	3	13	1
+bill4	board has not completed	NNP VBZ RB VBN	Noun Verb VerbMod Verb	VerbArg	4	23	1
+bill4	board has not completed the representation	NNP VBZ RB VBN DT NN	Noun Verb VerbMod Verb Det Noun	VerbArg	6	42	1
+bill4	board has not completed the representation proceeding	NNP VBZ RB VBN DT NN NN	Noun Verb VerbMod Verb Det Noun Noun	VerbArg	7	53	1
+bill4	calendar _______________________________________________________________________	NN CD	Noun Noun	NP	2	80	1
+bill4	calendar calendar	NN NNP	Noun Noun	NP	2	17	1
+bill4	calendar calendar no.	NN NNP NNP	Noun Noun Noun	NP	3	21	1
+bill4	calendar senate	NNP NNP	Noun Noun	NP	2	15	1
+bill4	calendar senate -lrb- pcs -rrb-	NNP NNP -LRB- NNP -RRB-	Noun Noun Lparen Noun Rparen	NP	5	31	1
+bill4	carrier and the labor	NN CC DT NN	Noun O Det Noun	NP	4	21	1
+bill4	carrier and the labor organization	NN CC DT NN NN	Noun O Det Noun Noun	NP	5	34	1
+bill4	carrier at the commencement	NN IN DT NN	Noun Prep Det Noun	NP	4	27	1
+bill4	carrier at the commencement of the dispute	NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	42	1
+bill4	carrier during a dispute	NN IN DT NN	Noun Prep Det Noun	NP	4	24	1
+bill4	certified	VBN	Verb	VG	1	9	1
+bill4	certified or recognized	VBN CC VBN	Verb O Verb	VG	3	23	1
+bill4	certified or recognized exclusive representative	VBN CC VBN JJ NN	Verb O Verb Adj Noun	VerbArg	5	48	1
+bill4	cesar	NNP	Noun	NP	1	5	1
+bill4	cesar chavez	NNP NNP	Noun Noun	NP	2	12	1
+bill4	cesar chavez workplace	NNP NNP NNP	Noun Noun Noun	NP	3	22	1
+bill4	cesar chavez workplace fairness	NNP NNP NNP NNP	Noun Noun Noun Noun	NP	4	31	1
+bill4	chavez	NNP	Noun	NP	1	6	1
+bill4	chavez workplace	NNP NNP	Noun Noun	NP	2	16	1
+bill4	chavez workplace fairness	NNP NNP NNP	Noun Noun Noun	NP	3	25	1
+bill4	cited	VBN	Verb	VG	1	5	1
+bill4	class for the carrier	NN IN DT NN	Noun Prep Det Noun	NP	4	21	1
+bill4	class for the carrier during a dispute	NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	38	1
+bill4	clause	NN	Noun	NP	1	6	1
+bill4	clause -lrb- i -rrb-	NN -LRB- LS -RRB-	Noun Lparen O Rparen	NP	4	20	1
+bill4	clerk	NNP	Noun	NP	1	5	1
+bill4	collective bargaining or other mutual aid	JJ NN CC JJ JJ NN	Adj Noun O Adj Adj Noun	NP	6	41	1
+bill4	collective bargaining or other mutual aid or protection	JJ NN CC JJ JJ NN CC NN	Adj Noun O Adj Adj Noun O Noun	NP	8	55	1
+bill4	collective bargaining or other mutual aid or protection through that labor	JJ NN CC JJ JJ NN CC NN IN DT NN	Adj Noun O Adj Adj Noun O Noun Prep Det Noun	NP	11	74	1
+bill4	collective bargaining or other mutual aid or protection through that labor organization	JJ NN CC JJ JJ NN CC NN IN DT NN NN	Adj Noun O Adj Adj Noun O Noun Prep Det Noun Noun	NP	12	87	1
+bill4	commencement of a labor	NN IN DT NN	Noun Prep Det Noun	NP	4	23	1
+bill4	commencement of a labor dispute	NN IN DT NN NN	Noun Prep Det Noun Noun	NP	5	31	1
+bill4	commencement of a labor dispute was	NN IN DT NN NN VBD	Noun Prep Det Noun Noun Verb	VerbArg	6	35	1
+bill4	commencement of a labor dispute was an employee	NN IN DT NN NN VBD DT NN	Noun Prep Det Noun Noun Verb Det Noun	VerbArg	8	47	1
+bill4	commencement of a labor dispute was an employee of the employer	NN IN DT NN NN VBD DT NN IN DT NN	Noun Prep Det Noun Noun Verb Det Noun Prep Det Noun	VerbArg	11	63	1
+bill4	commencement of a labor dispute was an employee of the employer in a bargaining	NN IN DT NN NN VBD DT NN IN DT NN IN DT NN	Noun Prep Det Noun Noun Verb Det Noun Prep Det Noun Prep Det Noun	VerbArg	14	79	1
+bill4	commencement of a labor dispute was an employee of the employer in a bargaining unit	NN IN DT NN NN VBD DT NN IN DT NN IN DT NN NN	Noun Prep Det Noun Noun Verb Det Noun Prep Det Noun Prep Det Noun Noun	VerbArg	15	84	1
+bill4	commencement of the dispute had	NN IN DT NN VBD	Noun Prep Det Noun Verb	VerbArg	5	31	1
+bill4	commencement of the dispute had filed	NN IN DT NN VBD VBN	Noun Prep Det Noun Verb Verb	VerbArg	6	37	1
+bill4	commencement of the dispute had filed a petition	NN IN DT NN VBD VBN DT NN	Noun Prep Det Noun Verb Verb Det Noun	VerbArg	8	48	1
+bill4	completed	VBN	Verb	VG	1	9	1
+bill4	completed the representation	VBN DT NN	Verb Det Noun	VerbArg	3	28	1
+bill4	completed the representation proceeding	VBN DT NN NN	Verb Det Noun Noun	VerbArg	4	39	1
+bill4	concerted activities	JJ NNS	Adj Noun	NP	2	20	1
+bill4	concerted activities for the purpose	JJ NNS IN DT NN	Adj Noun Prep Det Noun	NP	5	36	1
+bill4	concerted activities for the purpose of collective bargaining	JJ NNS IN DT NN IN JJ NN	Adj Noun Prep Det Noun Prep Adj Noun	NP	8	61	1
+bill4	concerted activities for the purpose of collective bargaining or other mutual aid	JJ NNS IN DT NN IN JJ NN CC JJ JJ NN	Adj Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun	NP	12	81	1
+bill4	concerted activities for the purpose of collective bargaining or other mutual aid or protection	JJ NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN	Adj Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun	NP	14	95	1
+bill4	concerted activities for the purpose of collective bargaining or other mutual aid or protection through that labor	JJ NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN IN DT NN	Adj Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun	NP	17	114	1
+bill4	concerted activities for the purpose of collective bargaining or other mutual aid or protection through that labor organization	JJ NNS IN DT NN IN JJ NN CC JJ JJ NN CC NN IN DT NN NN	Adj Noun Prep Det Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun Noun	NP	18	127	1
+bill4	conclusion of labor	NN IN NN	Noun Prep Noun	NP	3	19	1
+bill4	conclusion of labor disputes	NN IN NN NNS	Noun Prep Noun Noun	NP	4	28	1
+bill4	conclusion of railway	NN IN NNP	Noun Prep Noun	NP	3	21	1
+bill4	conclusion of railway labor	NN IN NNP NN	Noun Prep Noun Noun	NP	4	27	1
+bill4	conclusion of railway labor disputes	NN IN NNP NN NNS	Noun Prep Noun Noun Noun	NP	5	36	1
+bill4	congress 1st session h. r. 5	NNP CD NN NN NNP CD	Noun Noun Noun Noun Noun Noun	NP	6	28	1
+bill4	congress 1st session h. r. 5 _______________________________________________________________________	NNP CD NN NN NNP CD CD	Noun Noun Noun Noun Noun Noun Noun	NP	7	100	1
+bill4	congress assembled	NNP VBD	Noun Verb	VerbArg	2	18	1
+bill4	congressional bills	JJ NNS	Adj Noun	NP	2	19	1
+bill4	congressional bills 103th	JJ NNS VBP	Adj Noun Verb	VerbArg	3	25	1
+bill4	congressional bills 103th congress	JJ NNS VBP NNP	Adj Noun Verb Noun	VerbArg	4	34	1
+bill4	connection with such dispute	NN IN JJ NN	Noun Prep Adj Noun	NP	4	28	1
+bill4	connection with such dispute has	NN IN JJ NN VBZ	Noun Prep Adj Noun Verb	VerbArg	5	32	1
+bill4	connection with such dispute has exercised	NN IN JJ NN VBZ VBN	Noun Prep Adj Noun Verb Verb	VerbArg	6	42	1
+bill4	connection with such dispute has exercised the right	NN IN JJ NN VBZ VBN DT NN	Noun Prep Adj Noun Verb Verb Det Noun	VerbArg	8	52	1
+bill4	connection with that dispute	NN IN DT NN	Noun Prep Det Noun	NP	4	28	1
+bill4	connection with that dispute has	NN IN DT NN VBZ	Noun Prep Det Noun Verb	VerbArg	5	32	1
+bill4	connection with that dispute has engaged	NN IN DT NN VBZ VBN	Noun Prep Det Noun Verb Verb	VerbArg	6	40	1
+bill4	connection with that dispute has engaged in concerted activities	NN IN DT NN VBZ VBN IN JJ NNS	Noun Prep Det Noun Verb Verb Prep Adj Noun	VerbArg	9	64	1
+bill4	connection with that dispute has engaged in concerted activities for the purpose	NN IN DT NN VBZ VBN IN JJ NNS IN DT NN	Noun Prep Det Noun Verb Verb Prep Adj Noun Prep Det Noun	VerbArg	12	80	1
+bill4	connection with that dispute has engaged in concerted activities for the purpose of collective bargaining	NN IN DT NN VBZ VBN IN JJ NNS IN DT NN IN JJ NN	Noun Prep Det Noun Verb Verb Prep Adj Noun Prep Det Noun Prep Adj Noun	VerbArg	15	105	1
+bill4	craft or class for the carrier	NN CC NN IN DT NN	Noun O Noun Prep Det Noun	NP	6	30	1
+bill4	craft or class for the carrier during a dispute	NN CC NN IN DT NN IN DT NN	Noun O Noun Prep Det Noun Prep Det Noun	NP	9	47	1
+bill4	criteria	NNS	Noun	NP	1	8	1
+bill4	criteria of subparagraphs	NNS IN NNS	Noun Prep Noun	NP	3	25	1
+bill4	criteria of subparagraphs -lrb- a -rrb-	NNS IN NNS -LRB- NN -RRB-	Noun Prep Noun Lparen Noun Rparen	NP	6	39	1
+bill4	days	NNS	Noun	NP	1	4	1
+bill4	deny	VB	Verb	VG	1	4	1
+bill4	deny any other employment	VB DT JJ NN	Verb Det Adj Noun	VerbArg	4	25	1
+bill4	deny any other employment right	VB DT JJ NN NN	Verb Det Adj Noun Noun	VerbArg	5	31	1
+bill4	deny any other employment right or privilege	VB DT JJ NN NN CC NN	Verb Det Adj Noun Noun O Noun	VerbArg	7	44	1
+bill4	deny any other employment right or privilege to an employee	VB DT JJ NN NN CC NN TO DT NN	Verb Det Adj Noun Noun O Noun Prep Det Noun	VerbArg	10	59	1
+bill4	dispute had	NN VBD	Noun Verb	VerbArg	2	11	1
+bill4	dispute had filed	NN VBD VBN	Noun Verb Verb	VerbArg	3	17	1
+bill4	dispute had filed a petition	NN VBD VBN DT NN	Noun Verb Verb Det Noun	VerbArg	5	28	1
+bill4	dispute has engaged	NN VBZ VBN	Noun Verb Verb	VerbArg	3	19	1
+bill4	dispute has engaged in concerted activities	NN VBZ VBN IN JJ NNS	Noun Verb Verb Prep Adj Noun	VerbArg	6	43	1
+bill4	dispute has engaged in concerted activities for the purpose	NN VBZ VBN IN JJ NNS IN DT NN	Noun Verb Verb Prep Adj Noun Prep Det Noun	VerbArg	9	59	1
+bill4	dispute has engaged in concerted activities for the purpose of collective bargaining	NN VBZ VBN IN JJ NNS IN DT NN IN JJ NN	Noun Verb Verb Prep Adj Noun Prep Det Noun Prep Adj Noun	VerbArg	12	84	1
+bill4	dispute has exercised	NN VBZ VBN	Noun Verb Verb	VerbArg	3	21	1
+bill4	dispute has exercised the right	NN VBZ VBN DT NN	Noun Verb Verb Det Noun	VerbArg	5	31	1
+bill4	dispute over an individual	NN IN DT NN	Noun Prep Det Noun	NP	4	26	1
+bill4	dispute was	NN VBD	Noun Verb	VerbArg	2	11	1
+bill4	dispute was an employee	NN VBD DT NN	Noun Verb Det Noun	VerbArg	4	23	1
+bill4	dispute was an employee of the employer	NN VBD DT NN IN DT NN	Noun Verb Det Noun Prep Det Noun	VerbArg	7	39	1
+bill4	dispute was an employee of the employer in a bargaining	NN VBD DT NN IN DT NN IN DT NN	Noun Verb Det Noun Prep Det Noun Prep Det Noun	VerbArg	10	55	1
+bill4	dispute was an employee of the employer in a bargaining unit	NN VBD DT NN IN DT NN IN DT NN NN	Noun Verb Det Noun Prep Det Noun Prep Det Noun Noun	VerbArg	11	60	1
+bill4	donnald	NNP	Noun	NP	1	7	1
+bill4	donnald k.	NNP NNP	Noun Noun	NP	2	10	1
+bill4	donnald k. anderson	NNP NNP NNP	Noun Noun Noun	NP	3	19	1
+bill4	employee of the carrier	NN IN DT NN	Noun Prep Det Noun	NP	4	23	1
+bill4	employee of the carrier at the commencement	NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	43	1
+bill4	employee of the carrier at the commencement of the dispute	NN IN DT NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun Prep Det Noun	NP	10	58	1
+bill4	employee of the employer	NN IN DT NN	Noun Prep Det Noun	NP	4	24	1
+bill4	employee of the employer in a bargaining	NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	40	1
+bill4	employee of the employer in a bargaining unit	NN IN DT NN IN DT NN NN	Noun Prep Det Noun Prep Det Noun Noun	NP	8	45	1
+bill4	employees	NNS	Noun	NP	1	9	1
+bill4	employer during the labor	NN IN DT NN	Noun Prep Det Noun	NP	4	25	1
+bill4	employer during the labor dispute	NN IN DT NN NN	Noun Prep Det Noun Noun	NP	5	33	1
+bill4	employer in a bargaining	NN IN DT NN	Noun Prep Det Noun	NP	4	24	1
+bill4	employer in a bargaining unit	NN IN DT NN NN	Noun Prep Det Noun Noun	NP	5	29	1
+bill4	employment preference	NN NN	Noun Noun	NP	2	21	1
+bill4	employment preference based	NN NN VBN	Noun Noun Verb	VerbArg	3	27	1
+bill4	employment preference based on the fact	NN NN VBN IN DT NN	Noun Noun Verb Prep Det Noun	VerbArg	6	39	1
+bill4	employment right	NN NN	Noun Noun	NP	2	16	1
+bill4	employment right or privilege	NN NN CC NN	Noun Noun O Noun	NP	4	29	1
+bill4	employment right or privilege to an employee	NN NN CC NN TO DT NN	Noun Noun O Noun Prep Det Noun	NP	7	44	1
+bill4	enacted	VBN	Verb	VG	1	7	1
+bill4	enacted by the senate	VBN IN DT NNP	Verb Prep Det Noun	VerbArg	4	21	1
+bill4	end of paragraph	NN IN NN	Noun Prep Noun	NP	3	16	1
+bill4	end of paragraph -lrb- 5 -rrb-	NN IN NN -LRB- CD -RRB-	Noun Prep Noun Lparen Noun Rparen	NP	6	30	1
+bill4	engaged	VBN	Verb	VG	1	7	1
+bill4	engaged in concerted activities	VBN IN JJ NNS	Verb Prep Adj Noun	VerbArg	4	31	1
+bill4	engaged in concerted activities for the purpose	VBN IN JJ NNS IN DT NN	Verb Prep Adj Noun Prep Det Noun	VerbArg	7	47	1
+bill4	engaged in concerted activities for the purpose of collective bargaining	VBN IN JJ NNS IN DT NN IN JJ NN	Verb Prep Adj Noun Prep Det Noun Prep Adj Noun	VerbArg	10	72	1
+bill4	exclusive representative	JJ NN	Adj Noun	NP	2	24	1
+bill4	exercised	VBN	Verb	VG	1	9	1
+bill4	exercised the right	VBN DT NN	Verb Det Noun	VerbArg	3	19	1
+bill4	fact that the individual	NN IN DT NN	Noun Prep Det Noun	NP	4	24	1
+bill4	fact that the individual is	NN IN DT NN VBZ	Noun Prep Det Noun Verb	VerbArg	5	27	1
+bill4	fact that the individual is performing	NN IN DT NN VBZ VBG	Noun Prep Det Noun Verb Verb	VerbArg	6	38	1
+bill4	fairness	NNP	Noun	NP	1	8	1
+bill4	fairness act.sec	NNP NNP	Noun Noun	NP	2	16	1
+bill4	filed	VBN	Verb	VG	1	5	1
+bill4	filed a petition	VBN DT NN	Verb Det Noun	VerbArg	3	16	1
+bill4	first time	JJ NN	Adj Noun	NP	2	10	1
+bill4	first time june	JJ NN NNP	Adj Noun Noun	NP	3	15	1
+bill4	first time june 22	JJ NN NNP CD	Adj Noun Noun Noun	NP	4	18	1
+bill4	following new paragraph	VBG JJ NN	Verb Adj Noun	VerbArg	3	23	1
+bill4	fourth.	NN	Noun	NP	1	7	1
+bill4	government	NNP	Noun	NP	1	10	1
+bill4	government printing	NNP NNP	Noun Noun	NP	2	19	1
+bill4	government printing office	NNP NNP NNP	Noun Noun Noun	NP	3	26	1
+bill4	grant an individual any other employment	VB DT JJ DT JJ NN	Verb Det Adj Det Adj Noun	VerbArg	6	40	1
+bill4	grant an individual any other employment preference	VB DT JJ DT JJ NN NN	Verb Det Adj Det Adj Noun Noun	VerbArg	7	51	1
+bill4	grant the status	VB DT NN	Verb Det Noun	VerbArg	3	16	1
+bill4	grant the status of a permanent replacement	VB DT NN IN DT JJ NN	Verb Det Noun Prep Det Adj Noun	VerbArg	7	43	1
+bill4	grant the status of a permanent replacement employee	VB DT NN IN DT JJ NN NN	Verb Det Noun Prep Det Adj Noun Noun	VerbArg	8	52	1
+bill4	h. r. 5	NN NNP CD	Noun Noun Noun	NP	3	7	1
+bill4	h. r. 5 _______________________________________________________________________	NN NNP CD CD	Noun Noun Noun Noun	NP	4	79	1
+bill4	h.r.	NNP	Noun	NP	1	4	1
+bill4	h.r. 5	NNP CD	Noun Noun	NP	2	6	1
+bill4	h.r. 5 placed	NNP CD VBN	Noun Noun Verb	VerbArg	3	13	1
+bill4	h.r. 5 placed on calendar	NNP CD VBN IN NNP	Noun Noun Verb Prep Noun	VerbArg	5	25	1
+bill4	h.r. 5 placed on calendar senate	NNP CD VBN IN NNP NNP	Noun Noun Verb Prep Noun Noun	VerbArg	6	32	1
+bill4	had	VBD	Verb	VG	1	3	1
+bill4	had filed	VBD VBN	Verb Verb	VG	2	9	1
+bill4	had filed a petition	VBD VBN DT NN	Verb Verb Det Noun	VerbArg	4	20	1
+bill4	has engaged	VBZ VBN	Verb Verb	VG	2	11	1
+bill4	has engaged in concerted activities	VBZ VBN IN JJ NNS	Verb Verb Prep Adj Noun	VerbArg	5	35	1
+bill4	has engaged in concerted activities for the purpose	VBZ VBN IN JJ NNS IN DT NN	Verb Verb Prep Adj Noun Prep Det Noun	VerbArg	8	51	1
+bill4	has engaged in concerted activities for the purpose of collective bargaining	VBZ VBN IN JJ NNS IN DT NN IN JJ NN	Verb Verb Prep Adj Noun Prep Det Noun Prep Adj Noun	VerbArg	11	76	1
+bill4	has exercised	VBZ VBN	Verb Verb	VG	2	13	1
+bill4	has exercised the right	VBZ VBN DT NN	Verb Verb Det Noun	VerbArg	4	23	1
+bill4	has indicated	VBZ VBN	Verb Verb	VG	2	13	1
+bill4	has indicated a willingness	VBZ VBN DT NN	Verb Verb Det Noun	VerbArg	4	27	1
+bill4	has not	VBZ RB	Verb VerbMod	VG	2	7	1
+bill4	has not completed	VBZ RB VBN	Verb VerbMod Verb	VG	3	17	1
+bill4	has not completed the representation	VBZ RB VBN DT NN	Verb VerbMod Verb Det Noun	VerbArg	5	36	1
+bill4	has not completed the representation proceeding	VBZ RB VBN DT NN NN	Verb VerbMod Verb Det Noun Noun	VerbArg	6	47	1
+bill4	has performed	VBZ VBN	Verb Verb	VG	2	13	1
+bill4	hire	VB	Verb	VG	1	4	1
+bill4	hire a permanent replacement	VB DT JJ NN	Verb Det Adj Noun	VerbArg	4	28	1
+bill4	hire a permanent replacement for an employee	VB DT JJ NN IN DT NN	Verb Det Adj Noun Prep Det Noun	VerbArg	7	44	1
+bill4	house of representatives june	NNP IN NNPS NNP	Noun Prep Noun Noun	NP	4	29	1
+bill4	house of representatives june 15	NNP IN NNPS NNP CD	Noun Prep Noun Noun Noun	NP	5	32	1
+bill4	house of representatives of the united	NNP IN NNPS IN DT NNP	Noun Prep Noun Prep Det Noun	NP	6	38	1
+bill4	house of representatives of the united states	NNP IN NNPS IN DT NNP NNPS	Noun Prep Noun Prep Det Noun Noun	NP	7	45	1
+bill4	house of representatives of the united states of america	NNP IN NNPS IN DT NNP NNPS IN NNP	Noun Prep Noun Prep Det Noun Noun Prep Noun	NP	9	56	1
+bill4	house of representatives of the united states of america in congress	NNP IN NNPS IN DT NNP NNPS IN NNP IN NNP	Noun Prep Noun Prep Det Noun Noun Prep Noun Prep Noun	NP	11	68	1
+bill4	house of representatives of the united states of america in congress assembled	NNP IN NNPS IN DT NNP NNPS IN NNP IN NNP VBD	Noun Prep Noun Prep Det Noun Noun Prep Noun Prep Noun Verb	VerbArg	12	78	1
+bill4	ii	CD	Noun	NP	1	2	1
+bill4	individual is	NN VBZ	Noun Verb	VerbArg	2	13	1
+bill4	individual is performing	NN VBZ VBG	Noun Verb Verb	VerbArg	3	24	1
+bill4	involves	VBZ	Verb	VG	1	8	1
+bill4	involves the craft	VBZ DT NN	Verb Det Noun	VerbArg	3	18	1
+bill4	involves the craft or class	VBZ DT NN CC NN	Verb Det Noun O Noun	VerbArg	5	27	1
+bill4	is based	VBZ VBN	Verb Verb	VG	2	8	1
+bill4	is based on the fact	VBZ VBN IN DT NN	Verb Verb Prep Det Noun	VerbArg	5	20	1
+bill4	is based on the fact that the individual	VBZ VBN IN DT NN IN DT NN	Verb Verb Prep Det Noun Prep Det Noun	VerbArg	8	40	1
+bill4	is between the carrier	VBZ IN DT NN	Verb Prep Det Noun	VerbArg	4	22	1
+bill4	is performing	VBZ VBG	Verb Verb	VG	2	13	1
+bill4	join	VB	Verb	VG	1	4	1
+bill4	june 16	NNP CD	Noun Noun	NP	2	7	1
+bill4	june 16 -lrb- legislative day , june 15 -rrb-	NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	9	45	1
+bill4	june 17	NNP CD	Noun Noun	NP	2	7	1
+bill4	june 17 -lrb- legislative day , june 15 -rrb-	NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	9	45	1
+bill4	k.	NNP	Noun	NP	1	2	1
+bill4	k. anderson	NNP NNP	Noun Noun	NP	2	11	1
+bill4	labor act -lrb- 45 u.s.c. 152 -rrb-	NNP NNP -LRB- CD NN CD -RRB-	Noun Noun Lparen Noun Noun Noun Rparen	NP	7	35	1
+bill4	labor act -lrb- 45 u.s.c. 152 -rrb- is	NNP NNP -LRB- CD NN CD -RRB- VBZ	Noun Noun Lparen Noun Noun Noun Rparen Verb	VerbArg	8	38	1
+bill4	labor act -lrb- 45 u.s.c. 152 -rrb- is amended	NNP NNP -LRB- CD NN CD -RRB- VBZ VBN	Noun Noun Lparen Noun Noun Noun Rparen Verb Verb	VerbArg	9	46	1
+bill4	labor dispute was	NN NN VBD	Noun Noun Verb	VerbArg	3	17	1
+bill4	labor dispute was an employee	NN NN VBD DT NN	Noun Noun Verb Det Noun	VerbArg	5	29	1
+bill4	labor dispute was an employee of the employer	NN NN VBD DT NN IN DT NN	Noun Noun Verb Det Noun Prep Det Noun	VerbArg	8	45	1
+bill4	labor dispute was an employee of the employer in a bargaining	NN NN VBD DT NN IN DT NN IN DT NN	Noun Noun Verb Det Noun Prep Det Noun Prep Det Noun	VerbArg	11	61	1
+bill4	labor dispute was an employee of the employer in a bargaining unit	NN NN VBD DT NN IN DT NN IN DT NN NN	Noun Noun Verb Det Noun Prep Det Noun Prep Det Noun Noun	VerbArg	12	66	1
+bill4	least 30	JJS CD	Adj Noun	NP	2	8	1
+bill4	least 30 days	JJS CD NNS	Adj Noun Noun	NP	3	13	1
+bill4	majority	NN	Noun	NP	1	8	1
+bill4	majority of the unit	NN IN DT NN	Noun Prep Det Noun	NP	4	20	1
+bill4	majority of the unit employees	NN IN DT NN NNS	Noun Prep Det Noun Noun	NP	5	30	1
+bill4	may be	MD VB	VerbMod Verb	VG	2	6	1
+bill4	may be cited	MD VB VBN	VerbMod Verb Verb	VG	3	12	1
+bill4	meets	VBZ	Verb	VG	1	5	1
+bill4	meets the criteria	VBZ DT NNS	Verb Det Noun	VerbArg	3	18	1
+bill4	meets the criteria of subparagraphs	VBZ DT NNS IN NNS	Verb Det Noun Prep Noun	VerbArg	5	35	1
+bill4	meets the criteria of subparagraphs -lrb- a -rrb-	VBZ DT NNS IN NNS -LRB- NN -RRB-	Verb Det Noun Prep Noun Lparen Noun Rparen	VerbArg	8	49	1
+bill4	mutual aid	JJ NN	Adj Noun	NP	2	10	1
+bill4	mutual aid or protection	JJ NN CC NN	Adj Noun O Noun	NP	4	24	1
+bill4	mutual aid or protection through that labor	JJ NN CC NN IN DT NN	Adj Noun O Noun Prep Det Noun	NP	7	43	1
+bill4	mutual aid or protection through that labor organization	JJ NN CC NN IN DT NN NN	Adj Noun O Noun Prep Det Noun Noun	NP	8	56	1
+bill4	new paragraph	JJ NN	Adj Noun	NP	2	13	1
+bill4	not completed	RB VBN	VerbMod Verb	VG	2	13	1
+bill4	not completed the representation	RB VBN DT NN	VerbMod Verb Det Noun	VerbArg	4	32	1
+bill4	not completed the representation proceeding	RB VBN DT NN NN	VerbMod Verb Det Noun Noun	VerbArg	5	43	1
+bill4	office	NNP	Noun	NP	1	6	1
+bill4	officer	NN	Noun	NP	1	7	1
+bill4	officer or agent	NN CC NN	Noun O Noun	NP	3	16	1
+bill4	officer or agent of the carrier	NN CC NN IN DT NN	Noun O Noun Prep Det Noun	NP	6	31	1
+bill4	organize	VB	Verb	VG	1	8	1
+bill4	organizing	VBG	Verb	VG	1	10	1
+bill4	other action	JJ NN	Adj Noun	NP	2	12	1
+bill4	other employment preference	JJ NN NN	Adj Noun Noun	NP	3	27	1
+bill4	other employment preference based	JJ NN NN VBN	Adj Noun Noun Verb	VerbArg	4	33	1
+bill4	other employment preference based on the fact	JJ NN NN VBN IN DT NN	Adj Noun Noun Verb Prep Det Noun	VerbArg	7	45	1
+bill4	other employment right	JJ NN NN	Adj Noun Noun	NP	3	22	1
+bill4	other employment right or privilege	JJ NN NN CC NN	Adj Noun Noun O Noun	NP	5	35	1
+bill4	other employment right or privilege to an employee	JJ NN NN CC NN TO DT NN	Adj Noun Noun O Noun Prep Det Noun	NP	8	50	1
+bill4	other individual	JJ NN	Adj Noun	NP	2	16	1
+bill4	other mutual aid	JJ JJ NN	Adj Adj Noun	NP	3	16	1
+bill4	other mutual aid or protection	JJ JJ NN CC NN	Adj Adj Noun O Noun	NP	5	30	1
+bill4	other mutual aid or protection through that labor	JJ JJ NN CC NN IN DT NN	Adj Adj Noun O Noun Prep Det Noun	NP	8	49	1
+bill4	other mutual aid or protection through that labor organization	JJ JJ NN CC NN IN DT NN NN	Adj Adj Noun O Noun Prep Det Noun Noun	NP	9	62	1
+bill4	paragraph -lrb- 5 -rrb-	NN -LRB- CD -RRB-	Noun Lparen Noun Rparen	NP	4	23	1
+bill4	passed	VBN	Verb	VG	1	6	1
+bill4	passed the house	VBN DT NNP	Verb Det Noun	VerbArg	3	16	1
+bill4	passed the house of representatives	VBN DT NNP IN NNPS	Verb Det Noun Prep Noun	VerbArg	5	35	1
+bill4	passed the house of representatives june	VBN DT NNP IN NNPS NNP	Verb Det Noun Prep Noun Noun	VerbArg	6	40	1
+bill4	passed the house of representatives june 15	VBN DT NNP IN NNPS NNP CD	Verb Det Noun Prep Noun Noun Noun	VerbArg	7	43	1
+bill4	pcs	NNP	Noun	NP	1	3	1
+bill4	perform bargaining	VB NN	Verb Noun	VerbArg	2	18	1
+bill4	perform bargaining unit	VB NN NN	Verb Noun Noun	VerbArg	3	23	1
+bill4	perform bargaining unit work	VB NN NN NN	Verb Noun Noun Noun	VerbArg	4	28	1
+bill4	perform bargaining unit work for the employer	VB NN NN NN IN DT NN	Verb Noun Noun Noun Prep Det Noun	VerbArg	7	45	1
+bill4	perform bargaining unit work for the employer during the labor	VB NN NN NN IN DT NN IN DT NN	Verb Noun Noun Noun Prep Det Noun Prep Det Noun	VerbArg	10	62	1
+bill4	perform bargaining unit work for the employer during the labor dispute	VB NN NN NN IN DT NN IN DT NN NN	Verb Noun Noun Noun Prep Det Noun Prep Det Noun Noun	VerbArg	11	70	1
+bill4	perform such work	VB JJ NN	Verb Adj Noun	VerbArg	3	17	1
+bill4	performed work	VBN NN	Verb Noun	VerbArg	2	14	1
+bill4	performed work in a craft	VBN NN IN DT NN	Verb Noun Prep Det Noun	VerbArg	5	25	1
+bill4	performed work in a craft or class	VBN NN IN DT NN CC NN	Verb Noun Prep Det Noun O Noun	VerbArg	7	34	1
+bill4	performing work	VBG NN	Verb Noun	VerbArg	2	15	1
+bill4	performing work in a craft	VBG NN IN DT NN	Verb Noun Prep Det Noun	VerbArg	5	26	1
+bill4	performing work in a craft or class	VBG NN IN DT NN CC NN	Verb Noun Prep Det Noun O Noun	VerbArg	7	35	1
+bill4	performing work in a craft or class for the carrier	VBG NN IN DT NN CC NN IN DT NN	Verb Noun Prep Det Noun O Noun Prep Det Noun	VerbArg	10	51	1
+bill4	performing work in a craft or class for the carrier during a dispute	VBG NN IN DT NN CC NN IN DT NN IN DT NN	Verb Noun Prep Det Noun O Noun Prep Det Noun Prep Det Noun	VerbArg	13	68	1
+bill4	period	NN	Noun	NP	1	6	1
+bill4	period at the end	NN IN DT NN	Noun Prep Det Noun	NP	4	17	1
+bill4	period at the end of paragraph	NN IN DT NN IN NN	Noun Prep Det Noun Prep Noun	NP	6	30	1
+bill4	period at the end of paragraph -lrb- 5 -rrb-	NN IN DT NN IN NN -LRB- CD -RRB-	Noun Prep Det Noun Prep Noun Lparen Noun Rparen	NP	9	44	1
+bill4	permanent replacement employee	JJ NN NN	Adj Noun Noun	NP	3	30	1
+bill4	permanent replacement for an employee	JJ NN IN DT NN	Adj Noun Prep Det Noun	NP	5	37	1
+bill4	petition	NN	Noun	NP	1	8	1
+bill4	placed on calendar	VBN IN NNP	Verb Prep Noun	VerbArg	3	18	1
+bill4	placed on calendar senate	VBN IN NNP NNP	Verb Prep Noun Noun	VerbArg	4	25	1
+bill4	placed on the calendar _______________________________________________________________________	VBN IN DT NN CD	Verb Prep Det Noun Noun	VerbArg	5	94	1
+bill4	placed on the calendar calendar	VBN IN DT NN NNP	Verb Prep Det Noun Noun	VerbArg	5	31	1
+bill4	placed on the calendar calendar no.	VBN IN DT NN NNP NNP	Verb Prep Det Noun Noun Noun	VerbArg	6	35	1
+bill4	preference based	NN VBN	Noun Verb	VerbArg	2	16	1
+bill4	preference based on the fact	NN VBN IN DT NN	Noun Verb Prep Det Noun	VerbArg	5	28	1
+bill4	preference for any other individual	NN IN DT JJ NN	Noun Prep Det Adj Noun	NP	5	35	1
+bill4	printing	NNP	Noun	NP	1	8	1
+bill4	printing office	NNP NNP	Noun Noun	NP	2	15	1
+bill4	privilege	NN	Noun	NP	1	9	1
+bill4	privilege to an employee	NN TO DT NN	Noun Prep Det Noun	NP	4	24	1
+bill4	proceeding	NN	Noun	NP	1	10	1
+bill4	promise	VB	Verb	VG	1	7	1
+bill4	protection	NN	Noun	NP	1	10	1
+bill4	protection through that labor	NN IN DT NN	Noun Prep Det Noun	NP	4	29	1
+bill4	protection through that labor organization	NN IN DT NN NN	Noun Prep Det Noun Noun	NP	5	42	1
+bill4	purpose	NN	Noun	NP	1	7	1
+bill4	purpose of collective bargaining	NN IN JJ NN	Noun Prep Adj Noun	NP	4	32	1
+bill4	purpose of collective bargaining or other mutual aid	NN IN JJ NN CC JJ JJ NN	Noun Prep Adj Noun O Adj Adj Noun	NP	8	52	1
+bill4	purpose of collective bargaining or other mutual aid or protection	NN IN JJ NN CC JJ JJ NN CC NN	Noun Prep Adj Noun O Adj Adj Noun O Noun	NP	10	66	1
+bill4	purpose of collective bargaining or other mutual aid or protection through that labor	NN IN JJ NN CC JJ JJ NN CC NN IN DT NN	Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun	NP	13	85	1
+bill4	purpose of collective bargaining or other mutual aid or protection through that labor organization	NN IN JJ NN CC JJ JJ NN CC NN IN DT NN NN	Noun Prep Adj Noun O Adj Adj Noun O Noun Prep Det Noun Noun	NP	14	98	1
+bill4	r. 5	NNP CD	Noun Noun	NP	2	4	1
+bill4	r. 5 _______________________________________________________________________	NNP CD CD	Noun Noun Noun	NP	3	76	1
+bill4	railway labor act -lrb- 45 u.s.c. 152 -rrb-	NNP NNP NNP -LRB- CD NN CD -RRB-	Noun Noun Noun Lparen Noun Noun Noun Rparen	NP	8	43	1
+bill4	railway labor act -lrb- 45 u.s.c. 152 -rrb- is	NNP NNP NNP -LRB- CD NN CD -RRB- VBZ	Noun Noun Noun Lparen Noun Noun Noun Rparen Verb	VerbArg	9	46	1
+bill4	railway labor act -lrb- 45 u.s.c. 152 -rrb- is amended	NNP NNP NNP -LRB- CD NN CD -RRB- VBZ VBN	Noun Noun Noun Lparen Noun Noun Noun Rparen Verb Verb	VerbArg	10	54	1
+bill4	railway labor disputes	NNP NN NNS	Noun Noun Noun	NP	3	22	1
+bill4	read the first time	VB DT JJ NN	Verb Det Adj Noun	VerbArg	4	19	1
+bill4	read the first time june	VB DT JJ NN NNP	Verb Det Adj Noun Noun	VerbArg	5	24	1
+bill4	read the first time june 22	VB DT JJ NN NNP CD	Verb Det Adj Noun Noun Noun	VerbArg	6	27	1
+bill4	received	VBD	Verb	VG	1	8	1
+bill4	received june	VBD NNP	Verb Noun	VerbArg	2	13	1
+bill4	recognized	VBN	Verb	VG	1	10	1
+bill4	recognized exclusive representative	VBN JJ NN	Verb Adj Noun	VerbArg	3	35	1
+bill4	replacement employee	NN NN	Noun Noun	NP	2	20	1
+bill4	replacement for an employee	NN IN DT NN	Noun Prep Det Noun	NP	4	27	1
+bill4	representation	NN	Noun	NP	1	14	1
+bill4	representation proceeding	NN NN	Noun Noun	NP	2	25	1
+bill4	representatives june	NNPS NNP	Noun Noun	NP	2	20	1
+bill4	representatives june 15	NNPS NNP CD	Noun Noun Noun	NP	3	23	1
+bill4	representatives of the united	NNPS IN DT NNP	Noun Prep Det Noun	NP	4	29	1
+bill4	representatives of the united states	NNPS IN DT NNP NNPS	Noun Prep Det Noun Noun	NP	5	36	1
+bill4	representatives of the united states of america	NNPS IN DT NNP NNPS IN NNP	Noun Prep Det Noun Noun Prep Noun	NP	7	47	1
+bill4	representatives of the united states of america in congress	NNPS IN DT NNP NNPS IN NNP IN NNP	Noun Prep Det Noun Noun Prep Noun Prep Noun	NP	9	59	1
+bill4	representatives of the united states of america in congress assembled	NNPS IN DT NNP NNPS IN NNP IN NNP VBD	Noun Prep Det Noun Noun Prep Noun Prep Noun Verb	VerbArg	10	69	1
+bill4	right or privilege	NN CC NN	Noun O Noun	NP	3	18	1
+bill4	right or privilege to an employee	NN CC NN TO DT NN	Noun O Noun Prep Det Noun	NP	6	33	1
+bill4	right to join	NN TO VB	Noun Prep Verb	VerbArg	3	13	1
+bill4	sec	NNP	Noun	NP	1	3	1
+bill4	section 1	NN CD	Noun Noun	NP	2	9	1
+bill4	section 2	NN CD	Noun Noun	NP	2	9	1
+bill4	section 2 of the railway	NN CD IN DT NNP	Noun Noun Prep Det Noun	NP	5	24	1
+bill4	section 2 of the railway labor	NN CD IN DT NNP NNP	Noun Noun Prep Det Noun Noun	NP	6	30	1
+bill4	section 2 of the railway labor act	NN CD IN DT NNP NNP NNP	Noun Noun Prep Det Noun Noun Noun	NP	7	34	1
+bill4	section 2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb-	NN CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB-	Noun Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen	NP	12	60	1
+bill4	section 2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb- is	NN CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB- VBZ	Noun Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen Verb	VerbArg	13	63	1
+bill4	section 2 of the railway labor act -lrb- 45 u.s.c. 152 -rrb- is amended	NN CD IN DT NNP NNP NNP -LRB- CD NN CD -RRB- VBZ VBN	Noun Noun Prep Det Noun Noun Noun Lparen Noun Noun Noun Rparen Verb Verb	VerbArg	14	71	1
+bill4	section 8	NN CD	Noun Noun	NP	2	9	1
+bill4	section 8 -lrb- a -rrb-	NN CD -LRB- DT -RRB-	Noun Noun Lparen Det Rparen	NP	5	23	1
+bill4	section 8 -lrb- a -rrb- of the national	NN CD -LRB- DT -RRB- IN DT NNP	Noun Noun Lparen Det Rparen Prep Det Noun	NP	8	39	1
+bill4	section 8 -lrb- a -rrb- of the national labor	NN CD -LRB- DT -RRB- IN DT NNP NNP	Noun Noun Lparen Det Rparen Prep Det Noun Noun	NP	9	45	1
+bill4	section 8 -lrb- a -rrb- of the national labor relations	NN CD -LRB- DT -RRB- IN DT NNP NNP NNP	Noun Noun Lparen Det Rparen Prep Det Noun Noun Noun	NP	10	55	1
+bill4	section 8 -lrb- a -rrb- of the national labor relations act	NN CD -LRB- DT -RRB- IN DT NNP NNP NNP NNP	Noun Noun Lparen Det Rparen Prep Det Noun Noun Noun Noun	NP	11	59	1
+bill4	section 9	NN CD	Noun Noun	NP	2	9	1
+bill4	section 9 -lrb- c -rrb-	NN CD -LRB- NN -RRB-	Noun Noun Lparen Noun Rparen	NP	5	23	1
+bill4	section 9 -lrb- c -rrb- -lrb- 1 -rrb-	NN CD -LRB- NN -RRB- -LRB- LS -RRB-	Noun Noun Lparen Noun Rparen Lparen O Rparen	NP	8	37	1
+bill4	senate -lrb- pcs -rrb-	NNP -LRB- NNP -RRB-	Noun Lparen Noun Rparen	NP	4	22	1
+bill4	senate and house	NNP CC NNP	Noun O Noun	NP	3	16	1
+bill4	senate and house of representatives	NNP CC NNP IN NNPS	Noun O Noun Prep Noun	NP	5	35	1
+bill4	senate and house of representatives of the united	NNP CC NNP IN NNPS IN DT NNP	Noun O Noun Prep Noun Prep Det Noun	NP	8	49	1
+bill4	senate and house of representatives of the united states	NNP CC NNP IN NNPS IN DT NNP NNPS	Noun O Noun Prep Noun Prep Det Noun Noun	NP	9	56	1
+bill4	senate and house of representatives of the united states of america	NNP CC NNP IN NNPS IN DT NNP NNPS IN NNP	Noun O Noun Prep Noun Prep Det Noun Noun Prep Noun	NP	11	67	1
+bill4	senate and house of representatives of the united states of america in congress	NNP CC NNP IN NNPS IN DT NNP NNPS IN NNP IN NNP	Noun O Noun Prep Noun Prep Det Noun Noun Prep Noun Prep Noun	NP	13	79	1
+bill4	senate and house of representatives of the united states of america in congress assembled	NNP CC NNP IN NNPS IN DT NNP NNPS IN NNP IN NNP VBD	Noun O Noun Prep Noun Prep Det Noun Noun Prep Noun Prep Noun Verb	VerbArg	14	89	1
+bill4	senate of the united	NNP IN DT NNP	Noun Prep Det Noun	NP	4	20	1
+bill4	senate of the united states	NNP IN DT NNP NNS	Noun Prep Det Noun Noun	NP	5	27	1
+bill4	senate of the united states june	NNP IN DT NNP NNS NNP	Noun Prep Det Noun Noun Noun	NP	6	32	1
+bill4	senate of the united states june 16	NNP IN DT NNP NNS NNP CD	Noun Prep Det Noun Noun Noun Noun	NP	7	35	1
+bill4	senate of the united states june 16 -lrb- legislative day , june 15 -rrb-	NNP IN DT NNP NNS NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Prep Det Noun Noun Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	14	73	1
+bill4	session h. r. 5	NN NN NNP CD	Noun Noun Noun Noun	NP	4	15	1
+bill4	session h. r. 5 _______________________________________________________________________	NN NN NNP CD CD	Noun Noun Noun Noun Noun	NP	5	87	1
+bill4	short	NNP	Noun	NP	1	5	1
+bill4	short title	NNP NNP	Noun Noun	NP	2	11	1
+bill4	states june	NNS NNP	Noun Noun	NP	2	11	1
+bill4	states june 16	NNS NNP CD	Noun Noun Noun	NP	3	14	1
+bill4	states june 16 -lrb- legislative day , june 15 -rrb-	NNS NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	10	52	1
+bill4	states of america	NNPS IN NNP	Noun Prep Noun	NP	3	17	1
+bill4	states of america in congress	NNPS IN NNP IN NNP	Noun Prep Noun Prep Noun	NP	5	29	1
+bill4	states of america in congress assembled	NNPS IN NNP IN NNP VBD	Noun Prep Noun Prep Noun Verb	VerbArg	6	39	1
+bill4	status	NN	Noun	NP	1	6	1
+bill4	status of a permanent replacement	NN IN DT JJ NN	Noun Prep Det Adj Noun	NP	5	33	1
+bill4	status of a permanent replacement employee	NN IN DT JJ NN NN	Noun Prep Det Adj Noun Noun	NP	6	42	1
+bill4	striking	VBG	Verb	VG	1	8	1
+bill4	striking the period	VBG DT NN	Verb Det Noun	VerbArg	3	19	1
+bill4	striking the period at the end	VBG DT NN IN DT NN	Verb Det Noun Prep Det Noun	VerbArg	6	30	1
+bill4	striking the period at the end of paragraph	VBG DT NN IN DT NN IN NN	Verb Det Noun Prep Det Noun Prep Noun	VerbArg	8	43	1
+bill4	striking the period at the end of paragraph -lrb- 5 -rrb-	VBG DT NN IN DT NN IN NN -LRB- CD -RRB-	Verb Det Noun Prep Det Noun Prep Noun Lparen Noun Rparen	VerbArg	11	57	1
+bill4	subparagraphs	NNS	Noun	NP	1	13	1
+bill4	subparagraphs -lrb- a -rrb-	NNS -LRB- NN -RRB-	Noun Lparen Noun Rparen	NP	4	27	1
+bill4	such dispute	JJ NN	Adj Noun	NP	2	12	1
+bill4	such dispute has	JJ NN VBZ	Adj Noun Verb	VerbArg	3	16	1
+bill4	such dispute has exercised	JJ NN VBZ VBN	Adj Noun Verb Verb	VerbArg	4	26	1
+bill4	such dispute has exercised the right	JJ NN VBZ VBN DT NN	Adj Noun Verb Verb Det Noun	VerbArg	6	36	1
+bill4	such work	JJ NN	Adj Noun	NP	2	9	1
+bill4	take	VB	Verb	VG	1	4	1
+bill4	take other action	VB JJ NN	Verb Adj Noun	VerbArg	3	17	1
+bill4	threaten	VB	Verb	VG	1	8	1
+bill4	time june	NN NNP	Noun Noun	NP	2	9	1
+bill4	time june 22	NN NNP CD	Noun Noun Noun	NP	3	12	1
+bill4	title	NNP	Noun	NP	1	5	1
+bill4	u.s.	NNP	Noun	NP	1	4	1
+bill4	u.s. government	NNP NNP	Noun Noun	NP	2	15	1
+bill4	u.s. government printing	NNP NNP NNP	Noun Noun Noun	NP	3	24	1
+bill4	u.s. government printing office	NNP NNP NNP NNP	Noun Noun Noun Noun	NP	4	31	1
+bill4	u.s.c. 152	NN CD	Noun Noun	NP	2	10	1
+bill4	u.s.c. 158	NN CD	Noun Noun	NP	2	10	1
+bill4	u.s.c. 158 -lrb- a -rrb-	NN CD -LRB- DT -RRB-	Noun Noun Lparen Det Rparen	NP	5	24	1
+bill4	unit employees	NN NNS	Noun Noun	NP	2	14	1
+bill4	unit work	NN NN	Noun Noun	NP	2	9	1
+bill4	unit work for the employer	NN NN IN DT NN	Noun Noun Prep Det Noun	NP	5	26	1
+bill4	unit work for the employer during the labor	NN NN IN DT NN IN DT NN	Noun Noun Prep Det Noun Prep Det Noun	NP	8	43	1
+bill4	unit work for the employer during the labor dispute	NN NN IN DT NN IN DT NN NN	Noun Noun Prep Det Noun Prep Det Noun Noun	NP	9	51	1
+bill4	united states june	NNP NNS NNP	Noun Noun Noun	NP	3	18	1
+bill4	united states june 16	NNP NNS NNP CD	Noun Noun Noun Noun	NP	4	21	1
+bill4	united states june 16 -lrb- legislative day , june 15 -rrb-	NNP NNS NNP CD -LRB- JJ NN , NNP CD -RRB-	Noun Noun Noun Noun Lparen Adj Noun O Noun Noun Rparen	NP	11	59	1
+bill4	united states of america	NNP NNPS IN NNP	Noun Noun Prep Noun	NP	4	24	1
+bill4	united states of america in congress	NNP NNPS IN NNP IN NNP	Noun Noun Prep Noun Prep Noun	NP	6	36	1
+bill4	united states of america in congress assembled	NNP NNPS IN NNP IN NNP VBD	Noun Noun Prep Noun Prep Noun Verb	VerbArg	7	46	1
+bill4	was an employee of the carrier	VBD DT NN IN DT NN	Verb Det Noun Prep Det Noun	VerbArg	6	30	1
+bill4	was an employee of the carrier at the commencement	VBD DT NN IN DT NN IN DT NN	Verb Det Noun Prep Det Noun Prep Det Noun	VerbArg	9	50	1
+bill4	was an employee of the carrier at the commencement of the dispute	VBD DT NN IN DT NN IN DT NN IN DT NN	Verb Det Noun Prep Det Noun Prep Det Noun Prep Det Noun	VerbArg	12	65	1
+bill4	was an employee of the employer	VBD DT NN IN DT NN	Verb Det Noun Prep Det Noun	VerbArg	6	31	1
+bill4	was an employee of the employer in a bargaining	VBD DT NN IN DT NN IN DT NN	Verb Det Noun Prep Det Noun Prep Det Noun	VerbArg	9	47	1
+bill4	was an employee of the employer in a bargaining unit	VBD DT NN IN DT NN IN DT NN NN	Verb Det Noun Prep Det Noun Prep Det Noun Noun	VerbArg	10	52	1
+bill4	willingness to perform bargaining	NN TO VB NN	Noun Prep Verb Noun	VerbArg	4	33	1
+bill4	willingness to perform bargaining unit	NN TO VB NN NN	Noun Prep Verb Noun Noun	VerbArg	5	38	1
+bill4	willingness to perform bargaining unit work	NN TO VB NN NN NN	Noun Prep Verb Noun Noun Noun	VerbArg	6	43	1
+bill4	willingness to perform bargaining unit work for the employer	NN TO VB NN NN NN IN DT NN	Noun Prep Verb Noun Noun Noun Prep Det Noun	VerbArg	9	60	1
+bill4	willingness to perform bargaining unit work for the employer during the labor	NN TO VB NN NN NN IN DT NN IN DT NN	Noun Prep Verb Noun Noun Noun Prep Det Noun Prep Det Noun	VerbArg	12	77	1
+bill4	willingness to perform bargaining unit work for the employer during the labor dispute	NN TO VB NN NN NN IN DT NN IN DT NN NN	Noun Prep Verb Noun Noun Noun Prep Det Noun Prep Det Noun Noun	VerbArg	13	85	1
+bill4	willingness to perform such work	NN TO VB JJ NN	Noun Prep Verb Adj Noun	VerbArg	5	32	1
+bill4	withhold	VB	Verb	VG	1	8	1
+bill4	withhold or deny	VB CC VB	Verb O Verb	VG	3	16	1
+bill4	withhold or deny any other employment	VB CC VB DT JJ NN	Verb O Verb Det Adj Noun	VerbArg	6	37	1
+bill4	withhold or deny any other employment right	VB CC VB DT JJ NN NN	Verb O Verb Det Adj Noun Noun	VerbArg	7	43	1
+bill4	withhold or deny any other employment right or privilege	VB CC VB DT JJ NN NN CC NN	Verb O Verb Det Adj Noun Noun O Noun	VerbArg	9	56	1
+bill4	withhold or deny any other employment right or privilege to an employee	VB CC VB DT JJ NN NN CC NN TO DT NN	Verb O Verb Det Adj Noun Noun O Noun Prep Det Noun	VerbArg	12	71	1
+bill4	work for the employer during the labor	NN IN DT NN IN DT NN	Noun Prep Det Noun Prep Det Noun	NP	7	38	1
+bill4	work for the employer during the labor dispute	NN IN DT NN IN DT NN NN	Noun Prep Det Noun Prep Det Noun Noun	NP	8	46	1
+bill4	work in a craft or class for the carrier	NN IN DT NN CC NN IN DT NN	Noun Prep Det Noun O Noun Prep Det Noun	NP	9	40	1
+bill4	work in a craft or class for the carrier during a dispute	NN IN DT NN CC NN IN DT NN IN DT NN	Noun Prep Det Noun O Noun Prep Det Noun Prep Det Noun	NP	12	57	1
+bill4	workplace	NNP	Noun	NP	1	9	1
+bill4	workplace fairness	NNP NNP	Noun Noun	NP	2	18	1
+bill4	workplace fairness act.sec	NNP NNP NNP	Noun Noun Noun	NP	3	26	1
+bill4	written	VBN	Verb	VG	1	7	1
+bill4	written authorizations	VBN NNS	Verb Noun	VerbArg	2	22	1
+bill4	written authorizations by a majority	VBN NNS IN DT NN	Verb Noun Prep Det Noun	VerbArg	5	36	1
+bill4	written authorizations by a majority of the unit	VBN NNS IN DT NN IN DT NN	Verb Noun Prep Det Noun Prep Det Noun	VerbArg	8	48	1
+bill4	written authorizations by a majority of the unit employees	VBN NNS IN DT NN IN DT NN NNS	Verb Noun Prep Det Noun Prep Det Noun Noun	VerbArg	9	58	1
