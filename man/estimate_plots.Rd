@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate_plots.R
 \name{estimate_plots}
 \alias{estimate_plots}
-\title{A function to parameter estimate plots with 95% confidence bounds for up to two models we wish to compare.}
+\title{A function to parameter estimate plots with 95 percent confidence bounds for up to two models we wish to compare.}
 \usage{
 estimate_plots(model1, model2 = NULL, type = c("glm/lm", "zero-inflated",
   "generic"), model1_name = "Model 1", model2_name = "Model 2")
@@ -19,6 +19,6 @@ estimate_plots(model1, model2 = NULL, type = c("glm/lm", "zero-inflated",
 \item{model2_name}{The name we wish to give model2 in the legend if plotting two model's parameter estimates together. Defaults to "Model 2".}
 }
 \description{
-A function to parameter estimate plots with 95% confidence bounds for up to two models we wish to compare.
+A function to parameter estimate plots with 95 percent confidence bounds for up to two models we wish to compare.
 }
 

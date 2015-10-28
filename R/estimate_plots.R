@@ -1,4 +1,4 @@
-#' A function to parameter estimate plots with 95% confidence bounds for up to two models we wish to compare.
+#' A function to parameter estimate plots with 95 percent confidence bounds for up to two models we wish to compare.
 #'
 #' @param model1 A model object returned by a regression estimation routine in R that we wish to plot the parameter estimates of.
 #' @param model2 A optional second model object returned by a regression estimation routine in R that we wish to plot the parameter estimates of alongside model 1. Defaults to NULL if no comparison model is provided.

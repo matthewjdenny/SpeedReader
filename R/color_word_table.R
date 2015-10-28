@@ -1,6 +1,8 @@
 #' A function to generate LaTeX output from a dataframe containing covariates and top words.
 #'
 #' @param word_table A dataframe with optional covariates and then some number of fields each of which is a top word.
+#' @param covariate_columns The columns (if any) in the word table(s) that contain covariates which will be printed verbatim.
+#' @param word_columns The columns in the word table(s) that contain the actual words we wish to print.
 #' @param min_black Defaults to 30 and indicates how light the text for infrequently used words can become.
 #' @param print_first Defualts to printing the first 40 rows. If set to -1, then all rows will be printed.
 #' @param all_same If TRUE then the color of all words will be the same and at the maximum value.

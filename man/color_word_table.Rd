@@ -12,6 +12,10 @@ color_word_table(word_table, covariate_columns = 1, word_columns = 4:13,
 \arguments{
 \item{word_table}{A dataframe with optional covariates and then some number of fields each of which is a top word.}
 
+\item{covariate_columns}{The columns (if any) in the word table(s) that contain covariates which will be printed verbatim.}
+
+\item{word_columns}{The columns in the word table(s) that contain the actual words we wish to print.}
+
 \item{min_black}{Defaults to 30 and indicates how light the text for infrequently used words can become.}
 
 \item{print_first}{Defualts to printing the first 40 rows. If set to -1, then all rows will be printed.}
