@@ -31,6 +31,7 @@ List Count_Words(
           int temp2 = existing_word_counts[j];
           unique_word_counts[j] = temp2;
       }
+      total_unique_words = existing_vocabulary_size;
   }
 
   for(int n = 0; n < number_of_documents; ++n){
