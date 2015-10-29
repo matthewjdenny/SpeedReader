@@ -23,3 +23,4 @@ NULL
 #' @usage data(document_term_count_list)
 #' @format A list object with 5 fields.
 NULL
+
