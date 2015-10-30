@@ -5,13 +5,15 @@
 #' @param aggregate_vocabulary If we already know the aggregate vocabulary, then it can be provided as a string vector. When providing this vector it will be mush more computationally efficient to provide it order from most frequently appearing words to least frequently appearing ones for computational efficiency. Defaults to NULL in which case the vocabulary will be determined inside the function.
 #' @param maximum_vocabulary_size An integer specifying the maximum number of unique word types you expect to encounter. Defaults to -1 in which case the maximum vocabulary size used for pre-allocation in finding the common vocabular across all documents will be set to approximately the number of words in all documents. If you beleive this number to be over 2 billion, or are memory limited on your computer it is recommended to set this to some lower number. For normal english words, a value of 10 million should be sufficient. If you are dealing with n-grams then somewhere in the neighborhood of 100 million to 1 billion is often appropriate. If you have reason to believe that your final vocabulary size will be over ~2,147,000,000 then you should considder working in C++ or rolling your own functions, and congratuations, you have really large text data.
 #' @param using_document_term_counts Defaults to FALSE, if TRUE then we epect a document_term_count_list for each chunk. See generate_document_term_matrix() for more information.
+#' @param generate_sparse_term_matrix Defaults to TRUE. If FALSE, then the function only generates and saves the aggregate vocabulary (and counts) in the form of a list object named Aggregate_Vocabular_and_Counts.Rdata in file_directory or the current working directory if file_directory = NULL. This option is useful if we have an extremely large corpus and may wnat to trim the vocabulary first before providing an aggregate_vocabulary.
 #' @return A sparse document term matrix object. This will likely still be a large file.
 #' @export
 generate_sparse_large_document_term_matrix <- function(file_list,
                                               file_directory = NULL,
                                               aggregate_vocabulary = NULL,
                                               maximum_vocabulary_size = -1,
-                                              using_document_term_counts = FALSE){
+                                              using_document_term_counts = FALSE,
+                                              generate_sparse_term_matrix = TRUE){
     # get the current working directory so we can change back to it.
     current_directory <- getwd()
     # change working directory file_directory
@@ -62,34 +64,42 @@ generate_sparse_large_document_term_matrix <- function(file_list,
     aggregate_vocabulary_size <- length(aggregate_vocabulary)
     cat("Aggregate vocabulary size:",aggregate_vocabulary_size,"\n")
 
-    #loop over bill blocks to add to matricies
-    for(j in 1:num_files){
-        cat("Loading Document Block Number:",j,"\n")
-        load(file_list[j])
-
-        current_document_lengths <- unlist(lapply(document_term_vector_list, length))
-
-        cat("Total Terms in Block:",sum(current_document_lengths),"\n")
-
-        current_dw <- generate_document_term_matrix(document_term_vector_list,
-                        vocabulary = aggregate_vocabulary,
-                        document_term_count_list = document_term_count_list)
-
-        #turn into simple triplet matrix and rbind to what we already have
-        current_dw <- slam::as.simple_triplet_matrix(current_dw)
-        if(j == 1){
-            sparse_document_term_matrix <- current_dw
-        }else{
-            sparse_document_term_matrix <- rbind(sparse_document_term_matrix,
-                                                 current_dw)
-        }
+    if(!generate_sparse_term_matrix){
+        Aggregate_Vocabular_and_Counts <- vocab
+        save(Aggregate_Vocabular_and_Counts,
+             file = "Aggregate_Vocabular_and_Counts.Rdata")
     }
 
-    #reset working directory
-    setwd(current_directory)
+    if(generate_sparse_term_matrix){
+        #loop over bill blocks to add to matricies
+        for(j in 1:num_files){
+            cat("Loading Document Block Number:",j,"\n")
+            load(file_list[j])
 
-    #get the names right
-    colnames(sparse_document_term_matrix) <- aggregate_vocabulary
+            current_document_lengths <- unlist(lapply(document_term_vector_list, length))
 
-    return(sparse_document_term_matrix)
+            cat("Total Terms in Block:",sum(current_document_lengths),"\n")
+
+            current_dw <- generate_document_term_matrix(document_term_vector_list,
+                                                        vocabulary = aggregate_vocabulary,
+                                                        document_term_count_list = document_term_count_list)
+
+            #turn into simple triplet matrix and rbind to what we already have
+            current_dw <- slam::as.simple_triplet_matrix(current_dw)
+            if(j == 1){
+                sparse_document_term_matrix <- current_dw
+            }else{
+                sparse_document_term_matrix <- rbind(sparse_document_term_matrix,
+                                                     current_dw)
+            }
+        }
+
+        #reset working directory
+        setwd(current_directory)
+
+        #get the names right
+        colnames(sparse_document_term_matrix) <- aggregate_vocabulary
+
+        return(sparse_document_term_matrix)
+    }
 }
