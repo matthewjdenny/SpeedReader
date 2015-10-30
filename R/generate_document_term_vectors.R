@@ -51,6 +51,22 @@ generate_document_term_vectors <- function(
         }
     }
 
+    # check to make sure the user did not provide an .Rdata or .rdata extension
+    substrRight <- function(x, n){
+        substr(x, nchar(x)-n+1, nchar(x))
+    }
+
+    # remove the trailing file type if necessary
+    if(!is.null(output_name)){
+        if(substrRight(output_name,6) == ".Rdata" |
+           substrRight(output_name,6) == ".rdata"){
+            output_name <- substr(output_name, 1, nchar(output_name)-6)
+        }
+        if(substrRight(output_name,4) == ".rda"){
+            output_name <- substr(output_name, 1, nchar(output_name)-4)
+        }
+    }
+
     # allocate list objects
     document_term_vector_list <- vector(mode= "list", length = length(input))
     document_term_count_list <- vector(mode= "list", length = length(input))
@@ -113,13 +129,14 @@ generate_document_term_vectors <- function(
                                 )
             return(return_list)
         }
-    }else if(output_type == "return"){
+    }else if(output_type == "save"){
         if(keep_sequence){
-            save(document_term_vector_list,
+            save(list = c("document_term_vector_list","input"),
                  file = paste(output_name,".Rdata", sep = ""))
         }else{
             save(list = c("document_term_vector_list",
-                          "document_term_count_list"),
+                          "document_term_count_list",
+                          "input"),
                  file = paste(output_name,".Rdata", sep = ""))
         }
     }else{
