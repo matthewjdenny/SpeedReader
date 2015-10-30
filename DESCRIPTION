@@ -13,7 +13,8 @@ Imports:
         ggplot2,
         methods,
 	slam,
-	readr
+	readr,
+	stringr
 Depends: 
         R (>= 3.2.1)
 LinkingTo: 
