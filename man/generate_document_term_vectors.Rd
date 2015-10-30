@@ -5,9 +5,9 @@
 \title{A function to generate document term vectors from a variety of inputs.}
 \usage{
 generate_document_term_vectors(input, data_type = c("string", "term vector",
-  "raw text", "csv"), data_directory = NULL,
-  tokenization_method = c("RegEx", "CoreNLP"), output_type = c("return",
-  "save", "return and save"), output_name = NULL, csv_separator = ",",
+  "raw text", "csv"), data_directory = NULL, tokenization_method = c("None",
+  "RegEx"), regex = "[^a-zA-Z\\\\s]", output_type = c("return", "save",
+  "return and save"), output_name = NULL, csv_separator = ",",
   csv_word_column = NULL, csv_count_column = NULL, csv_header = FALSE,
   keep_sequence = FALSE)
 }
@@ -18,7 +18,9 @@ generate_document_term_vectors(input, data_type = c("string", "term vector",
 
 \item{data_directory}{Optional argument specifying where the data is stored.}
 
-\item{tokenization_method}{Will eventually implement both an R-based and a Stanford CoreNLP based tokenization strategy. Currently not available.}
+\item{tokenization_method}{Defaults to "None", in which case text input is kept as is. Alternatively, the user may select "RegEx" in which case all characters will be removed from the input that match the regex argument. See clean_document_text() for more examples.}
+
+\item{regex}{Deaults to removing all characters that are not upper or lowercase letters or spaces. Can be set as desired by the user.}
 
 \item{output_type}{A string value indicating whether the resulting list object should be returned ("return"), saved to a file in the current working directory with name output_name.Rdata ("save"), of both ("save and return"). Defaults to "return".}
 

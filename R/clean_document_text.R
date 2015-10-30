@@ -1,11 +1,11 @@
 #' A function which cleans the raw text of a document provided either as a single string, a vector of strings, or a column of a data.frame.
 #'
 #' @param text The raw text of a document the user wishes to clean. Can be supplied as either a single string, a vector of strings, or a column from a data.frame.
-#' @param remove_regex A regular expression specifying the characters the user would like to exclude from the final text string. This function works by replacing those terms with spaces and then splitting the resulting string on those spaces. Defaults to removing all characters that are not uper or lowercase letters or spaces (as a regex, this is "[^a-zA-Z\\s]").
+#' @param regex A regular expression specifying the characters the user would like to EXCLUDE from the final text string. This function works by replacing those terms with spaces and then splitting the resulting string on those spaces. Defaults to removing all characters that are not uper or lowercase letters or spaces (as a regex, this is "[^a-zA-Z\\s]").
 #' @return A document-term vector with ordering preserved.
 #' @export
 clean_document_text <- function(text,
-                                remove_regex = "[^a-zA-Z\\s]"){
+                                regex = "[^a-zA-Z\\s]"){
 
     # if the user provided a vector of strings, then collapse it before
     # further preprocessing
