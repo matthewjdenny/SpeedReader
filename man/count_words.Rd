@@ -4,7 +4,7 @@
 \alias{count_words}
 \title{A function to efficiently form aggregate word counts and a common vocabulary vector from an unordered list of document term vectors.}
 \usage{
-count_words(document_term_vector_list, maximum_vocabulary_size = 1e+06,
+count_words(document_term_vector_list, maximum_vocabulary_size = -1,
   existing_vocabulary = NULL, existing_word_counts = NULL,
   document_term_count_list = NULL)
 }
