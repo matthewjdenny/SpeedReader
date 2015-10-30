@@ -25,7 +25,7 @@ clean_document_text <- function(text,
     temp <- tolower(text)
     #' Remove everything that is not a number or letter (may want to keep more
     #' stuff in your actual analyses).
-    temp <- stringr::str_replace_all(temp,remove_regex, " ")
+    temp <- stringr::str_replace_all(temp,regex, " ")
     # Shrink down to just one white space
     temp <- stringr::str_replace_all(temp,"[\\s]+", " ")
     # Split it
