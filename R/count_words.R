@@ -8,7 +8,7 @@
 #' @return A list object with a unique_words field containing a vector of all unique word types, in descending order of their frequency, as well as a word_counts field containing word counts for each of those words, in the same order, and a total_unique_words field -- the size of the vocabulary.
 #' @export
 count_words <- function(document_term_vector_list,
-                        maximum_vocabulary_size = 1000000,
+                        maximum_vocabulary_size = -1,
                         existing_vocabulary = NULL,
                         existing_word_counts = NULL,
                         document_term_count_list = NULL){
@@ -92,7 +92,9 @@ count_words <- function(document_term_vector_list,
                    total_unique_words = counts[[1]])
 
     #check to make sure that we did not inadvertently run out of space in our initially allocated vector.
-    if(counts[[1]] >= (maximum_vocabulary_size -1)){
+
+    cat("Current vocabulary size:",counts[[1]],"\n")
+    if(counts[[1]] > maximum_vocabulary_size){
         stop("You have specified a maximum_vocabulary_size that is too small. Considder increasing it or setting it to -1, in which case the total number of tokens in all documents will be used.")
     }
 
