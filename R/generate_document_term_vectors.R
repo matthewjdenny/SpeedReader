@@ -155,4 +155,5 @@ generate_document_term_vectors <- function(
             return(return_list)
         }
     }
+    setwd(current_directory)
 }
