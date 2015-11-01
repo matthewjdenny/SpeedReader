@@ -38,6 +38,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
     # if the user did not provide a vocabulary, then we have to generate one.
     if(is.null(aggregate_vocabulary)){
         load(file_list[1])
+        cat("Generating vocabulary from block 1 ...\n")
         vocab <- count_words(document_term_vector_list,
                              maximum_vocabulary_size = maximum_vocabulary_size,
                              existing_vocabulary = NULL,
@@ -45,6 +46,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                              document_term_count_list = document_term_count_list)
         for(i in 2:num_files){
             load(file_list[i])
+            cat("Generating vocabulary from block",i,"...\n")
             # If we are approaching the maximum vocabulary size then increase it by 50%
             if(maximum_vocabulary_size != -1){
                 if(vocab$total_unique_words/maximum_vocabulary_size > 0.8){
@@ -73,12 +75,12 @@ generate_sparse_large_document_term_matrix <- function(file_list,
     if(generate_sparse_term_matrix){
         #loop over bill blocks to add to matricies
         for(j in 1:num_files){
-            cat("Loading Document Block Number:",j,"\n")
+            cat("Generating sparse matrix from block number:",j,"\n")
             load(file_list[j])
 
             current_document_lengths <- unlist(lapply(document_term_vector_list, length))
 
-            cat("Total Terms in Block:",sum(current_document_lengths),"\n")
+            cat("Total terms in current block:",sum(current_document_lengths),"\n")
 
             current_dw <- generate_document_term_matrix(document_term_vector_list,
                                                         vocabulary = aggregate_vocabulary,
