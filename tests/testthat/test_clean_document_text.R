@@ -25,7 +25,6 @@ test_that("All different types of text input yield the same thing", {
     df <- clean_document_text(text = df_example[,1])
     df2 <- clean_document_text(text = df2_example)
     bad <- clean_document_text(text = bad_df_example)
-
     # make sure we get the same thing.
     expect_equal(str, vec)
     expect_equal(str, df)

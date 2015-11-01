@@ -101,8 +101,9 @@ generate_document_term_vectors <- function(
                 if(tokenization_method == "RegEx"){
                     clean <- clean_document_text(text = as.character(data[,csv_word_column]), regex = regex)
                     document_term_vector_list[[i]] <- clean
+                }else{
+                    document_term_vector_list[[i]] <- as.character(data[,csv_word_column])
                 }
-                document_term_vector_list[[i]] <- as.character(data[,csv_word_column])
             }
 
         }else{
@@ -120,9 +121,51 @@ generate_document_term_vectors <- function(
             }
 
         }
+    }# end of csv data type loop
 
+    #******************************************#
+    #****** One String Per Document Data ******#
+    #******************************************#
+    if(data_type == "string"){
 
-    }
+        if(class(input) == "list"){
+            input <- unlist(input)
+        }
+
+        if(class(input) != "character"){
+            stop("If data_type == 'string' then you must provide documents as either a character vector with one entry per document or a list with one entry per document." )
+        }
+
+        if(keep_sequence){
+            for(i in 1:length(input)){
+                cat("Reading in document",i,"of",length(input),"\n")
+                if(tokenization_method == "RegEx"){
+                    clean <- clean_document_text(text = as.character(input[i]),
+                                                 regex = regex)
+                    document_term_vector_list[[i]] <- clean
+                }else{
+                    stop("tokenization_method = 'RegEx' is the only method currently available for tokenization of document when provided as strings. Please use this option.")
+                }
+            }
+        }else{
+            for(i in 1:length(input)){
+                cat("Reading in document",i,"of",length(input),"\n")
+                if(tokenization_method == "RegEx"){
+                    clean <- clean_document_text(text = as.character(input[i]),
+                                                 regex = regex)
+                    vocab <- count_words(
+                        document_term_vector_list = list(as.character(clean)),
+                        maximum_vocabulary_size = -1,
+                        document_term_count_list = NULL)
+                    document_term_vector_list[[i]] <- vocab$unique_words
+                    document_term_count_list[[i]] <- vocab$word_counts
+                }else{
+                    stop("tokenization_method = 'RegEx' is the only method currently available for tokenization of document when provided as strings. Please use this option.")
+                }
+            }
+        }
+
+    }# end of string data type
 
     # return everything
     if(output_type == "return"){
