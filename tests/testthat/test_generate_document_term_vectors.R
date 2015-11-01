@@ -45,6 +45,16 @@ test_that("We are reading in the right number of ", {
 
     expect_equal(documents2$document_term_vector_list,documents$document_term_vector_list)
     expect_equal(documents3,documents$document_term_vector_list)
+
+    #now try with raw text:
+    files <- get_file_paths(source = "raw text")
+    cat("\n")
+    system.time({documents4 <- generate_document_term_vectors(
+        input = files,
+        data_type = "raw text",
+        tokenization_method = "RegEx",
+        keep_sequence = FALSE)})
+
 })
 
 

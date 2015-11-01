@@ -14,7 +14,7 @@ generate_document_term_vectors(input, data_type = c("string", "term vector",
 \arguments{
 \item{input}{A list of strings, term vectors, raw documents, or csv files you wish to turn into document term vectors.}
 
-\item{data_type}{The type of data provided to the function.}
+\item{data_type}{The type of data provided to the function. Defaults to 'string' in which case the user must provide a vector or list of strings, with each string representing one document. Alternatively the user may specify one of the following input formats: 'term vector', in which case a list of document term vectors is expected; 'raw text', in which case a vector of paths to plain text files should be provided; or 'csv', in which case a vector of paths to document term csv files must be specified. If 'csv' is specified, optional arguments csv_separator, csv_word_column, csv_header,  and optionally csv_count_column must also be specified.}
 
 \item{data_directory}{Optional argument specifying where the data is stored.}
 
