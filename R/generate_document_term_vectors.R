@@ -167,7 +167,55 @@ generate_document_term_vectors <- function(
 
     }# end of string data type
 
-    # return everything
+    #********************************************#
+    #****** Document Term Vector Data Data ******#
+    #********************************************#
+
+    if(data_type == "term vector"){
+
+        if(class(input) == "character"){
+            input <- list(doc = input)
+            cat("You provided a string vector so this function is assuming that you only provided one document and proceeding accordingly.")
+        }
+
+        if(class(input) != "list"){
+            stop("If data_type == 'term vector' then you must provide documents as a list with one term vector per document." )
+        }
+
+        if(keep_sequence){
+            for(i in 1:length(input)){
+                cat("Reading in document",i,"of",length(input),"\n")
+                document_term_vector_list[[i]] <- input[[i]]
+            }
+        }else{
+            for(i in 1:length(input)){
+                cat("Reading in document",i,"of",length(input),"\n")
+                if(tokenization_method == "RegEx"){
+                    clean <- clean_document_text(text = as.character(input[[i]]),
+                                                 regex = regex)
+                    vocab <- count_words(
+                        document_term_vector_list = list(as.character(clean)),
+                        maximum_vocabulary_size = -1,
+                        document_term_count_list = NULL)
+                    document_term_vector_list[[i]] <- vocab$unique_words
+                    document_term_count_list[[i]] <- vocab$word_counts
+                }else{
+                    vocab <- count_words(
+                        document_term_vector_list = input[i],
+                        maximum_vocabulary_size = -1,
+                        document_term_count_list = NULL)
+                    document_term_vector_list[[i]] <- vocab$unique_words
+                    document_term_count_list[[i]] <- vocab$word_counts
+                }
+            }
+        }
+
+    }# end of term vector data type
+
+
+    #*************************************#
+    #****** Return Term Vector List ******#
+    #*************************************#
     if(output_type == "return"){
         if(keep_sequence){
             return(document_term_vector_list)

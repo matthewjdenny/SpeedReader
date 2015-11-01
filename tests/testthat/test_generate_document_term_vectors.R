@@ -31,6 +31,20 @@ test_that("We are reading in the right number of ", {
     str <- clean_document_text(text = docs[1])
 
     expect_equal(length(unique(str)), length(documents$document_term_count_list[[1]]))
+
+    # now try with term vectors
+    system.time({documents2 <- generate_document_term_vectors(
+        input = documents$document_term_vector_list,
+        data_type = "term vector",
+        keep_sequence = FALSE)})
+
+    system.time({documents3 <- generate_document_term_vectors(
+        input = documents$document_term_vector_list,
+        data_type = "term vector",
+        keep_sequence = TRUE)})
+
+    expect_equal(documents2$document_term_vector_list,documents$document_term_vector_list)
+    expect_equal(documents3,documents$document_term_vector_list)
 })
 
 
