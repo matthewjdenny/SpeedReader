@@ -4,10 +4,10 @@
 \alias{get_file_paths}
 \title{A function the returns the file paths to two example raw datasets for testing}
 \usage{
-get_file_paths(source = c("bill tsvs", "test sparse doc-term"))
+get_file_paths(source = c("bill tsvs", "test sparse doc-term", "raw text"))
 }
 \arguments{
-\item{source}{Can be either "bill tsvs" in which case the paths to the five example bill tsv files are returned, or "test sparse doc-term", in which case the paths to two Rdata files necessary to test the generate_sparse_large_document_term_matrix() are returned.}
+\item{source}{Can be either "bill tsvs" in which case the paths to the five example bill tsv files are returned, "test sparse doc-term", in which case the paths to two Rdata files necessary to test the generate_sparse_large_document_term_matrix() are returned, or "raw text", in which case the file paths to two example raw text files are provided.}
 }
 \value{
 A vector of file paths
