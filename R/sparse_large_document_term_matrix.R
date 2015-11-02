@@ -114,7 +114,6 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 end <- min(end + cores,num_files)
 
                 # now spool up the snowfall cluster
-                #library(snowfall)
                 #intitalizes snowfall session
                 snowfall::sfInit(parallel=TRUE, cpus=cores)
 

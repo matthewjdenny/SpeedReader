@@ -11,6 +11,9 @@ NULL
 #' @import methods
 NULL
 
+#' @import snowfall
+NULL
+
 #' @importFrom grDevices dev.off pdf rgb
 NULL
 
