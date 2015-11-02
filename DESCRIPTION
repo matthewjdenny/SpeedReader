@@ -14,7 +14,8 @@ Imports:
         methods,
 	slam,
 	readr,
-	stringr
+	stringr,
+	snowfall
 Depends: 
         R (>= 3.2.1)
 LinkingTo: 
