@@ -1,11 +1,11 @@
 #' Only to be used internally. A function to generate a sparse large document term matrix in parallel.
 #'
 #' @param file The path to a block of document term vectors.
-#' @param aggregate_vocabulary Defaults to aggregate_vocabulary. This is set internally inside the generate_sparse_large_document_term_matrix() function.
+#' @param aggregate_vocabulary This is set internally inside the generate_sparse_large_document_term_matrix() function.
 #' @return A sparse document term matrix object.
 #' @export
 sparse_doc_term_parallel <- function(file,
-                                     aggregate_vocabulary = aggregate_vocabulary){
+                                     aggregate_vocabulary){
     load(file)
     current_document_lengths <- unlist(lapply(document_term_vector_list, length))
     cat("Total terms in current block:",sum(current_document_lengths),"\n")
