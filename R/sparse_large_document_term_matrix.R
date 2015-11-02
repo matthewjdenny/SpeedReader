@@ -126,7 +126,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 }
                 cur_files <- file_list[current_file_indexes]
                 cat("Applying Across Cluster ... \n")
-                result <- snowfall::sfLapply(x = cur_files,
+                result <- snowfall::sfClusterApplyLB(x = cur_files,
                                              fun = sparse_doc_term_parallel,
                                              vocab = aggregate_vocabulary)
                 cat("Cluster apply complete ... \n")
