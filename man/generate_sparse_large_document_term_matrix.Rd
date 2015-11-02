@@ -22,7 +22,7 @@ generate_sparse_large_document_term_matrix(file_list, file_directory = NULL,
 
 \item{generate_sparse_term_matrix}{Defaults to TRUE. If FALSE, then the function only generates and saves the aggregate vocabulary (and counts) in the form of a list object named Aggregate_Vocabular_and_Counts.Rdata in file_directory or the current working directory if file_directory = NULL. This option is useful if we have an extremely large corpus and may wnat to trim the vocabulary first before providing an aggregate_vocabulary.}
 
-\item{parallel}{Defaults to FALSE, but can be set to TRUE to speed up processing provided the machine hte user is using has enough RAM. Parallelization is currently implemented in snowfall so it should work across platforms.}
+\item{parallel}{Defaults to FALSE, but can be set to TRUE to speed up processing provided the machine hte user is using has enough RAM. Parallelization is currently implemented using forking in the parallel package (mclapply) so it will only work on UNIX based platforms..}
 
 \item{cores}{Defaults to 1. Can be set to the number of cores on your computer.}
 }

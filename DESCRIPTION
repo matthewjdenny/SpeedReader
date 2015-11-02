@@ -15,7 +15,7 @@ Imports:
 	slam,
 	readr,
 	stringr,
-	snowfall
+	parallel
 Depends: 
         R (>= 3.2.1)
 LinkingTo: 

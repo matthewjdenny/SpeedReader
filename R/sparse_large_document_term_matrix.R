@@ -6,7 +6,7 @@
 #' @param maximum_vocabulary_size An integer specifying the maximum number of unique word types you expect to encounter. Defaults to -1 in which case the maximum vocabulary size used for pre-allocation in finding the common vocabular across all documents will be set to approximately the number of words in all documents. If you beleive this number to be over 2 billion, or are memory limited on your computer it is recommended to set this to some lower number. For normal english words, a value of 10 million should be sufficient. If you are dealing with n-grams then somewhere in the neighborhood of 100 million to 1 billion is often appropriate. If you have reason to believe that your final vocabulary size will be over ~2,147,000,000 then you should considder working in C++ or rolling your own functions, and congratuations, you have really large text data.
 #' @param using_document_term_counts Defaults to FALSE, if TRUE then we epect a document_term_count_list for each chunk. See generate_document_term_matrix() for more information.
 #' @param generate_sparse_term_matrix Defaults to TRUE. If FALSE, then the function only generates and saves the aggregate vocabulary (and counts) in the form of a list object named Aggregate_Vocabular_and_Counts.Rdata in file_directory or the current working directory if file_directory = NULL. This option is useful if we have an extremely large corpus and may wnat to trim the vocabulary first before providing an aggregate_vocabulary.
-#' @param parallel Defaults to FALSE, but can be set to TRUE to speed up processing provided the machine hte user is using has enough RAM. Parallelization is currently implemented in snowfall so it should work across platforms.
+#' @param parallel Defaults to FALSE, but can be set to TRUE to speed up processing provided the machine hte user is using has enough RAM. Parallelization is currently implemented using forking in the parallel package (mclapply) so it will only work on UNIX based platforms..
 #' @param cores Defaults to 1. Can be set to the number of cores on your computer.
 #' @return A sparse document term matrix object. This will likely still be a large file.
 #' @export
@@ -113,22 +113,12 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 start <- start + cores
                 end <- min(end + cores,num_files)
 
-                # now spool up the snowfall cluster
-                #intitalizes snowfall session
-                snowfall::sfInit(parallel=TRUE, cpus=cores)
-
-                if( snowfall::sfParallel() ){
-                    cat( "Running in parallel mode on", snowfall::sfCpus(), "nodes.\n" )
-                }
-
-                for (i in 1:length(.packages())){
-                    eval(call("sfLibrary", (.packages()[i]), character.only=TRUE))
-                }
                 cur_files <- file_list[current_file_indexes]
                 cat("Applying Across Cluster ... \n")
-                result <- snowfall::sfClusterApplyLB(x = cur_files,
-                                             fun = sparse_doc_term_parallel,
-                                             vocab = aggregate_vocabulary)
+                result <- parallel::mclapply(X = cur_files,
+                                             FUN = sparse_doc_term_parallel,
+                                             vocab = aggregate_vocabulary,
+                                             mc.cores = cores)
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")
