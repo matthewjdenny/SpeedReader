@@ -1,4 +1,5 @@
-sparse_doc_term_parallel <- function(file){
+sparse_doc_term_parallel <- function(file,
+                                     aggregate_vocabulary = aggregate_vocabulary){
     load(file)
     current_document_lengths <- unlist(lapply(document_term_vector_list, length))
     cat("Total terms in current block:",sum(current_document_lengths),"\n")
