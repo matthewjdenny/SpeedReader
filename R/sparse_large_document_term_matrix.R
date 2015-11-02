@@ -118,6 +118,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 result <- parallel::mclapply(cur_files,
                                              sparse_doc_term_parallel,
                                              mc.cores = cores)
+                cat(str(result),"\n")
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")

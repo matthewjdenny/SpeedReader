@@ -14,6 +14,8 @@ sparse_doc_term_parallel <- function(file,
                                                 document_term_count_list = document_term_count_list)
 
     #turn into simple triplet matrix and rbind to what we already have
+    cat(str(current_dw),"\n")
     current_dw <- slam::as.simple_triplet_matrix(current_dw)
+    cat(str(current_dw),"\n")
     return(current_dw)
 }
