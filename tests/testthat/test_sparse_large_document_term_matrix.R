@@ -37,6 +37,8 @@ test_that("That document term matricies have the right dimensions and sum", {
     expect_equal(69825, sum(sdtm))
 
     cat("\n")
+    data(document_term_vector_list)
+    data(document_term_count_list)
     count <- count_words(document_term_vector_list,
                          maximum_vocabulary_size = 1000000,
                          document_term_count_list = document_term_count_list)
