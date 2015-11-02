@@ -117,7 +117,6 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 cat("Applying Across Cluster ... \n")
                 result <- parallel::mclapply(X = cur_files,
                                              FUN = sparse_doc_term_parallel,
-                                             vocab = aggregate_vocabulary,
                                              mc.cores = cores)
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
