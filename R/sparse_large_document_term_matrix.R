@@ -98,8 +98,9 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 if(j == 1){
                     sparse_document_term_matrix <- current_dw
                 }else{
-                    sparse_document_term_matrix <- rbind(sparse_document_term_matrix,
-                                                         current_dw)
+                    sparse_document_term_matrix <- rbind(
+                        sparse_document_term_matrix,
+                        current_dw)
                 }
             }
         }else{
@@ -117,18 +118,20 @@ generate_sparse_large_document_term_matrix <- function(file_list,
 
                 cur_files <- file_list[current_file_indexes]
                 cat("Applying Across Cluster ... \n")
-                result <- parallel::mclapply(cur_files,
-                                             sparse_doc_term_parallel,
-                                             aggregate_vocabulary = aggregate_vocabulary,
-                                             mc.cores = cores)
+                result <- parallel::mclapply(
+                    cur_files,
+                    sparse_doc_term_parallel,
+                    aggregate_vocabulary = aggregate_vocabulary,
+                    mc.cores = cores)
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")
                     if(counter == 1){
                         sparse_document_term_matrix <- result[[k]]
                     }else{
-                        sparse_document_term_matrix <- rbind(sparse_document_term_matrix,
-                                                             result[[k]])
+                        sparse_document_term_matrix <- rbind(
+                            sparse_document_term_matrix,
+                            result[[k]])
                     }
                     counter <- counter + 1
                 }
@@ -136,7 +139,6 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         }
         #reset working directory
         setwd(current_directory)
-
         #get the names right
         colnames(sparse_document_term_matrix) <- aggregate_vocabulary
 
