@@ -29,6 +29,10 @@ Generate_Document_Term_Matrix <- function(number_of_documents, number_of_unique_
     .Call('SpeedReader_Generate_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, using_wordcounts, Document_Word_Counts)
 }
 
+Generate_Sparse_Document_Term_Matrix <- function(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms) {
+    .Call('SpeedReader_Generate_Sparse_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms)
+}
+
 Mutual_Information <- function(joint_dist) {
     .Call('SpeedReader_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist)
 }
