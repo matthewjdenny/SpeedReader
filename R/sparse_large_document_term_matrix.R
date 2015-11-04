@@ -140,7 +140,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         #reset working directory
         setwd(current_directory)
         #get the names right
-        colnames(sparse_document_term_matrix) <- aggregate_vocabulary
+        #colnames(sparse_document_term_matrix) <- aggregate_vocabulary
 
         return(sparse_document_term_matrix)
     }
