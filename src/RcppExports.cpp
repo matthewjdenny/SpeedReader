@@ -103,6 +103,23 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Generate_Sparse_Document_Term_Matrix
+List Generate_Sparse_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms);
+RcppExport SEXP SpeedReader_Generate_Sparse_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type number_of_documents(number_of_documentsSEXP);
+    Rcpp::traits::input_parameter< int >::type number_of_unique_words(number_of_unique_wordsSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type unique_words(unique_wordsSEXP);
+    Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
+    Rcpp::traits::input_parameter< List >::type Document_Word_Counts(Document_Word_CountsSEXP);
+    Rcpp::traits::input_parameter< int >::type total_terms(total_termsSEXP);
+    __result = Rcpp::wrap(Generate_Sparse_Document_Term_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms));
+    return __result;
+END_RCPP
+}
 // Mutual_Information
 double Mutual_Information(arma::mat joint_dist);
 RcppExport SEXP SpeedReader_Mutual_Information(SEXP joint_distSEXP) {

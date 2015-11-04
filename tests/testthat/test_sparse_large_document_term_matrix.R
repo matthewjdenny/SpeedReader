@@ -31,7 +31,6 @@ test_that("That document term matricies have the right dimensions and sum", {
         maximum_vocabulary_size = -1,
         using_document_term_counts = TRUE)
 
-
     expect_equal(35522, ncol(sdtm))
     expect_equal(5, nrow(sdtm))
     expect_equal(69825, sum(sdtm))
@@ -44,5 +43,7 @@ test_that("That document term matricies have the right dimensions and sum", {
                          document_term_count_list = document_term_count_list)
 
     expect_equal(count$word_counts, as.numeric(slam::col_sums(sdtm)))
+
+
 
 })

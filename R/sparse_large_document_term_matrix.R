@@ -87,12 +87,14 @@ generate_sparse_large_document_term_matrix <- function(file_list,
 
                 cat("Total terms in current block:",sum(current_document_lengths),"\n")
 
-                current_dw <- generate_document_term_matrix(document_term_vector_list,
-                                                            vocabulary = aggregate_vocabulary,
-                                                            document_term_count_list = document_term_count_list)
+                current_dw <- generate_document_term_matrix(
+                    document_term_vector_list,
+                    vocabulary = aggregate_vocabulary,
+                    document_term_count_list = document_term_count_list,
+                    return_sparse_matrix = TRUE)
 
                 #turn into simple triplet matrix and rbind to what we already have
-                current_dw <- slam::as.simple_triplet_matrix(current_dw)
+                #current_dw <- slam::as.simple_triplet_matrix(current_dw)
                 if(j == 1){
                     sparse_document_term_matrix <- current_dw
                 }else{
@@ -119,7 +121,6 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                                              sparse_doc_term_parallel,
                                              aggregate_vocabulary = aggregate_vocabulary,
                                              mc.cores = cores)
-                cat(str(result),"\n")
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")
