@@ -4,12 +4,12 @@
 \alias{sparse_doc_term_parallel}
 \title{Only to be used internally. A function to generate a sparse large document term matrix in parallel.}
 \usage{
-sparse_doc_term_parallel(file, aggregate_vocabulary)
+sparse_doc_term_parallel(file, vocabulary)
 }
 \arguments{
 \item{file}{The path to a block of document term vectors.}
 
-\item{aggregate_vocabulary}{This is set internally inside the generate_sparse_large_document_term_matrix() function.}
+\item{vocabulary}{This is set internally inside the generate_sparse_large_document_term_matrix() function.}
 }
 \value{
 A sparse document term matrix object.
