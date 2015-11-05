@@ -35,7 +35,12 @@ generate_document_term_matrix <- function(document_term_vector_list,
     }
 
     number_of_documents <- length(document_term_vector_list)
-    number_of_unique_words <- length(vocabulary)
+    if(USING_STEM_LOOKUP_VOCABULARY){
+        number_of_unique_words <- length(vocabulary$vocabulary)
+    }else{
+        number_of_unique_words <- length(vocabulary)
+    }
+
     document_lengths <- unlist(lapply(document_term_vector_list, length))
 
     using_wordcounts <- 0
@@ -60,8 +65,7 @@ generate_document_term_matrix <- function(document_term_vector_list,
     if(return_sparse_matrix){
         if(USING_STEM_LOOKUP_VOCABULARY){
             # fastest implementation for large vocabularies
-            document_term_matrix <- slam::as.simple_triplet_matrix(matrix(1:4,2,2))
-            colnames(document_term_matrix) <- c("a","b")
+
             total_terms <- sum(unlist(lapply(document_term_vector_list, length)))
             sparse_list <- Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                 number_of_documents,
@@ -74,14 +78,18 @@ generate_document_term_matrix <- function(document_term_vector_list,
                 stem_lookup = vocabulary$stems,
                 starts = (vocabulary$stem_first_use -1),
                 ends = vocabulary$stem_last_use)
+            cat(str(sparse_list),"\n")
             cat("Completed Generating Sparse Doc-Term Matrix...\n")
 
-            document_term_matrix$i = sparse_list[[1]]
-            document_term_matrix$j = sparse_list[[2]]
-            document_term_matrix$v = sparse_list[[3]]
-            document_term_matrix$dimnames[[2]] = vocabulary
-            document_term_matrix$nrow = number_of_documents
-            document_term_matrix$ncol = number_of_unique_words
+            document_term_matrix <- slam::simple_triplet_matrix(
+                i = sparse_list[[1]],
+                j = sparse_list[[2]],
+                v = sparse_list[[3]],
+                nrow = number_of_documents,
+                ncol = number_of_unique_words
+            )
+            document_term_matrix$dimnames[[2]] <- vocabulary$vocabulary
+            cat(str(document_term_matrix),"\n")
 
         }else{
             #generate a placeholder object insert results into

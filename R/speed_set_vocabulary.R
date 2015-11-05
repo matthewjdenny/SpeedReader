@@ -24,10 +24,13 @@ speed_set_vocabulary <- function(vocab,
     cat("Sorting vocabulary alphabetically...\n")
     # sort vocabulary alphabetically
     ordering <- order(vocab$unique_words)
-    Sorted_Vocabulary <- vocab$unique_words[ordering,]
+    Sorted_Vocabulary <- vocab$unique_words[ordering]
     cat("Removing terms that are fewer than three characters long...\n")
     #remove overly short words
-    Sorted_Vocabulary <- Sorted_Vocabulary[which(Sorted_Vocabulary$numchars > 2)]
+
+    numchars <- as.numeric(sapply(Sorted_Vocabulary,nchar))
+    cat("Removing:",Sorted_Vocabulary[which(numchars < 3)],"\n")
+    Sorted_Vocabulary <- Sorted_Vocabulary[which(numchars > 2)]
 
     # get first three characters of every string
     get_first_three <- function(i){
@@ -64,8 +67,8 @@ speed_set_vocabulary <- function(vocab,
     count <- last_time_used - first_time_used + 1
     lookup <- cbind(lookup,count,first_time_used,last_time_used)
     ordered_lookup <- lookup[order(lookup$count,decreasing = T),]
-    cat("Returning speed-set vocabulary")
-    vocabulary <- list(vocabulary = Sorted_Vocabulary$lc_words,
+    cat("Returning speed-set vocabulary...\n")
+    vocabulary <- list(vocabulary = Sorted_Vocabulary,
                        stems = ordered_lookup$stem,
                        stem_count = ordered_lookup$count,
                        stem_first_use = ordered_lookup$first_time_used,

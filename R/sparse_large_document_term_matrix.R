@@ -10,6 +10,7 @@
 #' @param cores Defaults to 1. Can be set to the number of cores on your computer.
 #' @param large_vocabulary Defaults to FALSE. If the user believes their vocabulary to be greater than ~500,000 unique terms, specifying true may result in a substantial reduction in compute time. If TRUE, then the program implements a stemming lookup table to efficiently index terms in the vocabulary. This option only works with parallel = TRUE and is meant to accomodate vocabulary sizes up to several hundred million unique terms.
 #' @param term_frequency_threshold The number of times a term must appear in the corpus or it will be removed. Defaults to 0. 5 is a reasonable choice, and higher numbers will speed computation by reducing vocabulary size.
+#' @param save_vocabulary_to_file Defaults to FALSE. If TRUE, the the vocabulary file you generate will be saved to disk so that the process can be restarted later.
 #' @return A sparse document term matrix object. This will likely still be a large file.
 #' @export
 generate_sparse_large_document_term_matrix <- function(file_list,
@@ -21,7 +22,8 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                                               parallel = FALSE,
                                               cores = 1,
                                               large_vocabulary = FALSE,
-                                              term_frequency_threshold = 0){
+                                              term_frequency_threshold = 0,
+                                              save_vocabulary_to_file = FALSE){
     # get the current working directory so we can change back to it.
     current_directory <- getwd()
     # change working directory file_directory
@@ -35,17 +37,23 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         stop("This function expects N > 1 intermediate files in file_list. Either split this file into smaller constituents or use the generate_document_term_matrix() function.")
     }
 
-    if(large_vocabulary & class(vocabulary) != "list"){
-        stop("If you are providing a vocabulary object and have specified large_vocabulary = TRUE, then you must first load the list object saved automatically in the Vocabulary.Rdata file in the file_directory, and provide that list object, called 'vocabulary', as the vocabulary argument.")
+    if(large_vocabulary & !is.null(vocabulary)){
+        if(class(vocabulary) != "list"){
+            stop("If you are providing a vocabulary object and have specified large_vocabulary = TRUE, then you must first load the list object saved automatically in the Vocabulary.Rdata file in the file_directory, and provide that list object, called 'vocabulary', as the vocabulary argument.")
+        }
     }
 
-    if(class(vocabulary) == "list"){
-        if(vocabulary$type == "standard"){
-            # all is well
-        }else if(vocabulary$type == "stem-lookup"){
-            # all is well
-        }else{
-            stop("You have provided a vocabulary in a list form. If you are providing your own vocabulary you must provide it as a character vector.")
+    VOCAB_PROVIDED = FALSE
+    if(!is.null(vocabulary)){
+        VOCAB_PROVIDED = TRUE
+        if(class(vocabulary) == "list"){
+            if(vocabulary$type == "standard"){
+                # all is well
+            }else if(vocabulary$type == "stem-lookup"){
+                # all is well
+            }else{
+                stop("You have provided a vocabulary in a list form. If you are providing your own vocabulary you must provide it as a character vector.")
+            }
         }
     }
 
@@ -98,9 +106,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
     aggregate_vocabulary_size <- length(vocabulary$vocabulary)
     cat("Aggregate vocabulary size:",aggregate_vocabulary_size,"\n")
 
-
-
-    if(!generate_sparse_term_matrix){
+    if(save_vocabulary_to_file & !VOCAB_PROVIDED){
         Aggregate_Vocabular_and_Counts <- vocab
         save(Aggregate_Vocabular_and_Counts,
              file = "Aggregate_Vocabular_and_Counts.Rdata")
@@ -176,5 +182,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
 
         print(str(sparse_document_term_matrix))
         return(sparse_document_term_matrix)
+    }else{
+        return(vocabulary)
     }
 }
