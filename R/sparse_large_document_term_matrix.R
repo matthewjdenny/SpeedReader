@@ -9,6 +9,7 @@
 #' @param parallel Defaults to FALSE, but can be set to TRUE to speed up processing provided the machine hte user is using has enough RAM. Parallelization is currently implemented using forking in the parallel package (mclapply) so it will only work on UNIX based platforms..
 #' @param cores Defaults to 1. Can be set to the number of cores on your computer.
 #' @param large_vocabulary Defaults to FALSE. If the user believes their vocabulary to be greater than ~500,000 unique terms, specifying true may result in a substantial reduction in compute time. If TRUE, then the program implements a stemming lookup table to efficiently index terms in the vocabulary. This option only works with parallel = TRUE and is meant to accomodate vocabulary sizes up to several hundred million unique terms.
+#' @param term_frequency_threshold The number of times a term must appear in the corpus or it will be removed. Defaults to 0. 5 is a reasonable choice, and higher numbers will speed computation by reducing vocabulary size.
 #' @return A sparse document term matrix object. This will likely still be a large file.
 #' @export
 generate_sparse_large_document_term_matrix <- function(file_list,
@@ -19,7 +20,8 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                                               generate_sparse_term_matrix = TRUE,
                                               parallel = FALSE,
                                               cores = 1,
-                                              large_vocabulary = FALSE){
+                                              large_vocabulary = FALSE,
+                                              term_frequency_threshold = 0){
     # get the current working directory so we can change back to it.
     current_directory <- getwd()
     # change working directory file_directory
@@ -85,6 +87,10 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         # now lets generate the lookup if we specified large_vocabulary = TRUE
         if(large_vocabulary){
             #call the funtion which generates the large vocabulary
+            vocabulary <- speed_set_vocabulary(
+                vocab = vocab,
+                term_frequency_threshold = term_frequency_threshold,
+                cores = cores)
         }
     }
 
