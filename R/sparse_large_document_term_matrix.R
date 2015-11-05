@@ -167,6 +167,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         #get the names right
         #colnames(sparse_document_term_matrix) <- aggregate_vocabulary
 
+        print(str(sparse_document_term_matrix))
         return(sparse_document_term_matrix)
     }
 }
