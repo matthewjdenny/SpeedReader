@@ -44,10 +44,20 @@ List Generate_Sparse_Document_Term_Matrix(
             }
         }
     }
+    //remove excess zeros
+    arma::vec ret_document_indices = arma::zeros(total_counter);
+    arma::vec ret_term_indices = arma::zeros(total_counter);
+    arma::vec ret_counts = arma::zeros(total_counter);
+    for(int t = 0; t < total_counter; ++t){
+        ret_document_indices[t] = document_indices[t];
+        ret_term_indices[t] = term_indices[t];
+        ret_counts[t] = counts[t];
+    }
+
     List to_return(3);
-    to_return[0] = document_indices;
-    to_return[1] = term_indices;
-    to_return[2] = counts;
+    to_return[0] = ret_document_indices;
+    to_return[1] = ret_term_indices;
+    to_return[2] = ret_counts;
     //return
     return to_return;
 
