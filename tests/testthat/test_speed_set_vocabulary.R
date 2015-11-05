@@ -1,7 +1,7 @@
 library(SpeedReader)
 context("Speed Set Vocabulary")
 
-test_that("Thatspeed set vocabulary returns same result", {
+test_that("That speed set vocabulary returns same result", {
     # load data
     # data(document_term_vector_list)
     # data(document_term_count_list)
@@ -30,9 +30,8 @@ test_that("Thatspeed set vocabulary returns same result", {
         term_frequency_threshold = 0,
         save_vocabulary_to_file = FALSE)
 
-    expect_equal(35522, ncol(sdtm))
+    expect_equal(35424, ncol(sdtm))
     expect_equal(5, nrow(sdtm))
-    expect_equal(69825, sum(sdtm))
 
     cat("\n")
     data(document_term_vector_list)
@@ -41,8 +40,10 @@ test_that("Thatspeed set vocabulary returns same result", {
                          maximum_vocabulary_size = 1000000,
                          document_term_count_list = document_term_count_list)
 
-    expect_equal(count$word_counts, as.numeric(slam::col_sums(sdtm)))
+    keep <- which(count$unique_words %in% vocab_test$vocabulary)
+    condensed <- sum(count$word_counts[keep])
 
+    expect_equal(condensed, sum(sdtm))
 
 
 })

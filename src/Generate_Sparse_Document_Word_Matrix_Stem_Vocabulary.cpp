@@ -20,6 +20,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
     arma::vec term_indices = arma::zeros(total_terms);
     arma::vec counts = arma::zeros(total_terms);
     int lookup_size = starts.n_elem;
+    //Rcpp::Rcout << "Lookup Size: " << lookup_size << std::endl;
     int total_counter = 0;
     for(int n = 0; n < number_of_documents; ++n){
         Rcpp::Rcout << "Current Document: " << n << std::endl;
@@ -31,6 +32,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                 // figure out which stem the current string has
                 std::string str = current[i];
                 std::string stem = str.substr(0,3);
+                //Rcpp::Rcout << "Stem: " << stem << std::endl;
                 int found_stem = 0;
                 int stem_counter = 0;
                 int stem_exists = 1;
@@ -41,9 +43,13 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         stem_exists = 0;
                         found_stem = 1;
                     }else{
-                        if(stem_lookup[stem_counter] == stem){
+                        std::string compare = stem_lookup[stem_counter];
+                        //Rcpp::Rcout << "Compare: " << compare << std::endl;
+                        if(compare == stem){
+                            //Rcpp::Rcout << "Found Stem: " << stem_counter << std::endl;
                             start = starts[stem_counter];
                             end = ends[stem_counter];
+                            found_stem = 1;
                         }
                         stem_counter +=1;
                     }
@@ -51,6 +57,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
 
                 // only try to add a term if its stem exists
                 if(stem_exists == 1){
+                    //Rcpp::Rcout << "Found Stem: " << total_counter << std::endl;
                     int already = 0;
                     int counter = start;
                     while(already == 0){
@@ -73,6 +80,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
         }
     }
     //remove excess zeros
+    Rcpp::Rcout << "Total Counter: " << total_counter << std::endl;
     arma::vec ret_document_indices = arma::zeros(total_counter);
     arma::vec ret_term_indices = arma::zeros(total_counter);
     arma::vec ret_counts = arma::zeros(total_counter);

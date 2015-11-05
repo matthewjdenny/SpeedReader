@@ -179,7 +179,10 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         setwd(current_directory)
         #get the names right
         #colnames(sparse_document_term_matrix) <- aggregate_vocabulary
-
+        if(large_vocabulary){
+            ordering <- order(slam::col_sums(sparse_document_term_matrix), decreasing = T)
+            sparse_document_term_matrix <- sparse_document_term_matrix[,ordering]
+        }
         print(str(sparse_document_term_matrix))
         return(sparse_document_term_matrix)
     }else{
