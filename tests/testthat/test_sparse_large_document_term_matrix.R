@@ -1,7 +1,7 @@
 library(SpeedReader)
 context("Generate Sparse Document Term Matrix")
 
-test_that("That document term matricies have the right dimensions and sum", {
+test_that("That the sparse document term matricies have the right dimensions and sum", {
     # load data
     # data(document_term_vector_list)
     # data(document_term_count_list)
@@ -27,7 +27,7 @@ test_that("That document term matricies have the right dimensions and sum", {
     sdtm <- generate_sparse_large_document_term_matrix(
         file_list = files,
         file_directory = NULL,
-        aggregate_vocabulary = NULL,
+        vocabulary = NULL,
         maximum_vocabulary_size = -1,
         using_document_term_counts = TRUE)
 

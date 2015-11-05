@@ -9,12 +9,12 @@ test_that("That document term matricies have the right dimensions and sum", {
                          maximum_vocabulary_size = 1000000,
                          document_term_count_list = document_term_count_list)
 
-    aggregate_vocabulary = count$unique_words
+    vocabulary = count$unique_words
 
     files <- get_file_paths(source = "test sparse doc-term")
 
     test <- sparse_doc_term_parallel(file = files[1],
-                                     aggregate_vocabulary = aggregate_vocabulary)
+                                     vocabulary = vocabulary)
 
 
 })
