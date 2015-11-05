@@ -81,17 +81,18 @@ generate_sparse_large_document_term_matrix <- function(file_list,
         }
         vocabulary <- list(vocabulary = vocab$unique_words,
                            type = "standard")
+
+        # now lets generate the lookup if we specified large_vocabulary = TRUE
+        if(large_vocabulary){
+            #call the funtion which generates the large vocabulary
+        }
     }
 
     # now get the aggregate vocabulary size
     aggregate_vocabulary_size <- length(vocabulary$vocabulary)
     cat("Aggregate vocabulary size:",aggregate_vocabulary_size,"\n")
 
-    # now lets generate the lookup if we specified large_vocabulary = TRUE
-    if(large_vocabulary){
-        #call the funtion which generates the large vocabulary
-        vocabulary = NULL
-    }
+
 
     if(!generate_sparse_term_matrix){
         Aggregate_Vocabular_and_Counts <- vocab
