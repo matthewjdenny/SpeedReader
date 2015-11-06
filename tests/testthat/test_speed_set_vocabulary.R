@@ -32,6 +32,8 @@ test_that("That speed set vocabulary returns same result", {
 
     expect_equal(35424, ncol(sdtm))
     expect_equal(5, nrow(sdtm))
+    cs <- vocab_test$vocabulary[which(slam::col_sums(sdtm) == 0)]
+    cat("Missing Terms:",cs,"\n\n\n\n")
 
     cat("\n")
     data(document_term_vector_list)
@@ -41,6 +43,9 @@ test_that("That speed set vocabulary returns same result", {
                          document_term_count_list = document_term_count_list)
 
     keep <- which(count$unique_words %in% vocab_test$vocabulary)
+    cat(length(keep),"\n")
+    expect_equal(length(keep), 35424)
+
     condensed <- sum(count$word_counts[keep])
     second_sum <- sum(sdtm)
     cat(condensed, "\n")
