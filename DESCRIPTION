@@ -15,7 +15,8 @@ Imports:
 	slam,
 	readr,
 	stringr,
-	parallel
+	parallel,
+	inline
 Depends: 
         R (>= 3.2.1)
 LinkingTo: 

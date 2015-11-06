@@ -46,16 +46,16 @@ test_that("That speed set vocabulary returns same result", {
     expect_equal(condensed, sum(sdtm))
 
 
-    sdtm2 <- generate_sparse_large_document_term_matrix(
-        file_list = files,
-        file_directory = NULL,
-        vocabulary = NULL,
-        maximum_vocabulary_size = -1,
-        using_document_term_counts = TRUE,
-        generate_sparse_term_matrix = TRUE,
-        large_vocabulary = TRUE,
-        term_frequency_threshold = 0,
-        save_vocabulary_to_file = FALSE,
-        parallel = TRUE,
-        cores = 1)
+#     sdtm2 <- generate_sparse_large_document_term_matrix(
+#         file_list = files,
+#         file_directory = NULL,
+#         vocabulary = NULL,
+#         maximum_vocabulary_size = -1,
+#         using_document_term_counts = TRUE,
+#         generate_sparse_term_matrix = TRUE,
+#         large_vocabulary = TRUE,
+#         term_frequency_threshold = 0,
+#         save_vocabulary_to_file = FALSE,
+#         parallel = TRUE,
+#         cores = 1)
 })

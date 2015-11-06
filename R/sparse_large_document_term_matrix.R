@@ -162,6 +162,8 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                     sparse_doc_term_parallel,
                     vocabulary = vocabulary,
                     mc.cores = cores)
+                # kill off any waiting cores
+                kill_zombies()
                 cat("Cluster apply complete ... \n")
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")
