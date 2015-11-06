@@ -142,6 +142,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 }
             }
         }else{
+            requireNamespace("slam")
             # if we are using parallel
             chunks <- ceiling(num_files/cores)
             counter <- 1
@@ -165,11 +166,14 @@ generate_sparse_large_document_term_matrix <- function(file_list,
                 for(k in 1:length(result)){
                     cat("Adding current block",k,"of",length(result),"to sparse matrix ... \n")
                     if(counter == 1){
-                        sparse_document_term_matrix <- result[[k]]
+                        temp <- result[[k]]
+                        sparse_document_term_matrix <- temp
                     }else{
+                        temp <- result[[k]]
                         sparse_document_term_matrix <- rbind(
                             sparse_document_term_matrix,
-                            result[[k]])
+                            temp)
+                        cat(str(sparse_document_term_matrix),"\n")
                     }
                     counter <- counter + 1
                 }
