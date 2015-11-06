@@ -44,18 +44,24 @@ test_that("That speed set vocabulary returns same result", {
     condensed <- sum(count$word_counts[keep])
 
     expect_equal(condensed, sum(sdtm))
+})
 
+test_that("That speed set vocabulary sdm works", {
+    # load data
+    # data(document_term_vector_list)
+    # data(document_term_count_list)
+    files <- get_file_paths(source = "test sparse doc-term")
 
-    sdtm2 <- generate_sparse_large_document_term_matrix(
-        file_list = files,
-        file_directory = NULL,
-        vocabulary = NULL,
-        maximum_vocabulary_size = -1,
-        using_document_term_counts = TRUE,
-        generate_sparse_term_matrix = TRUE,
-        large_vocabulary = TRUE,
-        term_frequency_threshold = 0,
-        save_vocabulary_to_file = FALSE,
-        parallel = TRUE,
-        cores = 1)
+#     sdtm2 <- generate_sparse_large_document_term_matrix(
+#         file_list = files,
+#         file_directory = NULL,
+#         vocabulary = NULL,
+#         maximum_vocabulary_size = -1,
+#         using_document_term_counts = TRUE,
+#         generate_sparse_term_matrix = TRUE,
+#         large_vocabulary = TRUE,
+#         term_frequency_threshold = 0,
+#         save_vocabulary_to_file = FALSE,
+#         parallel = TRUE,
+#         cores = 1)
 })
