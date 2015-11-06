@@ -33,7 +33,10 @@ test_that("That speed set vocabulary returns same result", {
     expect_equal(35424, ncol(sdtm))
     expect_equal(5, nrow(sdtm))
     cs <- vocab_test$vocabulary[which(slam::col_sums(sdtm) == 0)]
-    cat("Missing Terms:",cs,"\n\n\n\n")
+    cat("Missing Terms:\n")
+    for(i in 1:length(cs)){
+        cat(cs[i],"\n")
+    }
 
     cat("\n")
     data(document_term_vector_list)
