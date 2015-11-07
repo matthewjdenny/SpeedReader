@@ -76,6 +76,8 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         }
 
                     }
+                }else{
+                    Rcpp::Rcout << "Stem did not exist: " << stem << std::endl;
                 }
             }
         }
