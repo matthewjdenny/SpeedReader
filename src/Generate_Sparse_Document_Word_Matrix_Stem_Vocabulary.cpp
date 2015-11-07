@@ -13,14 +13,15 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
         int total_terms,
         std::vector<std::string> stem_lookup,
         arma::vec starts,
-        arma::vec ends
+        arma::vec ends,
+        int lookup_size
 ){
 
     arma::vec document_indices = arma::zeros(total_terms);
     arma::vec term_indices = arma::zeros(total_terms);
     arma::vec counts = arma::zeros(total_terms);
-    int lookup_size = starts.n_elem;
-    //Rcpp::Rcout << "Lookup Size: " << lookup_size << std::endl;
+    //int lookup_size = starts.n_elem;
+    Rcpp::Rcout << "Lookup Size: " << lookup_size << std::endl;
     int total_counter = 0;
     for(int n = 0; n < number_of_documents; ++n){
         Rcpp::Rcout << "Current Document: " << n << std::endl;

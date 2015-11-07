@@ -77,7 +77,8 @@ generate_document_term_matrix <- function(document_term_vector_list,
                 total_terms,
                 stem_lookup = vocabulary$stems,
                 starts = (vocabulary$stem_first_use -1),
-                ends = vocabulary$stem_last_use)
+                ends = vocabulary$stem_last_use,
+                lookup_size = length(vocabulary$stems))
             #cat(str(sparse_list),"\n")
             cat("Completed Generating Sparse Doc-Term Matrix...\n")
 
