@@ -39,25 +39,25 @@ test_that("That speed set vocabulary returns same result", {
 
     expect_equal(35424, ncol(sdtm))
     expect_equal(5, nrow(sdtm))
-    nums <- which(slam::col_sums(sdtm) == 0)
-    cs <- sdtm$dimnames[[2]][nums]
-    cat("Missing Terms:\n")
-    for(i in 1:length(cs)){
-        cat(cs[i]," --- ", nums[i], " --- ", count$word_counts[which(count$unique_words == cs[i])], "\n")
-    }
-
-    cat("\n")
-
-
-    keep <- which(count$unique_words %in% vocab_test$vocabulary)
-    cat(length(keep),"\n")
-    expect_equal(length(keep), 35424)
-
-    condensed <- sum(count$word_counts[keep])
-    second_sum <- sum(sdtm)
-    cat(condensed, "\n")
-    cat(second_sum,"\n")
-    expect_equal(condensed, second_sum)
+#     nums <- which(slam::col_sums(sdtm) == 0)
+#     cs <- sdtm$dimnames[[2]][nums]
+#     cat("Missing Terms:\n")
+#     for(i in 1:length(cs)){
+#         cat(cs[i]," --- ", nums[i], " --- ", count$word_counts[which(count$unique_words == cs[i])], "\n")
+#     }
+#
+#     cat("\n")
+#
+#
+#     keep <- which(count$unique_words %in% vocab_test$vocabulary)
+#     cat(length(keep),"\n")
+#     expect_equal(length(keep), 35424)
+#
+#     condensed <- sum(count$word_counts[keep])
+#     second_sum <- sum(sdtm)
+#     cat(condensed, "\n")
+#     cat(second_sum,"\n")
+#     expect_equal(condensed, second_sum)
 })
 
 test_that("That speed set in parallel works", {
