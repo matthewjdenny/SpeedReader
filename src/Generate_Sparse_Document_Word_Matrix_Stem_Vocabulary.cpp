@@ -65,7 +65,9 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         if(counter == end){
                             already = 1;
                         }else{
-                            if(unique_words[counter] == current[i]){
+                            std::string comp1 = unique_words[counter];
+                            std::string comp2 = current[i];
+                            if(comp1 == comp2){
                                 document_indices[total_counter] = n+1;
                                 term_indices[total_counter] = counter+1;
                                 counts[total_counter] = current_counts[i];
