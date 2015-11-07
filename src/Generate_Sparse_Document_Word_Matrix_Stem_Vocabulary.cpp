@@ -21,6 +21,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
     arma::vec term_indices = arma::zeros(total_terms);
     arma::vec counts = arma::zeros(total_terms);
     //int lookup_size = starts.n_elem;
+    int stems_found = 0;
     Rcpp::Rcout << "Lookup Size: " << lookup_size << std::endl;
     int total_counter = 0;
     for(int n = 0; n < number_of_documents; ++n){
@@ -45,12 +46,11 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         found_stem = 1;
                     }else{
                         std::string compare = stem_lookup[stem_counter];
-                        //Rcpp::Rcout << "Compare: " << compare << std::endl;
                         if(compare == stem){
-                            //Rcpp::Rcout << "Found Stem: " << stem_counter << std::endl;
                             start = starts[stem_counter];
                             end = ends[stem_counter];
                             found_stem = 1;
+                            stems_found += 1;
                         }
                         stem_counter +=1;
                     }
@@ -60,32 +60,29 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                 if(stem_exists == 1){
                     //Rcpp::Rcout << "Found Stem: " << total_counter << std::endl;
                     int already = 0;
-                    int counter = start;
                     while(already == 0){
-                        if(counter == end){
+                        if(start == end){
                             already = 1;
                         }else{
-                            std::string comp1 = unique_words[counter];
+                            std::string comp1 = unique_words[start];
                             std::string comp2 = current[i];
                             if(comp1 == comp2){
                                 document_indices[total_counter] = n+1;
-                                term_indices[total_counter] = counter+1;
+                                term_indices[total_counter] = start+1;
                                 counts[total_counter] = current_counts[i];
                                 total_counter +=1;
                                 already = 1;
                             }
-                            counter +=1;
+                            start +=1;
                         }
-
                     }
-                }else{
-                    Rcpp::Rcout << "Stem did not exist: " << stem << std::endl;
                 }
             }
         }
     }
     //remove excess zeros
     Rcpp::Rcout << "Total Counter: " << total_counter << std::endl;
+    Rcpp::Rcout << "Stems Found: " << stems_found<< std::endl;
     arma::vec ret_document_indices = arma::zeros(total_counter);
     arma::vec ret_term_indices = arma::zeros(total_counter);
     arma::vec ret_counts = arma::zeros(total_counter);
