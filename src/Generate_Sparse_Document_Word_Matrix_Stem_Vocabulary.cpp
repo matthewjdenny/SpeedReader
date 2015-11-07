@@ -1,4 +1,5 @@
 #include <RcppArmadillo.h>
+#include <string>
 //[[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
 
@@ -46,7 +47,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         found_stem = 1;
                     }else{
                         std::string compare = stem_lookup[stem_counter];
-                        if(compare == stem){
+                        if(compare.compare(stem) == 0){
                             start = starts[stem_counter];
                             end = ends[stem_counter];
                             found_stem = 1;
@@ -66,7 +67,7 @@ List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(
                         }else{
                             std::string comp1 = unique_words[start];
                             std::string comp2 = current[i];
-                            if(comp1 == comp2){
+                            if(comp1.compare(comp2) == 0){
                                 document_indices[total_counter] = n+1;
                                 term_indices[total_counter] = start+1;
                                 counts[total_counter] = current_counts[i];
