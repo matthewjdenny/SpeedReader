@@ -56,10 +56,10 @@ multi_plot <- function(data,
         par(las=2,mar=c(6,5,.5,.5),cex.lab=.5,xpd=TRUE)
 
         if(connect_with_lines){
-            plot(data[,plot_columns[1]],
+            matplot(data[,plot_columns],
                  ylim=c(min(data[,plot_columns],0),max(data[,plot_columns],1)),
                  lwd=1,
-                 col = "white",
+                 col = "grey80",
                  type="l",
                  xaxt= "n",
                  xlab=xlabel,
@@ -67,7 +67,7 @@ multi_plot <- function(data,
                  main = "",
                  cex.axis = 0.5)
         }else{
-            plot(data[,plot_columns[1]],
+            matplot(data[,plot_columns],
                  ylim=c(min(data[,plot_columns],0),max(data[,plot_columns],1)),
                  lwd=-1,
                  col = "white",
@@ -95,7 +95,7 @@ multi_plot <- function(data,
             points(data[,plot_columns[i]] ~ jitter(1:nrow(data),0.3),
                    pch=14+i,
                    col=plot_colors[i])
-                   #bg=plot_colors[i])
+            #bg=plot_colors[i])
             col_names <- c(col_names,colnames(data)[plot_columns[i]])
             col_colors <- c(col_colors,plot_colors[i])
             col_shapes <- c(col_shapes,14+i)
@@ -113,10 +113,10 @@ multi_plot <- function(data,
         par(las=2,mar=c(6,5,.5,.5),cex.lab=.5,xpd=TRUE)
 
         if(connect_with_lines){
-            plot(data[,plot_columns[1]],
+            matplot(data[,plot_columns],
                  ylim=c(min(data[,plot_columns],0),max(data[,plot_columns],1)),
                  lwd=1,
-                 col = "white",
+                 col = "grey80",
                  type="l",
                  xaxt= "n",
                  xlab=xlabel,
@@ -124,7 +124,7 @@ multi_plot <- function(data,
                  main = "",
                  cex.axis = 0.5)
         }else{
-            plot(data[,plot_columns[1]],
+            matplot(data[,plot_columns],
                  ylim=c(min(data[,plot_columns],0),max(data[,plot_columns],1)),
                  lwd=-1,
                  col = "white",
@@ -146,7 +146,7 @@ multi_plot <- function(data,
             points(data[,plot_columns[i]],
                    pch=14+i,
                    col=plot_colors[i])
-                   #bg=plot_colors[i])
+            #bg=plot_colors[i])
             col_names <- c(col_names,colnames(data)[plot_columns[i]])
             col_colors <- c(col_colors,plot_colors[i])
             col_shapes <- c(col_shapes,14+i)
