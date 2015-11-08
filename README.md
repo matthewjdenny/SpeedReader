@@ -42,5 +42,16 @@ Now we can install from Github using the following line:
 
 I have  had success installing with R 3.2.0+ installed but please email me if you hit any issues.
 
+### Functions
+
+The SpeedReader package currently provides the following functions to aid in the preprocessing of large text corpora.
+
+* `generate_document_term_vectors()` -- A function to ingest raw text data, either as .txt files, as R objects with one string per document, as R objects with a term vector per document, or as csv/tsv files with a column of unique words and (optionally) their counts. If providing raw text, cleaning and tokenization is currently provided using the included `clean_document_text()` function which makes use of regualr expressions, but cleaning and NER will eventually be provided using Standford's CoreNLP libraries.
+* `generate_blocked_document_term_vectors()` -- A function to automate generating and saving to disk blocks of documents for corpora that are too large to fit in memory. Automatically formats data for downstream use in large scale text manipulation functions.
+* `count_words()` -- A function to count words in a provided document term vector list. Has the option to continue adding to a previously generated vocabulary/count object.
+* `generate_document_term_matrix()` -- A function to generate a document term matrix from a term-vetor list object returned by `generate_document_term_vectors()`. Provides lots of options and will automatically generate a vocabulary if none is provided. Provides and option to return a sparse document-term matrix.
+* `generate_sparse_large_document_term_matrix()` -- The main function provided by the package. Will generate very large (sparse) document term matrices from very large vocabularies, in parallel, in a memory efficient manner. 
+* `sparse_to_dense_matrix()` -- A helpful function for converting sparse matrix objects to dense matrix objects. Use with caution on large sparse matrices!
+
 
 
