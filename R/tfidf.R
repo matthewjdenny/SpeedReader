@@ -15,6 +15,11 @@ tfidf <- function(document_term_matrix,
                   display_rankings = TRUE,
                   top_words_to_display = 40){
 
+    sparse_matrix <- FALSE
+    if(class(document_term_matrix) == "simple_triplet_matrix"){
+        sparse_matrix <- TRUE
+    }
+
   if(min(document_term_matrix) < 0){
     stop(paste("The minimum value for a term frequency matrix must be zero! The minimum value of the document term matrix you supplied was:",min(document_term_matrix)))
   }
@@ -27,29 +32,46 @@ tfidf <- function(document_term_matrix,
     }
   }
 
-  if(only_calculate_corpus_level_statistics){
+  if(only_calculate_corpus_level_statistics) {
       return_list = list()
-      return_list$document_frequency = calculate_document_frequency(document_term_matrix)
+      if(sparse_matrix){
+          document_frequency <- rep(0, ncol(document_term_matrix))
+          # loop over sparse matrix entries
+          for(i in 1:length(document_term_matrix$i)) {
+              document_frequency[document_term_matrix$i[i]] <- document_frequency[document_term_matrix$i[i]] + 1
+          }
+      }else{
+          return_list$document_frequency = calculate_document_frequency(document_term_matrix)
+      }
       return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(return_list$document_frequency))
+      if(sparse_matrix){
+          return_list$document_word_counts = slam::row_sums(document_term_matrix)
+          return_list$corpus_term_frequency = slam::col_sums(document_term_matrix)
+      }else{
+          return_list$document_word_counts = apply(document_term_matrix,1,sum)
+          return_list$corpus_term_frequency = apply(document_term_matrix,2,sum)
+      }
 
-      return_list$document_word_counts = apply(document_term_matrix,1,sum)
-      return_list$corpus_term_frequency = apply(document_term_matrix,2,sum)
       return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
       return_list$vocabulary = vocabulary
 
   }else{
-      to_return <- Calculate_TFIDF(document_term_matrix)
+      if(sparse_matrix){
+          stop("Full term-level TF-IDF not implemented for sparse matrices. This would likely break your computer. Set only_calculate_corpus_level_statistics = TRUE to proceed.")
+      }else{
+          to_return <- Calculate_TFIDF(document_term_matrix)
 
-      return_list = list()
+          return_list = list()
 
-      return_list$document_frequency = as.numeric(to_return[[3]])
-      return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(to_return[[3]]))
-      return_list$document_word_counts = as.numeric(to_return[[4]])
-      return_list$corpus_term_frequency = as.numeric(to_return[[5]])/sum(document_term_matrix)
-      return_list$document_level_term_frequency = to_return[[2]]
-      return_list$tfidf_dw = to_return[[1]]
-      return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
-      return_list$vocabulary = vocabulary
+          return_list$document_frequency = as.numeric(to_return[[3]])
+          return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(to_return[[3]]))
+          return_list$document_word_counts = as.numeric(to_return[[4]])
+          return_list$corpus_term_frequency = as.numeric(to_return[[5]])/sum(document_term_matrix)
+          return_list$document_level_term_frequency = to_return[[2]]
+          return_list$tfidf_dw = to_return[[1]]
+          return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
+          return_list$vocabulary = vocabulary
+      }
   }
 
 
