@@ -2,7 +2,7 @@
 % Please edit documentation in R/multi_plot.R
 \name{multi_plot}
 \alias{multi_plot}
-\title{An implementation of matplot with nice coloring and autmatic legend generation}
+\title{An implementation of matplot with nice coloring and automatic legend generation}
 \usage{
 multi_plot(data, plot_columns = NULL, legend_location = "bottomleft",
   xlabel = "", ylabel = "", category = "", output_pdf = FALSE,

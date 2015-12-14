@@ -26,7 +26,7 @@ combine_document_term_matrices <- function(
     }
 
     if(length(document_term_matrix_list) < 2){
-        stop("You must provide atleast two document term matrices to combine.")
+        stop("You must provide at least two document term matrices to combine.")
     }
 
     # get the unique words

@@ -1,4 +1,4 @@
-#' An implementation of matplot with nice coloring and autmatic legend generation
+#' An implementation of matplot with nice coloring and automatic legend generation
 #'
 #' @param data A data.frame or matrix we wish to plot.
 #' @param plot_columns A numeric vector of column indexes we wish to plot. Defaults to NULL in which case all columns are plotted.
