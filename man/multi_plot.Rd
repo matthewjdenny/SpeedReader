@@ -40,6 +40,6 @@ multi_plot(data, plot_columns = NULL, legend_location = "bottomleft",
 A dense document term matrix object with the vocabulary as column names.
 }
 \description{
-An implementation of matplot with nice coloring and autmatic legend generation
+An implementation of matplot with nice coloring and automatic legend generation
 }
 
