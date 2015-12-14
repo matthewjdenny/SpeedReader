@@ -39,6 +39,7 @@ tfidf <- function(document_term_matrix,
           # loop over sparse matrix entries
           for(i in 1:length(document_term_matrix$i)) {
               document_frequency[document_term_matrix$i[i]] <- document_frequency[document_term_matrix$i[i]] + 1
+              return_list$document_frequency <- document_frequency
           }
       }else{
           return_list$document_frequency = calculate_document_frequency(document_term_matrix)
