@@ -5,23 +5,26 @@ Version: 0.2
 Date: 2015-10-09
 Author: Matthew J. Denny <mdenny@psu.edu>
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
-Description: A suite of functions for processing large scale text corpora into formats that are useful for analysis, and for performing some analyses at scale via efficient implementations.
+Description: A suite of functions for processing large scale text corpora into
+    formats that are useful for analysis, and for performing some analyses at scale
+    via efficient implementations.
 URL: https://github.com/matthewjdenny/SpeedReader
 License: GPL-3
-Imports: 
-	Rcpp,
-        ggplot2,
-        methods,
-	slam,
-	readr,
-	stringr,
-	parallel,
-	inline
-Depends: 
-        R (>= 3.2.1)
-LinkingTo: 
-	BH,
-	Rcpp, 
-	RcppArmadillo
+Imports:
+    Rcpp,
+    ggplot2,
+    methods,
+    slam,
+    readr,
+    stringr,
+    parallel,
+    inline
+Depends:
+    R (>= 3.2.1)
+LinkingTo: BH,
+    Rcpp,
+    RcppArmadillo
 LazyData: TRUE
-Suggests: testthat
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
