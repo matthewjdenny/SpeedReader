@@ -14,6 +14,7 @@ arma::vec Sparse_Document_Frequencies(
     for(int i = 0; i < length_sparse_counts; ++i){
        if(i == print_sequence[print_sequence_counter]){
            Rcpp::Rcout << print_sequence_counter+1 << "/" << print_sequence_length << " complete..." << std::endl;
+           print_sequence_counter +=1;
        }
        int index = sparse_counts[i] -1;
        document_frequencies[index] += 1;
