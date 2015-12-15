@@ -86,7 +86,7 @@ tfidf <- function(document_term_matrix,
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
                                term_freq = return_list$corpus_term_frequency[ranking],
-                               idf = creturn_list$inverse_document_frequency[ranking],
+                               idf = return_list$inverse_document_frequency[ranking],
                                stringsAsFactors = F)
 
   if(display_rankings){
