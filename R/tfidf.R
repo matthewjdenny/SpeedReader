@@ -45,9 +45,6 @@ tfidf <- function(document_term_matrix,
               printseq,
               length(printseq))
           return_list$document_frequency <- as.numeric(document_frequency)
-          cat("Document frequency vector characteristics...\n")
-          print(str(return_list$document_frequency))
-
       }else{
           return_list$document_frequency = calculate_document_frequency(document_term_matrix)
       }
@@ -55,16 +52,12 @@ tfidf <- function(document_term_matrix,
       if(sparse_matrix){
           return_list$document_word_counts = as.numeric(slam::row_sums(document_term_matrix))
           return_list$corpus_term_frequency = as.numeric(slam::col_sums(document_term_matrix))
-          print(str(return_list$document_word_counts))
-          print(str(return_list$corpus_term_frequency))
       }else{
           return_list$document_word_counts = apply(document_term_matrix,1,sum)
           return_list$corpus_term_frequency = apply(document_term_matrix,2,sum)
       }
 
       return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
-      cat("Charactersitics of TF-IDF vector...\n")
-      print(str(return_list$tfidf))
       return_list$vocabulary = vocabulary
 
   }else{
@@ -89,12 +82,11 @@ tfidf <- function(document_term_matrix,
 
   #now generate a rank ordered dataset
   ranking <- order(return_list$tfidf, decreasing = T)
-  print(length(ranking))
   return_list$tfidf_rankings <- data.frame(tfidf = return_list$tfidf[ranking],
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
                                term_freq = return_list$corpus_term_frequency[ranking],
-                               idf = return_list$inverse_document_frequency[ranking],
+                               idf = creturn_list$inverse_document_frequency[ranking],
                                stringsAsFactors = F)
 
   if(display_rankings){
