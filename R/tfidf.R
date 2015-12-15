@@ -39,8 +39,8 @@ tfidf <- function(document_term_matrix,
           printseq <- round(seq(1,length(document_term_matrix$i), length.out = 101)[2:101],0)
           # fast C++ implementation
           document_frequency <- Sparse_Document_Frequencies(
-              length(document_term_matrix$i),
-              document_term_matrix$i,
+              length(document_term_matrix$j),
+              document_term_matrix$j,
               document_frequency,
               printseq,
               length(printseq))
@@ -64,7 +64,7 @@ tfidf <- function(document_term_matrix,
 
       return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
       cat("Charactersitics of TF-IDF vector...\n")
-      print(str(tfidf))
+      print(str(return_list$tfidf))
       return_list$vocabulary = vocabulary
 
   }else{
@@ -94,7 +94,8 @@ tfidf <- function(document_term_matrix,
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
                                term_freq = return_list$corpus_term_frequency[ranking],
-                               idf = return_list$inverse_document_frequency[ranking])
+                               idf = return_list$inverse_document_frequency[ranking],
+                               stringsAsFactors = F)
 
   if(display_rankings){
       print("Top words as ranked by corpus-level TF-IDF.")
