@@ -38,12 +38,13 @@ tfidf <- function(document_term_matrix,
           document_frequency <- rep(0, ncol(document_term_matrix))
           printseq <- round(seq(1,length(document_term_matrix$i), length.out = 101)[2:101],0)
           # fast C++ implementation
-          return_list$document_frequency <- Sparse_Document_Frequencies(
+          document_frequency <- Sparse_Document_Frequencies(
               length(document_term_matrix$i),
               document_term_matrix$i,
               document_frequency,
               printseq,
               length(printseq))
+          return_list$document_frequency <- as.numeric(document_frequency)
           cat("Document frequency vector characteristics...\n")
           print(str(return_list$document_frequency))
 
@@ -52,14 +53,18 @@ tfidf <- function(document_term_matrix,
       }
       return_list$inverse_document_frequency = log(nrow(document_term_matrix)/as.numeric(return_list$document_frequency))
       if(sparse_matrix){
-          return_list$document_word_counts = slam::row_sums(document_term_matrix)
-          return_list$corpus_term_frequency = slam::col_sums(document_term_matrix)
+          return_list$document_word_counts = as.numeric(slam::row_sums(document_term_matrix))
+          return_list$corpus_term_frequency = as.numeric(slam::col_sums(document_term_matrix))
+          print(str(return_list$document_word_counts))
+          print(str(return_list$corpus_term_frequency))
       }else{
           return_list$document_word_counts = apply(document_term_matrix,1,sum)
           return_list$corpus_term_frequency = apply(document_term_matrix,2,sum)
       }
 
       return_list$tfidf = return_list$corpus_term_frequency*return_list$inverse_document_frequency
+      cat("Charactersitics of TF-IDF vector...\n")
+      print(str(tfidf))
       return_list$vocabulary = vocabulary
 
   }else{
