@@ -44,17 +44,8 @@ tfidf <- function(document_term_matrix,
               document_frequency,
               printseq,
               length(printseq))
-          # loop over sparse matrix entries
-#
-#           printcounter <- 1
-#           for(i in 1:length(document_term_matrix$i)) {
-#               if(i == printseq[printcounter]){
-#                   cat(10*printcounter,"% complete...\n", sep = "")
-#                   printcounter <- printcounter +1
-#               }
-#               document_frequency[document_term_matrix$i[i]] <- document_frequency[document_term_matrix$i[i]] + 1
-#               return_list$document_frequency <- document_frequency
-#           }
+          cat("Document frequency vector characteristics...\n")
+          print(str(return_list$document_frequency))
 
       }else{
           return_list$document_frequency = calculate_document_frequency(document_term_matrix)
@@ -93,6 +84,7 @@ tfidf <- function(document_term_matrix,
 
   #now generate a rank ordered dataset
   ranking <- order(return_list$tfidf, decreasing = T)
+  print(length(ranking))
   return_list$tfidf_rankings <- data.frame(tfidf = return_list$tfidf[ranking],
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
