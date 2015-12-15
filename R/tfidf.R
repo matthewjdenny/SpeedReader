@@ -92,7 +92,7 @@ tfidf <- function(document_term_matrix,
 
 
   #now generate a rank ordered dataset
-  ranking <- order(return_list$tfidf_c, decreasing = T)
+  ranking <- order(return_list$tfidf, decreasing = T)
   return_list$tfidf_rankings <- data.frame(tfidf = return_list$tfidf[ranking],
                                term = vocabulary[ranking],
                                doc_freq = return_list$document_frequency[ranking],
