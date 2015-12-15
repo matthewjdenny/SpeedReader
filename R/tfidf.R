@@ -36,17 +36,26 @@ tfidf <- function(document_term_matrix,
       return_list = list()
       if(sparse_matrix){
           document_frequency <- rep(0, ncol(document_term_matrix))
+          printseq <- round(seq(1,length(document_term_matrix$i), length.out = 101)[2:101],0)
+          # fast C++ implementation
+          return_list$document_frequency <- Sparse_Document_Frequencies(
+              length(document_term_matrix$i),
+              document_term_matrix$i,
+              document_frequency,
+              printseq,
+              length(printseq))
           # loop over sparse matrix entries
-          printseq <- round(seq(1,length(document_term_matrix$i), length.out = 11)[2:11],0)
-          printcounter <- 1
-          for(i in 1:length(document_term_matrix$i)) {
-              if(i == printseq[printcounter]){
-                  cat(10*printcounter,"% complete...\n", sep = "")
-                  printcounter <- printcounter +1
-              }
-              document_frequency[document_term_matrix$i[i]] <- document_frequency[document_term_matrix$i[i]] + 1
-              return_list$document_frequency <- document_frequency
-          }
+#
+#           printcounter <- 1
+#           for(i in 1:length(document_term_matrix$i)) {
+#               if(i == printseq[printcounter]){
+#                   cat(10*printcounter,"% complete...\n", sep = "")
+#                   printcounter <- printcounter +1
+#               }
+#               document_frequency[document_term_matrix$i[i]] <- document_frequency[document_term_matrix$i[i]] + 1
+#               return_list$document_frequency <- document_frequency
+#           }
+
       }else{
           return_list$document_frequency = calculate_document_frequency(document_term_matrix)
       }

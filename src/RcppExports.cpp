@@ -152,3 +152,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Sparse_Document_Frequencies
+arma::vec Sparse_Document_Frequencies(int length_sparse_counts, arma::vec sparse_counts, arma::vec document_frequencies, arma::vec print_sequence, int print_sequence_length);
+RcppExport SEXP SpeedReader_Sparse_Document_Frequencies(SEXP length_sparse_countsSEXP, SEXP sparse_countsSEXP, SEXP document_frequenciesSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type length_sparse_counts(length_sparse_countsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type sparse_counts(sparse_countsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type document_frequencies(document_frequenciesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type print_sequence(print_sequenceSEXP);
+    Rcpp::traits::input_parameter< int >::type print_sequence_length(print_sequence_lengthSEXP);
+    __result = Rcpp::wrap(Sparse_Document_Frequencies(length_sparse_counts, sparse_counts, document_frequencies, print_sequence, print_sequence_length));
+    return __result;
+END_RCPP
+}

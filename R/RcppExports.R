@@ -41,3 +41,7 @@ Mutual_Information <- function(joint_dist) {
     .Call('SpeedReader_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist)
 }
 
+Sparse_Document_Frequencies <- function(length_sparse_counts, sparse_counts, document_frequencies, print_sequence, print_sequence_length) {
+    .Call('SpeedReader_Sparse_Document_Frequencies', PACKAGE = 'SpeedReader', length_sparse_counts, sparse_counts, document_frequencies, print_sequence, print_sequence_length)
+}
+
