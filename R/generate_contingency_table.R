@@ -5,21 +5,29 @@
 #' @param vocabulary A character vector corresponding to the columns of the document word matrix. If NULL, the column names of doc_word_matrix will be used. Defaults to NULL.
 #' @param variables_to_use Defaults to NULL in which case all columns of the metadata data frame will be used. Otherwise can be specified as a vector of column indexes or column names.
 #' @param threshold Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.
+#' @param force_dense Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 10,000,000 entries.
 #' @return A contingency table.
 #' @export
 generate_contingency_table  <- function(metadata,
                                         document_term_matrix,
                                         vocabulary = NULL,
                                         variables_to_use = NULL,
-                                        threshold = 0){
+                                        threshold = 0,
+                                        force_dense = FALSE){
 
     # get dimensions
     #Num_Docs = nrow(document_term_matrix)
-    Vocab_Size = ncol(document_term_matrix)
+
 
     is_sparse_matrix <- FALSE
     if(class(document_term_matrix) == "simple_triplet_matrix"){
         is_sparse_matrix <- TRUE
+    }
+
+    if(is_sparse_matrix){
+        Vocab_Size = document_term_matrix$ncol
+    }else{
+        Vocab_Size = ncol(document_term_matrix)
     }
 
     # if we did not get any variable names or indices passed in, then select all of them
@@ -30,9 +38,13 @@ generate_contingency_table  <- function(metadata,
     }
 
     if(is.null(vocabulary)){
-        cat("You did not supply a vocabulry, so the column names of document_term_matrix will be used.\n")
-        vocabulary <- colnames(document_term_matrix)
-        cat("Here are the first ten terms of the vocabulary extracted from document_term_matrix:", paste0(head(vocabulary, n = 10)), "--- If these appear to be incorrect, considder specifying the vocabulary argument explicitly.\n")
+        cat("You did not supply a vocabulary, so the column names of document_term_matrix will be used.\n")
+        if(is_sparse_matrix){
+            vocabulary <-document_term_matrix$dimnames[[2]]
+        }else{
+            vocabulary <- colnames(document_term_matrix)
+        }
+        cat("Here are the first ten terms of the vocabulary extracted from document_term_matrix:\n\n", paste0(head(vocabulary, n = 10), collapse = ", "), "\n\nIf these appear to be incorrect, consider specifying the vocabulary argument explicitly.\n")
     }
 
     # figure out what kind variables to use is:
@@ -81,7 +93,16 @@ generate_contingency_table  <- function(metadata,
     for(i in 1:NUM_VARS){
         Num_Categories = Num_Categories*length(unique_value_list[[i]])
     }
-    contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
+
+    if(Vocab_Size*Num_Categories > 10000000 & !force_dense){
+        cat("Due to the large size of the contingency table, generating a sparse matrix...\n")
+        contingency_table <- slam::simple_triplet_zero_matrix(
+            ncol = Vocab_Size,
+            nrow = Num_Categories)
+    }else{
+        contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
+    }
+
     cat("The contingency table has",Num_Categories,"rows and",Vocab_Size,"columns. \n")
 
     # if we have a multivariate contingency table
@@ -173,7 +194,5 @@ generate_contingency_table  <- function(metadata,
     }
 
     #return everything
-    return(list(contingency_table = contingency_table,
-                vocabulary = vocabulary,
-                cateogry_names = Cateogry_Names))
+    return(contingency_table)
 }
