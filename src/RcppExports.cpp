@@ -167,3 +167,22 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// Sparse_PMI_Statistics
+List Sparse_PMI_Statistics(int length_sparse_counts, int table_sum, arma::vec colsums, arma::vec rowsums, arma::vec sparse_col_indexes, arma::vec sparse_row_indexes, arma::vec sparse_counts, arma::vec print_sequence, int print_sequence_length);
+RcppExport SEXP SpeedReader_Sparse_PMI_Statistics(SEXP length_sparse_countsSEXP, SEXP table_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP sparse_col_indexesSEXP, SEXP sparse_row_indexesSEXP, SEXP sparse_countsSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type length_sparse_counts(length_sparse_countsSEXP);
+    Rcpp::traits::input_parameter< int >::type table_sum(table_sumSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type sparse_col_indexes(sparse_col_indexesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type sparse_row_indexes(sparse_row_indexesSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type sparse_counts(sparse_countsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type print_sequence(print_sequenceSEXP);
+    Rcpp::traits::input_parameter< int >::type print_sequence_length(print_sequence_lengthSEXP);
+    __result = Rcpp::wrap(Sparse_PMI_Statistics(length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length));
+    return __result;
+END_RCPP
+}

@@ -45,3 +45,7 @@ Sparse_Document_Frequencies <- function(length_sparse_counts, sparse_counts, doc
     .Call('SpeedReader_Sparse_Document_Frequencies', PACKAGE = 'SpeedReader', length_sparse_counts, sparse_counts, document_frequencies, print_sequence, print_sequence_length)
 }
 
+Sparse_PMI_Statistics <- function(length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length) {
+    .Call('SpeedReader_Sparse_PMI_Statistics', PACKAGE = 'SpeedReader', length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length)
+}
+
