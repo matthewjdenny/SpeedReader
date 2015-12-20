@@ -3,7 +3,7 @@
 #' @param metadata A data.frame containing document covariates.
 #' @param variable_names A string or vector of strings givign the column names of covariates we would like to get unique values for.
 #' @param threshold Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.
-#' @return A vector (or list of vectors) of unique variable values that occur more than "threshold" times.
+#' @return A list of vectors of unique variable values that occur more than "threshold" times.
 #' @export
 get_unique_values_and_counts <- function(metadata,
                                          variable_names = NA,
@@ -63,8 +63,8 @@ get_unique_values_and_counts <- function(metadata,
 			stop(paste("You have specified a threshold such that there are no valid categories of variable:",variable_names))
 		}
 		unique_values <- unique_values[use]
-		ret <- list(indexes = use,
-		            values = unique_values)
+		ret <- list(indexes = list(use),
+		            values = list(unique_values))
     }else{
         uselist <- vector(length = NUM_VARS, mode = "list")
         for(i in 1:NUM_VARS){
