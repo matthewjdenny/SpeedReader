@@ -13,7 +13,7 @@
 #' @param connect_with_lines Logical indicating whether dots should be connected with a line, defaults to FALSE.
 #' @param order_by_col Defaults to NULL. If not NULL, then a column index (must be in plot_columns) may be specified. The values of this column are used to sort X values in decreasing order in the resulting plot.
 #' @param normalize Defaults to FALSE, if TRUE, then each column will be normalized by dividing it by its maximum absolute value.
-#' @return A dense document term matrix object with the vocabulary as column names.
+#' @return A plot.
 #' @export
 multi_plot <- function(data,
                        plot_columns = NULL,

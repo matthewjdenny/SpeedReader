@@ -37,7 +37,7 @@ multi_plot(data, plot_columns = NULL, legend_location = "bottomleft",
 \item{normalize}{Defaults to FALSE, if TRUE, then each column will be normalized by dividing it by its maximum absolute value.}
 }
 \value{
-A dense document term matrix object with the vocabulary as column names.
+A plot.
 }
 \description{
 An implementation of matplot with nice coloring and automatic legend generation
