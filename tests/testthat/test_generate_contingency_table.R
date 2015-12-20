@@ -21,8 +21,13 @@ test_that("That generating a contingency table works", {
     test <- get_unique_values_and_counts(
         metadata,
         variable_names = colnames(metadata)[1],
-        threshold =2)$values
+        threshold = 2)$values
 
+    test2 <- generate_contingency_table(metadata,
+                                        sdtm,
+                                        vocabulary = NULL,
+                                        variables_to_use = c("party","type"),
+                                        threshold = 0)
 
 
 })
