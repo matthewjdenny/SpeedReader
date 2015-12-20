@@ -23,11 +23,12 @@ test_that("That generating a contingency table works", {
         variable_names = colnames(metadata)[1],
         threshold = 2)$values
 
-    test2 <- generate_contingency_table(metadata,
-                                        sdtm,
-                                        vocabulary = NULL,
-                                        variables_to_use = c("party","type"),
-                                        threshold = 0)
+    test2 <- contingency_table(
+        metadata,
+        sdtm,
+        vocabulary = NULL,
+        variables_to_use = c("party","type"),
+        threshold = 0)
     expect_equal(sum(test2),sum(sdtm$v))
 
 })
