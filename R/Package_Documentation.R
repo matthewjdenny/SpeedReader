@@ -11,6 +11,9 @@ NULL
 #' @import methods
 NULL
 
+#' @import slam
+NULL
+
 #' @import parallel
 NULL
 
