@@ -1,4 +1,4 @@
-calculate_pmi <- function(contingency_table,
+pmi <- function(contingency_table,
                           to_print = 20,
                           threshold = 5,
                           EVERY_CATEGORY_COUNTS = F){

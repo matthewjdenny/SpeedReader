@@ -8,12 +8,12 @@
 #' @param force_dense Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 10,000,000 entries.
 #' @return A contingency table.
 #' @export
-generate_contingency_table  <- function(metadata,
-                                        document_term_matrix,
-                                        vocabulary = NULL,
-                                        variables_to_use = NULL,
-                                        threshold = 0,
-                                        force_dense = FALSE){
+contingency_table  <- function(metadata,
+                               document_term_matrix,
+                               vocabulary = NULL,
+                               variables_to_use = NULL,
+                               threshold = 0,
+                               force_dense = FALSE){
 
     # get dimensions
     #Num_Docs = nrow(document_term_matrix)
