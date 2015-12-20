@@ -75,18 +75,16 @@ pmi <- function(contingency_table,
 
     cat("Generating token PMI table...\n")
     if(is_sparse_matrix){
-        printseq <- round(seq(1,length(contingency_table$i), length.out = 11)[2:101],0)
-        stats <- Sparse_PMI_Statistics(
-            length(contingency_table$i),
+        printseq <- round(seq(1,length(contingency_table$i), length.out = 11)[2:11],0)
+        stats <- Sparse_PMI_Statistics(length(contingency_table$i),
             table_sum,
-            colsums,
-            rowsums,
+            as.numeric(colsums),
+            as.numeric(rowsums),
             contingency_table$j,
             contingency_table$i,
-            contingency_table$v,
+            as.numeric(contingency_table$v),
             printseq,
-            length(printseq)
-        )
+            length(printseq))
 
         print(str(stats))
         #now create the sparse matrix objects
