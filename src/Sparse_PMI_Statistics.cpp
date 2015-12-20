@@ -27,7 +27,7 @@ List Sparse_PMI_Statistics(
             << " complete..." << std::endl;
             print_sequence_counter +=1;
         }
-        pmi[i] = log( (double(sparse_counts[i]) / double(table_sum) ) *
+        pmi[i] = log( (double(sparse_counts[i]) / double(table_sum) )/
             ((double(colsums[sparse_col_indexes[i] -1]) / double(table_sum)) *
             (double(rowsums[sparse_row_indexes[i] -1]) / double(table_sum))));
 
