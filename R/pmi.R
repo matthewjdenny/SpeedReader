@@ -4,7 +4,7 @@
 #' @param display_top_x_terms Defaults to 20, the number of top ranked terms to display for each measure.
 #' @param term_threshold The threshold at which terms are eliminated from the contingency table for the purposes of calculating information-theoretic quantities. THis gets around issues with terms that only appear once having very high PMI.
 #' @param every_category_counts Defaults to FALSE, if TRUE, then terms are removed if they do not appear at least term_threshold times in every row (category) of the contingency table.
-#' @return A list object containing lots of different information theoretic measures calculated on the contingency table.
+#' @return A list object containing lots of different information theoretic measures calculated on the contingency table. If a sparse matrix was provided, then a sparse PMI table is returned. Note that the "zero" entries in this sparse matrix are actually -Inf, but cannot be represented as such using the slam sparse matrix libraries (which this package does), so you will manually need to replace the zero entries with -Inf if you want to compare to a dense matrix.
 #' @export
 pmi <- function(contingency_table,
                 display_top_x_terms = 20,

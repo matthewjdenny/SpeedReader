@@ -17,7 +17,7 @@ pmi(contingency_table, display_top_x_terms = 20, term_threshold = 5,
 \item{every_category_counts}{Defaults to FALSE, if TRUE, then terms are removed if they do not appear at least term_threshold times in every row (category) of the contingency table.}
 }
 \value{
-A list object containing lots of different information theoretic measures calculated on the contingency table.
+A list object containing lots of different information theoretic measures calculated on the contingency table. If a sparse matrix was provided, then a sparse PMI table is returned. Note that the "zero" entries in this sparse matrix are actually -Inf, but cannot be represented as such using the slam sparse matrix libraries (which this package does), so you will manually need to replace the zero entries with -Inf if you want to compare to a dense matrix.
 }
 \description{
 A function to calculate a number of information-theoretic measures on terms in a contingency table, including point-wise mutual information.
