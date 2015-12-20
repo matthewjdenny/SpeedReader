@@ -32,7 +32,7 @@ pmi <- function(contingency_table,
 
     Names <- rownames(contingency_table)
     Terms <- colnames(contingency_table)
-    categories <- length(contingency_table[,1])
+    categories <- nrow(contingency_table)
     temp = keep1 = NULL
     check  <- function(index){
         return(length(which(temp == keep1[index])))
@@ -51,7 +51,11 @@ pmi <- function(contingency_table,
             }
         }
     }else{
-        colsums <- apply(contingency_table,2,sum)
+        if(is_sparse_matrix){
+            colsums <- slam::col_sums(contingency_table)
+        }else{
+            colsums <- apply(contingency_table,2,sum)
+        }
         keep1 <- which(colsums >= term_threshold)
     }
 
@@ -68,52 +72,121 @@ pmi <- function(contingency_table,
         colsums <- apply(contingency_table,2,sum)
         rowsums <- apply(contingency_table,1,sum)
     }
-    pmi_table <- matrix(0,nrow = categories,ncol = unique_terms )
-    distinctiveness_table <- matrix(0,nrow = categories,ncol = unique_terms )
-    saliency_table <- matrix(0,nrow = categories,ncol = unique_terms )
 
-    #generate tables
     cat("Generating token PMI table...\n")
-    for(i in 1:nrow(contingency_table)){
-        cat("Category", i,"of",nrow(contingency_table),"\n")
-        for(j in 1:ncol(contingency_table)){
-            pmi_table[i,j] <- log((contingency_table[i,j]/table_sum)/((colsums[j]/table_sum)*(rowsums[i]/table_sum)))
-            distinctiveness_table[i,j] <- (contingency_table[i,j]/colsums[j])*log((contingency_table[i,j]/colsums[j])/(rowsums[i]/table_sum))
-            saliency_table[i,j] <- (colsums[j]/table_sum)*distinctiveness_table[i,j]
+    if(is_sparse_matrix){
+        printseq <- round(seq(1,length(contingency_table$i), length.out = 11)[2:101],0)
+        stats <- Sparse_PMI_Statistics(
+            length(contingency_table$i),
+            table_sum,
+            colsums,
+            rowsums,
+            contingency_table$j,
+            contingency_table$i,
+            contingency_table$v,
+            printseq,
+            length(printseq)
+        )
+
+        print(str(stats))
+        #now create the sparse matrix objects
+        pmi_table <- contingency_table
+        pmi_table$v <- stats[[1]]
+        distinctiveness_table <- contingency_table
+        distinctiveness_table$v <- stats[[2]]
+        saliency_table <- contingency_table
+        saliency_table$v <- stats[[3]]
+
+    }else{
+        pmi_table <- matrix(0,nrow = categories,ncol = unique_terms )
+        distinctiveness_table <- matrix(0,nrow = categories,ncol = unique_terms )
+        saliency_table <- matrix(0,nrow = categories,ncol = unique_terms )
+
+        #generate tables
+        for(i in 1:nrow(contingency_table)){
+            cat("Category", i,"of",nrow(contingency_table),"\n")
+            for(j in 1:ncol(contingency_table)){
+                pmi_table[i,j] <- log((contingency_table[i,j]/table_sum)/((colsums[j]/table_sum)*(rowsums[i]/table_sum)))
+                distinctiveness_table[i,j] <- (contingency_table[i,j]/colsums[j])*log((contingency_table[i,j]/colsums[j])/(rowsums[i]/table_sum))
+                saliency_table[i,j] <- (colsums[j]/table_sum)*distinctiveness_table[i,j]
+            }
         }
+
     }
 
+
+    # reduce terms to only those we are keeping
     Terms <- Terms[keep1]
 
-    ## get token top and bottom words
-    top_terms <- matrix(0,nrow = categories,ncol = ncol(pmi_table) )
-    for(i in 1:categories){
-        top_terms[i,] <- order(pmi_table[i,],decreasing = T)
-    }
-    pmi_ranked_terms <- matrix("",nrow = categories,ncol = ncol(pmi_table) )
-    for(i in 1:categories){
-        for(j in 1:ncol(pmi_table)){
-            pmi_ranked_terms[i,j] <- Terms[top_terms[i,j]]
+    if(is_sparse_matrix){
+        ## get token top and bottom words
+        top_terms <- vector(mode = "list", length = categories)
+        for(i in 1:categories){
+            counts <- pmi_table$v[which(pmi_table$i == i)]
+            indices <- pmi_table$j[which(pmi_table$i == i)]
+            top_terms[[i]] <- list(indices = indices[order(counts,decreasing = T)],
+                                   counts = counts[order(counts,decreasing = T)])
         }
-    }
-    ranked_pmi <-  matrix(0,nrow = categories,ncol = ncol(pmi_table) )
-    for(i in 1:categories){
-        ranked_pmi[i,] <- pmi_table[i,top_terms[i,]]
-    }
-    cat("Top terms by category:\n\n")
-
-
-    for(i in 1:categories){
-        cat("Category: ",Names[i], "\n")
-
-        for(j in 1:display_top_x_terms){
-            cat(Terms[top_terms[i,j]],"    ePMI:",exp(pmi_table[i,top_terms[i,j]]), ": Local Count --",contingency_table[i,top_terms[i,j]], "Global Count --",sum(contingency_table[,top_terms[i,j]]),"\n")
+        pmi_ranked_terms <- vector(mode = "list", length = categories)
+        for(i in 1:categories){
+            terms <- rep("",length(top_terms[[i]]$indices))
+            for(j in 1:length(terms)){
+                terms[j] <- Terms[top_terms[[i]]$indices[j]]
+            }
+            pmi_ranked_terms[[i]] <- terms
         }
-        cat("\n\n")
-    }
+        ranked_pmi <- vector(mode = "list", length = categories)
+        for(i in 1:categories){
+            ranked_pmi[[i]] <- top_terms[[i]]$counts
+        }
+        cat("Top terms by category:\n\n")
+        print(str(top_terms))
 
-    distinctiveness <- apply(distinctiveness_table,2,sum)
-    saliency <- apply(saliency_table,2,sum)
+        for(i in 1:categories){
+            cat("Category: ",Names[i], "\n")
+
+            disp <- min(display_top_x_terms,length(pmi_ranked_terms[[i]]))
+            for(j in 1:disp){
+                cat(pmi_ranked_terms[[i]][j],"    ePMI:",exp(ranked_pmi[[i]][j]), ": Local Count --",contingency_table[i,top_terms[[i]]$indices[j]]$v, "Global Count --",sum(contingency_table[,top_terms[[i]]$indices[j]]$v),"\n")
+            }
+            cat("\n\n")
+        }
+
+        distinctiveness <- slam::col_sums(distinctiveness_table)
+        saliency <- slam::col_sums(saliency_table)
+
+    }else{
+        # DENSE MATRICES
+        ## get token top and bottom words
+        top_terms <- matrix(0,nrow = categories,ncol = ncol(pmi_table) )
+        for(i in 1:categories){
+            top_terms[i,] <- order(pmi_table[i,],decreasing = T)
+        }
+        pmi_ranked_terms <- matrix("",nrow = categories,ncol = ncol(pmi_table) )
+        for(i in 1:categories){
+            for(j in 1:ncol(pmi_table)){
+                pmi_ranked_terms[i,j] <- Terms[top_terms[i,j]]
+            }
+        }
+        ranked_pmi <-  matrix(0,nrow = categories,ncol = ncol(pmi_table) )
+        for(i in 1:categories){
+            ranked_pmi[i,] <- pmi_table[i,top_terms[i,]]
+        }
+        cat("Top terms by category:\n\n")
+
+
+        for(i in 1:categories){
+            cat("Category: ",Names[i], "\n")
+
+            for(j in 1:display_top_x_terms){
+                cat(Terms[top_terms[i,j]],"    ePMI:",exp(pmi_table[i,top_terms[i,j]]), ": Local Count --",contingency_table[i,top_terms[i,j]], "Global Count --",sum(contingency_table[,top_terms[i,j]]),"\n")
+            }
+            cat("\n\n")
+        }
+
+        distinctiveness <- apply(distinctiveness_table,2,sum)
+        saliency <- apply(saliency_table,2,sum)
+    }
 
     dist_terms <- Terms[order(distinctiveness ,decreasing = T)]
     non_dist_terms <- Terms[order(distinctiveness ,decreasing = F)]
