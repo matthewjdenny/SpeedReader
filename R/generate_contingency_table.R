@@ -1,108 +1,91 @@
+#' Generates a contingency table from user-specified document covariates and a document term matrix.
+#'
+#' @param metadata A data.frame containing document covariates.
+#' @param document_term_matrix A documents x vocabulary matrix with counts of unique words in each document. Can be a dense or sparse matrix.
+#' @param vocabulary A character vector corresponding to the columns of the document word matrix. If NULL, the column names of doc_word_matrix will be used. Defaults to NULL.
+#' @param variables_to_use Defaults to NULL in which case all columns of the metadata data frame will be used. Otherwise can be specified as a vector of column indexes or column names.
+#' @param threshold Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.
+#' @return A contingency table.
+#' @export
 generate_contingency_table  <- function(metadata,
-                                        doc_word_matrix,
-                                        vocab ,
-                                        variable_indexes = NA,
-                                        use = "all",
-                                        variable_names = NA,
-                                        USE_INDEXES = FALSE){
-    #     metadata -- a matrix containing metadata abotu every bill
-    #     doc_word_matrix -- a documents (row) by word types (columns) matrix
-    #     variable_indexes= NA -- if we are using numeric indexing then the indexes of each variable to use
-    #     use = "all"  -- a list containing the indexes of the unique independent variables we want to use for constructing the contingency table.
-    #     variable_names = NA -- a vector of names to be used to get variables
-    #     vocab = the vocab associated with the doc-word matrix
+                                        document_term_matrix,
+                                        vocabulary = NULL,
+                                        variables_to_use = NULL,
+                                        threshold = 0){
 
-    Num_Docs = nrow(doc_word_matrix)
-    Vocab_Size = ncol(doc_word_matrix)
+    # get dimensions
+    #Num_Docs = nrow(document_term_matrix)
+    Vocab_Size = ncol(document_term_matrix)
 
-    #determine which kind of variable indexing we are doing and how many variables we are creating a contingency table over
-    if(USE_INDEXES){
-        USE_NUMERIC = TRUE
-        if(length(variable_indexes) == 1){
-            UNIVARIATE = TRUE
-        }else{
-            UNIVARIATE = FALSE
-            NUM_VARS = length(variable_indexes)
-        }
-    }else{
-        USE_NUMERIC = FALSE
-        if(length(variable_names) == 1){
-            UNIVARIATE = TRUE
-        }else{
-            UNIVARIATE = FALSE
-            NUM_VARS = length(variable_names)
-        }
+    is_sparse_matrix <- FALSE
+    if(class(document_term_matrix) == "simple_triplet_matrix"){
+        is_sparse_matrix <- TRUE
     }
 
-    cat("Getting Unique Values...\n")
-    if(USE_NUMERIC){
-        #if we are only making a 1 variable contingency table
-        if(UNIVARIATE){
-            colindex = variable_indexes
-            if(use == "all"){
-                unique_values <- unique(metadata[,variable_indexes])
-            }else{
-                unique_values <- unique(metadata[,variable_indexes])
-                unique_values  <- unique_values[use]
-            }
-            #if we are making a multi-variate contingency table
-        }else{
-            unique_value_list <- vector(length = NUM_VARS, mode = "list")
-            colindexes = variable_indexes
-            #populate the list
-            for(i in 1:NUM_VARS){
-                if(length(use[[i]])== 1){
-                    unique_value_list[[i]] <- unique(metadata[,variable_indexes[i]])
+    # if we did not get any variable names or indices passed in, then select all of them
+    if(is.null(variables_to_use)){
+        cat("You did not specify a subset of variables to use...\n")
+        variables_to_use <- 1:ncol(metadata)
+        cat("Constructing a contingency table using all combinations of unique values of the following variables:", paste0(colnames(metadata), collapse = ", "),"\n")
+    }
+
+    if(is.null(vocabulary)){
+        cat("You did not supply a vocabulry, so the column names of document_term_matrix will be used.\n")
+        vocabulary <- colnames(document_term_matrix)
+        cat("Here are the first ten terms of the vocabulary extracted from document_term_matrix:", paste0(head(vocabulary, n = 10)), "--- If these appear to be incorrect, considder specifying the vocabulary argument explicitly.\n")
+    }
+
+    # figure out what kind variables to use is:
+    if(!is.null(variables_to_use)){
+        Number_of_Variables <- length(variables_to_use)
+        if(length(variables_to_use) > ncol(metadata)){
+            stop("You have specified more covariates than columns in metadata.")
+        }
+        if(class(variables_to_use) == "numeric"){
+            # we do not need to do anything
+        }else if(class(variables_to_use) == "character"){
+            # turn into indexes
+            temp <- rep(0,Number_of_Variables)
+            for(i in 1:Number_of_Variables){
+                ind <- which(colnames(metadata) == variables_to_use[i])
+                if(length(ind) == 1){
+                    temp[i]  <- ind
                 }else{
-                    unique_values <- unique(metadata[,variable_indexes[i]])
-                    unique_value_list[[i]] <- unique_values[use[[i]]]
+                    stop("You specified a covariate:",variables_to_use[i],"which does not correspond to a column of metadata, or corresponds to multiple columns. This is not allowed.")
                 }
             }
-        }#end multivariate conditional statement
-        #if we are using names
+            # exchange for numeric indices
+            variables_to_use <- temp
+        }else{
+            stop("variables_to_use must either be a vector of column indexes or column names of metadata")
+        }
     }else{
-        #if we are only making a 1 variable contingency table
-        if(UNIVARIATE){
-            colindex <- which(colnames(metadata)==variable_names)
-            if(use == "all"){
-                unique_values <- unique(metadata[,colindex])
-            }else{
-                unique_values <- unique(metadata[,colindex])
-                unique_values  <- unique_values[use]
-            }
-            #if we are making a multi-variate contingency table
-        }else{
-            colindexes <- rep(0,NUM_VARS)
-            unique_value_list <- vector(length = NUM_VARS, mode = "list")
-            #populate the list
-            for(i in 1:NUM_VARS){
-                colindex <- which(colnames(metadata)==variable_names[i])
-                colindexes[i] <- colindex
-                if(length(use[[i]]) == 1){
-                    unique_value_list[[i]] <- unique(metadata[,colindex])
-                }else{
-                    unique_values <- unique(metadata[,colindex])
-                    unique_value_list[[i]] <- unique_values[use[[i]]]
-                }
-            }
-        }#end multivariate conditional statement
-    }#end of finding unique values for contingency table conditional
+        stop("There was an error, you did not specify any columns in metadata to use...")
+    }
+
+
+
+    cat("Getting unique values for all variables to be used in contingency table...\n")
+    unique_value_list <- get_unique_values_and_counts(
+        metadata,
+        variable_names = colnames(metadata)[variables_to_use],
+        threshold = threshold)$values
 
     #testing
     #unique_value_list<- list(c(1,2,3),c("dog","cat","Fish"),c(1,2,3,4,5,6,7))
     cat("Building Unique Values Lookup... \n")
     #determine number of rows in contingency table and build a category combination lookup if necessary
-    if(UNIVARIATE){
-        Num_Categories = length(unique_values)
-        contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
-    }else{
-        Num_Categories = length(unique_value_list[[1]])
-        for(i in 2:NUM_VARS){
-            Num_Categories = Num_Categories*length(unique_value_list[[i]])
-        }
-        contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
-        cat("The contingency table has",Num_Categories,"rows and",Vocab_Size,"columns. \n")
 
+    Num_Categories <- 1
+    NUM_VARS <- length(unique_value_list)
+    for(i in 1:NUM_VARS){
+        Num_Categories = Num_Categories*length(unique_value_list[[i]])
+    }
+    contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
+    cat("The contingency table has",Num_Categories,"rows and",Vocab_Size,"columns. \n")
+
+    # if we have a multivariate contingency table
+    if(NUM_VARS > 1){
         #now generate facotrial category names and lookup talbe
         times_repeat <- rep(1,NUM_VARS)
         for(i in 1:(NUM_VARS-1)){
@@ -137,29 +120,34 @@ generate_contingency_table  <- function(metadata,
     cat("Compiling Contingency Table...\n")
 
     #populate contingency tables
-    if(UNIVARIATE){
+    if(NUM_VARS == 1){
+        unique_values <- unique_value_list[[1]]
         Cateogry_Names <- unique_values
         for(i in 1:Num_Categories){
             cat("Currently compiling contingency table row for:",unique_values[i],"\n")
-            indexes <- which(metadata[,colindex] == unique_values[i])
-            cur <- doc_word_matrix[indexes,]
-            contingency_table[i,] <- colSums(cur)
+            indexes <- which(metadata[,variables_to_use] == unique_values[i])
+            cur <- document_term_matrix[indexes,]
+            if(is_sparse_matrix){
+                contingency_table[i,] <- slam::col_sums(cur)
+            }else{
+                contingency_table[i,] <- colSums(cur)
+            }
         }
         rownames(contingency_table) <- Cateogry_Names
-        colnames(contingency_table) <- vocab
+        colnames(contingency_table) <- vocabulary
         #if multivariate
     }else{
         for(i in 1:Num_Categories){
             cat("Currently compiling contingency table row for:",Cateogry_Names[i],"\n")
             #now generate the conditional contingency tables
-            indexes <- which(metadata[,colindexes[1]] == Category_Combination_Lookup[i,1])
-            cur <- doc_word_matrix[indexes,]
+            indexes <- which(metadata[,variables_to_use[1]] == Category_Combination_Lookup[i,1])
+            cur <- document_term_matrix[indexes,]
             met <- metadata[indexes,]
             NONE = FALSE
             for(j in 2:NUM_VARS){
                 #if we have not already gotten to an empty category
                 if(!NONE){
-                    indexes <- which(met[,colindexes[j]] == Category_Combination_Lookup[i,j])
+                    indexes <- which(met[,variables_to_use[j]] == Category_Combination_Lookup[i,j])
                     if(length(indexes) > 0){
                         cur <- cur[indexes,]
                         met <- met[indexes,]
@@ -171,17 +159,21 @@ generate_contingency_table  <- function(metadata,
 
             if(!NONE){
                 cat("There were",nrow(cur),"observations for category:",Cateogry_Names[i],"\n")
-                row <- apply(cur,2,sum)
-                #cat("length of current colsum:",length(row), "length of contingency", length(contingency_table[i,])) #for debugging
-                contingency_table[i,] <- row
+                if(is_sparse_matrix){
+                    contingency_table[i,] <- slam::col_sums(cur)
+                }else{
+                    contingency_table[i,] <- colSums(cur)
+                }
             }else{
                 cat("There were no observations for category:",Cateogry_Names[i],"\n")
             }
         }
         rownames(contingency_table) <- Cateogry_Names
-        colnames(contingency_table) <- vocab
+        colnames(contingency_table) <- vocabulary
     }
 
     #return everything
-    return(list(contingency_table,vocab,Cateogry_Names))
+    return(list(contingency_table = contingency_table,
+                vocabulary = vocabulary,
+                cateogry_names = Cateogry_Names))
 }
