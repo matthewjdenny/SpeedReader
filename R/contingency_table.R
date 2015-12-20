@@ -5,7 +5,7 @@
 #' @param vocabulary A character vector corresponding to the columns of the document word matrix. If NULL, the column names of doc_word_matrix will be used. Defaults to NULL.
 #' @param variables_to_use Defaults to NULL in which case all columns of the metadata data frame will be used. Otherwise can be specified as a vector of column indexes or column names.
 #' @param threshold Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.
-#' @param force_dense Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 10,000,000 entries.
+#' @param force_dense Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 100,000 entries.
 #' @return A contingency table.
 #' @export
 contingency_table  <- function(metadata,
@@ -94,7 +94,7 @@ contingency_table  <- function(metadata,
         Num_Categories = Num_Categories*length(unique_value_list[[i]])
     }
 
-    if(Vocab_Size*Num_Categories > 10000000 & !force_dense){
+    if(Vocab_Size*Num_Categories > 100000 & !force_dense){
         cat("Due to the large size of the contingency table, generating a sparse matrix...\n")
         contingency_table <- slam::simple_triplet_zero_matrix(
             ncol = Vocab_Size,

@@ -18,7 +18,7 @@ contingency_table(metadata, document_term_matrix, vocabulary = NULL,
 
 \item{threshold}{Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.}
 
-\item{force_dense}{Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 10,000,000 entries.}
+\item{force_dense}{Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 100,000 entries.}
 }
 \value{
 A contingency table.
