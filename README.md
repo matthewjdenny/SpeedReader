@@ -53,6 +53,8 @@ The SpeedReader package currently provides the following functions to aid in the
 * `generate_sparse_large_document_term_matrix()` -- The main function provided by the package. Will generate very large (sparse) document term matrices from very large vocabularies, in parallel, in a memory efficient manner. 
 * `sparse_to_dense_matrix()` -- A helpful function for converting sparse matrix objects to dense matrix objects. Use with caution on large sparse matrices!
 * `tfidf()` -- Calculates and displays TF-IDF scores for a given document term matrix.
+* `contingency_table()` -- Generates a contingency table for a given document term matrix and set of document covariates.
+* `pmi()` -- Calculates a number of information theoretic quantities on a given contingency table.
 
 The SpeedReader package also provides the following utility functions:
 
@@ -67,3 +69,4 @@ The SpeedReader package also provides the following utility functions:
 * `color_word_table()` -- A function to generate LaTeX output from a dataframe containing covariates and top words.
 * `clean_document_text()` -- A function which cleans the raw text of a document provided either as a single string, a vector of strings, or a column of a data.frame.
 * `topic_coherence()` -- A function to calculate topic coherence for a given topic using the formulation in "Optimizing Semantic Coherence in Topic Models" [available here:](http://dirichlet.net/pdf/mimno11optimizing.pdf).
+* `frequency_threshold()` -- Finds combinations of covariate values that occur more than a spcified number of times.
