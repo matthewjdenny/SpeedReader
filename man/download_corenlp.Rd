@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_corenlp.R
 \name{download_corenlp}
 \alias{download_corenlp}
-\title{Checks the java version on your computer and downloads Stanford Core-NLP jar files for use with this package.}
+\title{Checks the java version on your computer and downloads Stanford CoreNLP jar files for use with this package.}
 \usage{
 download_corenlp(version = "3.5.2")
 }
@@ -13,6 +13,6 @@ download_corenlp(version = "3.5.2")
 Does not return anything.
 }
 \description{
-Checks the java version on your computer and downloads Stanford Core-NLP jar files for use with this package.
+Checks the java version on your computer and downloads Stanford CoreNLP jar files for use with this package.
 }
 

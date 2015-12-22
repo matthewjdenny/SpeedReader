@@ -1,4 +1,4 @@
-#' Checks the java version on your computer and downloads Stanford Core-NLP jar files for use with this package.
+#' Checks the java version on your computer and downloads Stanford CoreNLP jar files for use with this package.
 #'
 #' @param version THe version of Core-NLP to download. Defaults to '3.5.2'
 #' @return Does not return anything.
@@ -8,7 +8,7 @@ download_corenlp <- function(version = "3.5.2"){
     version <- system("java -version", intern = TRUE)
 
     Version_OK <- function(){
-        x <- readline(prompt = "Is the java version greater than 1.8? (yes/no) ")
+        x <- readline(prompt = "Is the java version greater than or equal to  1.8? (yes/no)")
         x <- as.character(x)
         if(is.na(x)){
             stop("Please provide a valid string.")
