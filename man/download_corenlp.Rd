@@ -7,7 +7,7 @@
 download_corenlp(version = "3.5.2")
 }
 \arguments{
-\item{version}{THe version of Core-NLP to download. Defaults to '3.5.2'}
+\item{version}{The version of Core-NLP to download. Defaults to '3.5.2'}
 }
 \value{
 Does not return anything.
