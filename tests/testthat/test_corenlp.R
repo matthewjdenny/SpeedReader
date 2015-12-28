@@ -3,6 +3,7 @@ context("CoreNLP.")
 
 test_that("CoreNLP Works", {
 
-    download_corenlp(version = "3.5.2")
+    # dont run since this is too large of a file
+    #download_corenlp(version = "3.5.2")
 
 })
