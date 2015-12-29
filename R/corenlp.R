@@ -136,11 +136,11 @@ corenlp <- function(documents = NULL,
         #loop through every sentence in document
         token_counter <- 1
         for(j in 1:length(xml_data)){
-            for(k in 1:length(xml_data[[j]])){
-                token_data$word[token_counter] <- xml_data[[j]][[k]]$token$word
-                token_data$lemma[token_counter] <- xml_data[[j]][[k]]$token$lemma
-                token_data$POS[token_counter] <- xml_data[[j]][[k]]$token$POS
-                token_data$NER[token_counter] <- xml_data[[j]][[k]]$token$NER
+            for(k in 1:length(xml_data[[j]][[1]])){
+                token_data$word[token_counter] <- xml_data[[j]][[1]][[k]]$word
+                token_data$lemma[token_counter] <- xml_data[[j]][[1]][[k]]$lemma
+                token_data$POS[token_counter] <- xml_data[[j]][[1]][[k]]$POS
+                token_data$NER[token_counter] <- xml_data[[j]][[1]][[k]]$NER
                 token_data$sentence[token_counter] <- j
                 token_counter <- token_counter + 1
             }
