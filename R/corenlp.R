@@ -128,7 +128,7 @@ corenlp <- function(documents = NULL,
 
     # run corenlp
     directory <- system.file("extdata", package = "SpeedReader")[1]
-    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," ",ner_model," ",additional_options, ' -filelist filenames.txt',sep = ""),"r")
+    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," -ner.model ",ner_model," ",additional_options, ' -filelist filenames.txt',sep = ""),"r")
     close(p2)
 
     for(i in 1:numdocs){
