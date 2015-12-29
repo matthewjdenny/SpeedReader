@@ -56,8 +56,12 @@ corenlp <- function(documents = NULL,
 
 
     #check to see that we have the selected version of corenlp installed
-    test1 <- system.file("extdata",paste("stanford-corenlp-",version,".jar",sep = ""), package = "SpeedReader")[1]
-    test2 <- system.file("extdata",paste("stanford-corenlp-",version,"-models.jar",sep = ""), package = "SpeedReader")[1]
+    test1 <- system.file("extdata",
+                         paste("stanford-corenlp-",version,".jar",sep = ""),
+                         package = "SpeedReader")[1]
+    test2 <- system.file("extdata",
+                         paste("stanford-corenlp-",version,"-models.jar",sep = ""),
+                         package = "SpeedReader")[1]
     test3 <- system.file("extdata","xom.jar", package = "SpeedReader")[1]
 
     if(test1 != "" & test2 != "" & test3 != ""){
@@ -107,7 +111,7 @@ corenlp <- function(documents = NULL,
 
     # write filenames table to file so that it can be used by coreNLP
     write.table(filenames,
-                file = "filenames.txt",
+                file = "CoreNLP_filenames.txt",
                 quote = FALSE,
                 row.names = F,
                 col.names= F,
@@ -125,8 +129,16 @@ corenlp <- function(documents = NULL,
 
     # run corenlp
     directory <- system.file("extdata", package = "SpeedReader")[1]
-    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref,' ',additional_options, ' -filelist filenames.txt',sep = ""),"r")
+    p2 <- pipe(paste('java -cp "', directory,
+                     '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP',
+                     ' -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref,
+                     ' ',additional_options,
+                     ' -filelist CoreNLP_filenames.txt',sep = ""),"r")
     close(p2)
+
+    if(delete_intermediate_files){
+        file.remove(paste("CoreNLP_filenames.txt",sep = ""))
+    }
 
     for(i in 1:numdocs){
         #read everything in
@@ -142,10 +154,6 @@ corenlp <- function(documents = NULL,
             }
         }
 
-        if(delete_intermediate_files){
-            file.remove(paste("filenames.txt",sep = ""))
-        }
-
         # turn into a list of sentences
         xml_data <- XML::xmlToList(data)[[1]][[1]]
 
@@ -157,7 +165,8 @@ corenlp <- function(documents = NULL,
             for(j in 1:length(xml_data)){
                 numtokens <- numtokens + length(xml_data[[j]][[1]])
             }
-            cat("Reading in:", numtokens, "tokens from document:",i,"of", numdocs,"\n")
+            cat("Reading in:", numtokens, "tokens from document:",i,"of",
+                numdocs,"\n")
 
             token_data <- data.frame(word = rep("",numtokens),
                                      lemma = rep("",numtokens),
