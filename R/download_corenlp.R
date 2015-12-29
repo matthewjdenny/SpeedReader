@@ -97,8 +97,9 @@ download_corenlp <- function(version = "3.5.2"){
     #check to see that the download worked
     test1 <- system.file("extdata",paste("stanford-corenlp-",version,".jar",sep = ""), package = "SpeedReader")[1]
     test2 <- system.file("extdata",paste("stanford-corenlp-",version,"-models.jar",sep = ""), package = "SpeedReader")[1]
+    test3 <- system.file("extdata","xom.jar", package = "SpeedReader")[1]
 
-    if(test1 != "" & test2 != ""){
+    if(test1 != "" & test2 != "" & test3 != ""){
         cat("JAR file downloads appear to have been successful!\n")
     }else{
         stop("It appears that one or more of the files did not download successfully...\n")
