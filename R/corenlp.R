@@ -8,7 +8,7 @@
 #' @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
 #' @param additional_options An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!
 #' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
-#' @param version The version of Core-NLP to download. Defaults to '3.5.2'.
+#' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
 #' @return Does not return anything.
 #' @export
 corenlp <- function(documents = NULL,
@@ -128,7 +128,7 @@ corenlp <- function(documents = NULL,
 
     # run corenlp
     directory <- system.file("extdata", package = "SpeedReader")[1]
-    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," ", additional_options, ' -filelist filenames.txt',sep = ""),"r")
+    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," ",ner_model," ",additional_options, ' -filelist filenames.txt',sep = ""),"r")
     close(p2)
 
     for(i in 1:numdocs){

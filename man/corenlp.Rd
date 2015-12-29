@@ -27,7 +27,7 @@ corenlp(documents = NULL, document_directory = NULL,
 
 \item{return_raw_output}{Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.}
 
-\item{version}{The version of Core-NLP to download. Defaults to '3.5.2'.}
+\item{version}{The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.}
 }
 \value{
 Does not return anything.

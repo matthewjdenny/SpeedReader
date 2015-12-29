@@ -21,7 +21,8 @@ test_that("CoreNLP Works", {
         delete_intermediate_files = TRUE,
         syntactic_parsing = FALSE,
         coreference_resolution =FALSE,
-        additional_options = opts,
+        ner_model = "english.muc.7class",
+        additional_options = "",
         return_raw_output = FALSE)
 
 
