@@ -5,7 +5,9 @@
 \title{Runs Stanford CoreNLP on a collection of documents}
 \usage{
 corenlp(documents = NULL, document_directory = NULL,
-  delete_intermediate_files = TRUE, version = "3.5.2")
+  delete_intermediate_files = TRUE, syntactic_parsing = FALSE,
+  coreference_resolution = FALSE, additional_options = "",
+  return_raw_output = FALSE, version = "3.5.2")
 }
 \arguments{
 \item{documents}{An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.}
@@ -13,6 +15,14 @@ corenlp(documents = NULL, document_directory = NULL,
 \item{document_directory}{An optional directory path to a directory contianing only .txt files (one per document) to be run through CoreNLP. Cannot be supplied in addition to the 'documents' argument.}
 
 \item{delete_intermediate_files}{Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.}
+
+\item{syntactic_parsing}{Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE.}
+
+\item{coreference_resolution}{Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE.}
+
+\item{additional_options}{An optional string specifying additional options for CoreNLP.}
+
+\item{return_raw_output}{Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.}
 
 \item{version}{The version of Core-NLP to download. Defaults to '3.5.2'.}
 }

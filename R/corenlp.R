@@ -3,12 +3,20 @@
 #' @param documents An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.
 #' @param document_directory An optional directory path to a directory contianing only .txt files (one per document) to be run through CoreNLP. Cannot be supplied in addition to the 'documents' argument.
 #' @param delete_intermediate_files Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.
+#' @param syntactic_parsing Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE.
+#' @param coreference_resolution Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE.
+#' @param additional_options An optional string specifying additional options for CoreNLP.
+#' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'.
 #' @return Does not return anything.
 #' @export
 corenlp <- function(documents = NULL,
                     document_directory = NULL,
                     delete_intermediate_files = TRUE,
+                    syntactic_parsing = FALSE,
+                    coreference_resolution =FALSE,
+                    additional_options = "",
+                    return_raw_output = FALSE,
                     version = "3.5.2"){
 
     # save the current working directory
@@ -95,9 +103,19 @@ corenlp <- function(documents = NULL,
                 col.names= F,
                 sep = "\n" )
 
+    #include options
+    parse <- ""
+    if(syntactic_parsing){
+        parse <- ",parse"
+    }
+    dcoref <- ""
+    if(coreference_resolution){
+        dcoref <- ",dcoref"
+    }
+
     # run corenlp
     directory <- system.file("extdata", package = "SpeedReader")[1]
-    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner -filelist filenames.txt',sep = ""),"r")
+    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," ", additional_options, ' -filelist filenames.txt',sep = ""),"r")
     close(p2)
 
     for(i in 1:numdocs){
@@ -117,36 +135,39 @@ corenlp <- function(documents = NULL,
         # turn into a list of sentences
         xml_data <- XML::xmlToList(data)[[1]][[1]]
 
-        #get number of tokens
-        numtokens <- 0
-        for(j in 1:length(xml_data)){
-            numtokens <- numtokens + length(xml_data[[j]][[1]])
-        }
-        cat("Reading in:", numtokens, "tokens from document:",i,"of", numdocs,"\n")
-
-        token_data <- data.frame(word = rep("",numtokens),
-                                 lemma = rep("",numtokens),
-                                 POS = rep("",numtokens),
-                                 NER = rep("",numtokens),
-                                 sentence = rep(0,numtokens),
-                                 document = rep(i,numtokens),
-                                 stringsAsFactors = FALSE)
-
-
-        #loop through every sentence in document
-        token_counter <- 1
-        for(j in 1:length(xml_data)){
-            for(k in 1:length(xml_data[[j]][[1]])){
-                token_data$word[token_counter] <- xml_data[[j]][[1]][[k]]$word
-                token_data$lemma[token_counter] <- xml_data[[j]][[1]][[k]]$lemma
-                token_data$POS[token_counter] <- xml_data[[j]][[1]][[k]]$POS
-                token_data$NER[token_counter] <- xml_data[[j]][[1]][[k]]$NER
-                token_data$sentence[token_counter] <- j
-                token_counter <- token_counter + 1
+        if(return_raw_output){
+            Processed_Text[[i]] <- xml_data
+        }else{
+            #get number of tokens
+            numtokens <- 0
+            for(j in 1:length(xml_data)){
+                numtokens <- numtokens + length(xml_data[[j]][[1]])
             }
-        }
+            cat("Reading in:", numtokens, "tokens from document:",i,"of", numdocs,"\n")
 
-        Processed_Text[[i]] <- token_data
+            token_data <- data.frame(word = rep("",numtokens),
+                                     lemma = rep("",numtokens),
+                                     POS = rep("",numtokens),
+                                     NER = rep("",numtokens),
+                                     sentence = rep(0,numtokens),
+                                     document = rep(i,numtokens),
+                                     stringsAsFactors = FALSE)
+
+
+            #loop through every sentence in document
+            token_counter <- 1
+            for(j in 1:length(xml_data)){
+                for(k in 1:length(xml_data[[j]][[1]])){
+                    token_data$word[token_counter] <- xml_data[[j]][[1]][[k]]$word
+                    token_data$lemma[token_counter] <- xml_data[[j]][[1]][[k]]$lemma
+                    token_data$POS[token_counter] <- xml_data[[j]][[1]][[k]]$POS
+                    token_data$NER[token_counter] <- xml_data[[j]][[1]][[k]]$NER
+                    token_data$sentence[token_counter] <- j
+                    token_counter <- token_counter + 1
+                }
+            }
+            Processed_Text[[i]] <- token_data
+        }
     }
 
     # reset the working directory
