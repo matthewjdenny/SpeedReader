@@ -5,7 +5,6 @@
 #' @param delete_intermediate_files Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.
 #' @param syntactic_parsing Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.
 #' @param coreference_resolution Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.
-#' @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
 #' @param additional_options An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!
 #' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
@@ -16,17 +15,15 @@ corenlp <- function(documents = NULL,
                     delete_intermediate_files = TRUE,
                     syntactic_parsing = FALSE,
                     coreference_resolution = FALSE,
-                    ner_model = c("english.all.3class",
-                                  "english.muc.7class",
-                                  "english.conll.4class"),
                     additional_options = "",
                     return_raw_output = FALSE,
                     version = "3.5.2"){
 
+    #currently borken
+    # @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
+
     # save the current working directory
     currentwd <- getwd()
-
-    ner_model <- ner_model[1]
 
     if(syntactic_parsing){
         return_raw_output <- TRUE
@@ -128,7 +125,7 @@ corenlp <- function(documents = NULL,
 
     # run corenlp
     directory <- system.file("extdata", package = "SpeedReader")[1]
-    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref," -ner.model ",ner_model," ",additional_options, ' -filelist filenames.txt',sep = ""),"r")
+    p2 <- pipe(paste('java -cp "', directory, '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref,' ',additional_options, ' -filelist filenames.txt',sep = ""),"r")
     close(p2)
 
     for(i in 1:numdocs){
