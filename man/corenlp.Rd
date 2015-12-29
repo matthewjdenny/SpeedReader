@@ -6,7 +6,8 @@
 \usage{
 corenlp(documents = NULL, document_directory = NULL,
   delete_intermediate_files = TRUE, syntactic_parsing = FALSE,
-  coreference_resolution = FALSE, additional_options = "",
+  coreference_resolution = FALSE, ner_model = c("english.all.3class",
+  "english.muc.7class", "english.conll.4class"), additional_options = "",
   return_raw_output = FALSE, version = "3.5.2")
 }
 \arguments{
@@ -16,11 +17,13 @@ corenlp(documents = NULL, document_directory = NULL,
 
 \item{delete_intermediate_files}{Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.}
 
-\item{syntactic_parsing}{Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE.}
+\item{syntactic_parsing}{Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.}
 
-\item{coreference_resolution}{Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE.}
+\item{coreference_resolution}{Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.}
 
-\item{additional_options}{An optional string specifying additional options for CoreNLP.}
+\item{ner_model}{The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.}
+
+\item{additional_options}{An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!}
 
 \item{return_raw_output}{Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.}
 
