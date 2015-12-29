@@ -46,6 +46,15 @@ corenlp <- function(documents = NULL,
                 stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
             }
             setwd("./corenlp_intermediate_files")
+
+            if(class(documents) == "list"){
+                # deal with the case where we got a list of term vectors
+                temp <- rep("", length(documents))
+                for(i in 1:length(temp)){
+                    temp[i] <- paste0(documents[[i]],collapse = " ")
+                }
+                documents <- temp
+            }
         }
     }else if(is.null(documents) & !is.null(document_directory)){
         setwd(document_directory)
@@ -97,11 +106,11 @@ corenlp <- function(documents = NULL,
         filenames <- documents
     }else{
         for(i in 1:numdocs){
-            filenames[i] <- paste("file",j,".txt",sep = "")
+            filenames[i] <- paste("file",i,".txt",sep = "")
             text <- documents[i]
             #write each document to file
             write.table(text,
-                        file = paste("file",j,".txt",sep = ""),
+                        file = paste("file",i,".txt",sep = ""),
                         quote = FALSE,
                         row.names = F,
                         col.names= F,
@@ -151,6 +160,7 @@ corenlp <- function(documents = NULL,
             data <- XML::xmlParse(paste("file",i,".txt.xml",sep = ""))
             if(delete_intermediate_files){
                 file.remove(paste("file",i,".txt.xml",sep = ""))
+                file.remove(paste("file",i,".txt",sep = ""))
             }
         }
 
