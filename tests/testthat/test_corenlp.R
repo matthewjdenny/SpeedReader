@@ -7,11 +7,23 @@ test_that("CoreNLP Works", {
     skip("Requires Huge download...")
     # dont run since this is too large of a file
     download_corenlp(version = "3.5.2")
+    file.remove(paste("filenames.txt",sep = ""))
+    file.remove(paste("filenames.txt.xml",sep = ""))
 
     directory <- system.file("extdata", package = "SpeedReader")[1]
+    opts = "-ner.model english.all.3class"
+    opts = "-ner.model english.muc.7class"
+    opts = "-ner.model english.conll.4class"
+
     Tokenized <- corenlp(
         documents = NULL,
         document_directory = directory,
-        version = "3.5.2")
+        delete_intermediate_files = TRUE,
+        syntactic_parsing = FALSE,
+        coreference_resolution =FALSE,
+        additional_options = opts,
+        return_raw_output = FALSE)
+
+
 
 })

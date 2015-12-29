@@ -132,6 +132,10 @@ corenlp <- function(documents = NULL,
             }
         }
 
+        if(delete_intermediate_files){
+            file.remove(paste("filenames.txt",sep = ""))
+        }
+
         # turn into a list of sentences
         xml_data <- XML::xmlToList(data)[[1]][[1]]
 
