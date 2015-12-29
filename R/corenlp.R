@@ -2,11 +2,13 @@
 #'
 #' @param documents An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.
 #' @param document_directory An optional directory path to a directory contianing only .txt files (one per document) to be run through CoreNLP. Cannot be supplied in addition to the 'documents' argument.
+#' @param delete_intermediate_files Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'.
 #' @return Does not return anything.
 #' @export
 corenlp <- function(documents = NULL,
                     document_directory = NULL,
+                    delete_intermediate_files = TRUE,
                     version = "3.5.2"){
 
     # save the current working directory
@@ -102,10 +104,17 @@ corenlp <- function(documents = NULL,
         #read everything in
         if(USING_EXTERNAL_FILES){
             data <- XML::xmlParse(paste(filenames[i],".xml",sep = ""))
+            if(delete_intermediate_files){
+                file.remove(paste(filenames[i],".xml",sep = ""))
+            }
         }else{
             data <- XML::xmlParse(paste("file",i,".txt.xml",sep = ""))
+            if(delete_intermediate_files){
+                file.remove(paste("file",i,".txt.xml",sep = ""))
+            }
         }
 
+        # turn into a list of sentences
         xml_data <- XML::xmlToList(data)[[1]][[1]]
 
         #get number of tokens
@@ -139,6 +148,10 @@ corenlp <- function(documents = NULL,
 
         Processed_Text[[i]] <- token_data
     }
+
+    # reset the working directory
+    setwd(currentwd)
+    # return the list of data frames
     return(Processed_Text)
 }
 
