@@ -57,14 +57,22 @@ mallet_lda <- function(documents = NULL,
             if(length(vocabulary) != ncol(documents)){
                 stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
             }
+
             #populate a string vector of documents from dtm
-            if(nrow(documents) > 99){
+            cat("Populating document vector from document term matrix...\n")
+            printseq_counter <- 1
+            if(nrow(documents) > 9999){
+                printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
+            }else if(nrow(documents) > 199){
                 printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
             }else{
                 printseq <- 1:nrow(documents)
             }
             temp_docs <- rep("",nrow(documents))
             for(i in 1:length(temp_docs)){
+                if(printseq[printseq_counter] == i){
+                    cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                }
                 str <- NULL
                 colindexes <- which(documents[i,] > 0)
                 if(length(colindexes) > 0){
@@ -80,13 +88,75 @@ mallet_lda <- function(documents = NULL,
                 temp_docs[i] <- temp
             }
             documents <- temp_docs
+
+
         }else if(class(documents) == "simple_triplet_matrix"){
+            if(is.null(vocabulary)){
+                vocabulary <- colnames(documents)
+                cat("No vocabulary supplied, using column names of document term matrix...\n")
+            }
+            if(length(vocabulary) != ncol(documents)){
+                stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
+            }
+
+            #populate a string vector of documents from dtm
+            cat("Populating document vector from document term matrix...\n")
+            printseq_counter <- 1
+            if(nrow(documents) > 9999){
+                printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
+            }else if(nrow(documents) > 199){
+                printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
+            }else{
+                printseq <- 1:nrow(documents)
+            }
+            temp_docs <- rep("",nrow(documents))
+            for(i in 1:length(temp_docs)){
+                if(printseq[printseq_counter] == i){
+                    cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                }
+                str <- NULL
+                colindexes <- which(documents$i == i)
+                if(length(colindexes) > 0){
+                    for(k in 1:length(colindexes)){
+                        str <- c(str,
+                                 rep(vocabulary[colindexes[k]],
+                                     documents$v[colindexes[k]]))
+                    }
+                    temp  <- paste0(str,collapse = " ")
+                }else{
+                    temp <- ""
+                }
+                temp_docs[i] <- temp
+            }
+            documents <- temp_docs
+
 
         }else{
             stop("You must provide a 'documents' object as either a vector of strings (one per document),a list of string vectors (one entry per document), or a dense (or sparse) document-term matrix...")
         }
     }else if(is.null(documents) & !is.null(document_directory)){
         USING_EXTERNAL_FILES <- TRUE
+        substrRight <- function(x, n){
+            substr(x, nchar(x)-n+1, nchar(x))
+        }
+
+        # prepare text to be used
+        documents <- list.files(path = document_directory)
+        #only use files with a .txt ending
+        endings <- as.character(sapply(documents,substrRight,4))
+        txtfiles <- which(endings == ".txt")
+        if(length(txtfiles) > 0){
+            documents <- documents[txtfiles]
+        }else{
+            stop("Did not find any valid .txt files in the specified directory...")
+        }
+        #read in documents
+        temp_docs <- rep("",length(documents))
+        for(i in 1:length(documents)){
+            temp_docs[i] <- paste0(readLines(documents[i]), collapse = " ")
+        }
+        document_names <- documents
+        documents <- temp_docs
     }else{
         stop("You must specify either a valid documents object or a valid document_directory directory path (but not both)...")
     }
@@ -101,27 +171,6 @@ mallet_lda <- function(documents = NULL,
     }else{
         cat("MALLET Jar files not found, downloading...\n")
         download_mallet(version = version)
-    }
-
-    substrRight <- function(x, n){
-        substr(x, nchar(x)-n+1, nchar(x))
-    }
-
-    # prepare text to be used
-    if(USING_EXTERNAL_FILES){
-        documents <- list.files(path = document_directory)
-        #only use files with a .txt ending
-        endings <- as.character(sapply(documents,substrRight,4))
-        txtfiles <- which(endings == ".txt")
-        if(length(txtfiles) > 0){
-            documents <- documents[txtfiles]
-        }else{
-            stop("Did not find any valid .txt files in the specified directory...")
-        }
-        #read in documents
-        for(i in 1:length(documents)){
-
-        }
     }
 
     num_docs <- length(documents)
