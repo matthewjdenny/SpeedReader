@@ -8,7 +8,19 @@
 #' @param additional_options An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!
 #' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
-#' @return Does not return anything.
+#' @return Returns a list of data.frame objects, one per document, where each row is a token observation (in order)
+#' @examples
+#' \dontrun{
+#' directory <- system.file("extdata", package = "SpeedReader")[1]
+#' Tokenized <- corenlp(
+#'      documents = NULL,
+#'      document_directory = directory,
+#'      delete_intermediate_files = TRUE,
+#'      syntactic_parsing = FALSE,
+#'      coreference_resolution =FALSE,
+#'      additional_options = "",
+#'      return_raw_output = FALSE)
+#' }
 #' @export
 corenlp <- function(documents = NULL,
                     document_directory = NULL,

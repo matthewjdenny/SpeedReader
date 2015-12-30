@@ -27,9 +27,22 @@ corenlp(documents = NULL, document_directory = NULL,
 \item{version}{The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.}
 }
 \value{
-Does not return anything.
+Returns a list of data.frame objects, one per document, where each row is a token observation (in order)
 }
 \description{
 Runs Stanford CoreNLP on a collection of documents
+}
+\examples{
+\dontrun{
+directory <- system.file("extdata", package = "SpeedReader")[1]
+Tokenized <- corenlp(
+     documents = NULL,
+     document_directory = directory,
+     delete_intermediate_files = TRUE,
+     syntactic_parsing = FALSE,
+     coreference_resolution =FALSE,
+     additional_options = "",
+     return_raw_output = FALSE)
+}
 }
 
