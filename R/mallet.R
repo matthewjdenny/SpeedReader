@@ -1,4 +1,14 @@
-mallet <- function(){
+mallet <- function(documents = NULL,
+                   document_directory = NULL,
+                   topics = 10,
+                   iterations = 100,
+                   alpha = 1,
+                   beta = 0.1,
+                   hyperparameter_optimization_interval = 0,
+                   num_top_words = 20,
+                   optional_arguments = "",
+                   tokenization_regex = '[\\p{L}\\p{N}\\p{P}]+',
+                   cores = 1){
 #     GENERATE_MALLET_FILES= FALSE
 #     RUN_MALLET = TRUE
 #     NUM_THREADS = 1
