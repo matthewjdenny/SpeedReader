@@ -191,7 +191,7 @@ generate_sparse_large_document_term_matrix <- function(file_list,
             ordering <- order(slam::col_sums(sparse_document_term_matrix), decreasing = T)
             sparse_document_term_matrix <- sparse_document_term_matrix[,ordering]
         }
-        print(str(sparse_document_term_matrix))
+        #print(str(sparse_document_term_matrix))
         return(sparse_document_term_matrix)
     }else{
         return(vocabulary)
