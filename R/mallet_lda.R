@@ -5,6 +5,7 @@
 #' @param vocabulary An optional character vector (required if the user wishes to not use hyper parameter optimization) specifying the vocabulary. If a (sparse) document term matrix is provided, then this must be the same length as the number of columns in the matrix, and should correspond to those columns.
 #' @param topics The number of topics the user wishes to specify for LDA. Defaults to 10.
 #' @param iterations The number of collapsed Gibbs sampling iterations the user wishes to specify. Defaults to 1000.
+#' @param burnin The number of iterations to be discarded before assesing topic model convergences via a Geweke test. Must be less than iterations. Not a parameter passed to MALLET, only used for post-hoc convergence checking. Defualts to 100.
 #' @param alpha The alpha LDA hyperparameter. Defaults to 1.
 #' @param beta The beta LDA hyperparameter. This value is multiplied by the size of the vocabulary. Defaults to 0.01 which has worked well for the author in the past.
 #' @param hyperparameter_optimization_interval The interval (number of iterations) at which LDA hyper-parameters should be optimized. Defaults to 0 -- meaning no hyper parameter optimization will be performed. If greater than zero, the beta term need not be specified as it will be optimized regardless. Generally a value of 5-10 works well and hyper parameter optimization will often provide much better quality topics.
@@ -20,6 +21,7 @@ mallet_lda <- function(documents = NULL,
                        vocabulary = NULL,
                        topics = 10,
                        iterations = 1000,
+                       burnin = 100,
                        alpha = 1,
                        beta = 0.01,
                        hyperparameter_optimization_interval = 0,
@@ -50,6 +52,11 @@ mallet_lda <- function(documents = NULL,
 
     if(hyperparameter_optimization_interval == 0){
         beta <- beta * length(vocabulary)
+    }
+
+    if(burnin >= iterations){
+        burnin <- ceiling(iterations/2)
+        cat("Burnin selected was too large, setting burnin to:",burnin,"...\n")
     }
 
     # save the current working directory
@@ -388,6 +395,23 @@ mallet_lda <- function(documents = NULL,
     #### Step 5: Cleanup and Return Everything ####
     ###############################################
 
+    UMASS_BLUE <- rgb(51,51,153,255,maxColorValue = 255)
+    cat("Assessing topic model convergence...\n")
+    try({
+        plot( y = trace_stats$LL_Token[ceiling(burnin/10):length(trace_stats$LL_Token)],
+              x = trace_stats$iteration[ceiling(burnin/10):length(trace_stats$LL_Token)],
+              pch = 19, col = UMASS_BLUE,
+              main = paste(
+                  "Un-Normalized Topic Model Log Likelihood \n",
+                  " Geweke Statistic for Last",
+                  length(ceiling(burnin/10):length(trace_stats$LL_Token)),
+                  "Iterations:",
+                  round(coda::geweke.diag(
+                      trace_stats$LL_Token[ceiling(burnin/10):length(trace_stats$LL_Token)])$z,
+                      2)),
+              xlab = "Iteration",ylab = "Log Likelihood",
+              cex.lab=2, cex.axis=1.4, cex.main=1.4)
+    })
     # remove
     if(delete_intermediate_files){
         setwd("..")

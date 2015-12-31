@@ -5,9 +5,9 @@
 \title{A wrapper function for LDA using the MALLET machine learning toolkit -- an incredibly efficient, fast and well tested implementation of LDA. See http://mallet.cs.umass.edu/ and https://github.com/mimno/Mallet for much more information on this amazing set of libraries.}
 \usage{
 mallet_lda(documents = NULL, document_directory = NULL, vocabulary = NULL,
-  topics = 10, iterations = 1000, alpha = 1, beta = 0.01,
-  hyperparameter_optimization_interval = 0, num_top_words = 20,
-  optional_arguments = "",
+  topics = 10, iterations = 1000, burnin = 100, alpha = 1,
+  beta = 0.01, hyperparameter_optimization_interval = 0,
+  num_top_words = 20, optional_arguments = "",
   tokenization_regex = "[\\\\p{L}\\\\p{N}\\\\p{P}]+", cores = 1,
   delete_intermediate_files = TRUE)
 }
@@ -21,6 +21,8 @@ mallet_lda(documents = NULL, document_directory = NULL, vocabulary = NULL,
 \item{topics}{The number of topics the user wishes to specify for LDA. Defaults to 10.}
 
 \item{iterations}{The number of collapsed Gibbs sampling iterations the user wishes to specify. Defaults to 1000.}
+
+\item{burnin}{The number of iterations to be discarded before assesing topic model convergences via a Geweke test. Must be less than iterations. Not a parameter passed to MALLET, only used for post-hoc convergence checking. Defualts to 100.}
 
 \item{alpha}{The alpha LDA hyperparameter. Defaults to 1.}
 

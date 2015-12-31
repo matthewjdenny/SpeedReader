@@ -20,6 +20,7 @@ test_that("MALLET LDA Works", {
                            vocabulary = NULL,
                            topics = 10,
                            iterations = 1000,
+                           burnin = 10,
                            alpha = 1,
                            beta = 0.01,
                            hyperparameter_optimization_interval = 5,
