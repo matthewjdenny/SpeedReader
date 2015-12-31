@@ -49,7 +49,7 @@ download_mallet <- function(){
     test1 <- system.file("extdata","/mallet.jar", package = "SpeedReader")[1]
     test2 <- system.file("extdata","/mallet-deps.jar", package = "SpeedReader")[1]
 
-    if(test1 != "" & test2 != "" & test3 != ""){
+    if(test1 != "" & test2 != ""){
         cat("JAR file downloads appear to have been successful!\n")
     }else{
         stop("It appears that one or more of the files did not download successfully...\n")
