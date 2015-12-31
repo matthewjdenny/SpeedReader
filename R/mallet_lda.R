@@ -46,16 +46,6 @@ mallet_lda <- function(documents = NULL,
     #check to make sure that we have the right kind of input
     if(!is.null(documents) & is.null(document_directory)){
         if(class(documents) == "list" | class(documents) == "character"){
-            # create an intermediate directory
-            success <- dir.create("mallet_intermediate_files",showWarnings = FALSE)
-            if(!success){
-                file.remove("./mallet_intermediate_files")
-                success <- dir.create("mallet_intermediate_files")
-            }
-            if(!success){
-                stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
-            }
-            setwd("./mallet_intermediate_files")
 
             if(class(documents) == "list"){
                 # deal with the case where we got a list of term vectors
@@ -201,6 +191,17 @@ mallet_lda <- function(documents = NULL,
     ##############################################
     cat("Outputing documents in correct format for MALLET...\n")
 
+    # create an intermediate directory
+    success <- dir.create("mallet_intermediate_files",showWarnings = FALSE)
+    if(!success){
+        file.remove("./mallet_intermediate_files")
+        success <- dir.create("mallet_intermediate_files")
+    }
+    if(!success){
+        stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
+    }
+    setwd("./mallet_intermediate_files")
+
     # CSV format -- 1 line per document:
     # doc_id\t\tdoc_text
     data <- matrix("",nrow = num_docs,ncol = 3)
@@ -213,7 +214,7 @@ mallet_lda <- function(documents = NULL,
 
     # write the data to file:
     write.table(data, file = "mallet_input_corpus.csv", quote = FALSE,
-                row.names = F,col.names= F, sep = "\t" )
+                row.names = F,col.names = F, sep = "\t" )
 
     ############################################
     #### Step 2: Preprocess data for MALLET ####
