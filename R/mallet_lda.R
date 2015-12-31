@@ -257,6 +257,73 @@ mallet_lda <- function(documents = NULL,
     stdout <- readLines("stdout.txt",warn = FALSE)
     document_topics <- read.table(file = "doc-topics.txt",sep = "\t",header = FALSE)
 
+    #####################################################
+    # 4.1 Turn document-topic table into a useable form #
+    #####################################################
+
+    # first get rid of bad columns
+    vector_is_NA <- function(vec){
+        if(length(which(is.na(vec))) == length(vec)){
+            return(1)
+        }else{
+            return(0)
+        }
+    }
+    NA_columns <- apply(document_topics,2,vector_is_NA)
+    NA_columns <- which(NA_columns == 1)
+    if(length(NA_columns) > 0){
+        document_topics <- document_topics[,-NA_columns]
+    }
+    document_topics <- document_topics[,-c(1,2)]
+    #create a populate a clean doc-topics table
+    temp <- matrix(0,nrow = nrow(document_topics),ncol = topics)
+    col_ind_L <- TRUE
+    col_ind <- 0
+    for(i in 1:nrow(document_topics)){
+        for(j in 1:ncol(document_topics)){
+            if(col_ind_L){
+                col_ind_L <- FALSE
+                col_ind <- document_topics[i,j] + 1
+            }else{
+                col_ind_L <- TRUE
+                temp[i,col_ind] <- document_topics[i,j]
+            }
+        }
+    }
+    document_topics <- temp
+    rownames(document_topics) <- paste("document_",
+                                       1:nrow(document_topics), sep = "")
+    colnames(document_topics) <- paste("topic_",
+                                       1:topics, sep = "")
+
+    ####################################################
+    # 4.2 Extract useful trace information from stdout #
+    ####################################################
+
+    # assumes that LL/token is printed out every 10 iterations
+    # I am only going to extract [beta: ] values on every 10.
+
+    trace_stats <- data.frame(iteration = seq(10,iterations,by = 10),
+                              beta = rep(NA,ceiling(iterations/10)),
+                              LL_Token = rep(NA,ceiling(iterations/10)))
+    counter <- 0
+    for(i in 1:length(stdout)){
+        if(grepl("LL/token",stdout[i])){
+            counter <- counter + 1
+            trace_stats$LL_Token[counter] <- as.numeric(stringr::str_split(stdout[i],":")[[1]][2])
+            next_beta <- TRUE
+        }
+        if(grepl("\\[beta:",stdout[i])){
+            temp <- stringr::str_split(stdout[i],":")[[1]][2]
+            trace_stats$beta[counter] <- as.numeric(stringr::str_replace(temp,"\\]",""))
+            next_beta <- FALSE
+        }
+    }
+
+    ########################################################
+    # 4.3 Read in topic report and put it in a nice format #
+    ########################################################
+
 
 
     ###############################################
