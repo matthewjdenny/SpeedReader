@@ -63,7 +63,7 @@ mallet_lda <- function(documents = NULL,
             if(length(vocabulary) != ncol(documents)){
                 stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
             }
-
+            vocabulary <- stringr::str_replace_all(vocabulary," ","_")
             #populate a string vector of documents from dtm
             cat("Populating document vector from document term matrix...\n")
             printseq_counter <- 1
@@ -105,6 +105,7 @@ mallet_lda <- function(documents = NULL,
             if(length(vocabulary) != ncol(documents)){
                 stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
             }
+            vocabulary <- stringr::str_replace_all(vocabulary," ","_")
 
             #populate a string vector of documents from dtm
             cat("Populating document vector from document term matrix...\n")
@@ -221,7 +222,8 @@ mallet_lda <- function(documents = NULL,
     ############################################
 
     # prepare the data for use with Mallet's LDA routine
-    prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt 2>&1", sep = "")
+    prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
+    #2>&1
     print(prepare_data)
     p <- pipe(prepare_data,"r")
     close(p)
@@ -232,9 +234,11 @@ mallet_lda <- function(documents = NULL,
 
     # Now run LDA
     if(hyperparameter_optimization_interval != 0){
-        run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1&", sep = "")
+        run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt", sep = "")
+        # 2>&1&
     }else{
-        run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1&", sep = "")
+        run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt", sep = "")
+        #  2>&1&
     }
     print(run_mallet)
     p <- pipe(run_mallet,"r")
