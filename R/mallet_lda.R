@@ -221,10 +221,11 @@ mallet_lda <- function(documents = NULL,
     #### Step 2: Preprocess data for MALLET ####
     ############################################
 
+    cat("Converting input to MALLET format...\n")
     # prepare the data for use with Mallet's LDA routine
     prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
     #2>&1
-    print(prepare_data)
+    #print(prepare_data)
     p <- pipe(prepare_data,"r")
     close(p)
 
@@ -232,6 +233,7 @@ mallet_lda <- function(documents = NULL,
     #### Step 3: Run LDA via MALLET ####
     ####################################
 
+    cat("Fitting topic model...\n")
     # Now run LDA
     if(hyperparameter_optimization_interval != 0){
         run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt", sep = "")
@@ -240,16 +242,14 @@ mallet_lda <- function(documents = NULL,
         run_mallet <- paste("java -server -Xmx10g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt", sep = "")
         #  2>&1&
     }
-    print(run_mallet)
+    #print(run_mallet)
     p <- pipe(run_mallet,"r")
     close(p)
 
     #######################################
     #### Step 4: Read the data back in ####
     #######################################
-
-    LDA_Results <- vector(mode = "list", length = 4)
-
+    cat("Reading MALLET output back into R...\n")
     topic_report <- XML::xmlParse("topic-report.xml")
     topic_report <- XML::xmlToList(topic_report)
     topic_phrase_report <- XML::xmlParse("topic-phrase-report.xml")
@@ -296,6 +296,8 @@ mallet_lda <- function(documents = NULL,
     colnames(document_topics) <- paste("topic_",
                                        1:topics, sep = "")
 
+    document_topics <- as.data.frame(document_topics)
+
     ####################################################
     # 4.2 Extract useful trace information from stdout #
     ####################################################
@@ -324,7 +326,58 @@ mallet_lda <- function(documents = NULL,
     # 4.3 Read in topic report and put it in a nice format #
     ########################################################
 
+    top_words <- data.frame(matrix("",nrow = topics, ncol = num_top_words),
+                            stringsAsFactors = F)
+    rownames(top_words) <- paste("topic_",1:topics, sep = "")
+    colnames(top_words) <- paste("top_word_",1:num_top_words, sep = "")
+    top_word_counts <- data.frame(matrix(0,nrow = topics, ncol = num_top_words),
+                            stringsAsFactors = F)
+    rownames(top_word_counts) <- paste("topic_",1:topics, sep = "")
+    colnames(top_word_counts) <- paste("top_word_",1:num_top_words, sep = "")
+    topic_data <- data.frame(matrix(0,nrow = topics, ncol = 2),
+                                  stringsAsFactors = F)
+    rownames(topic_data) <- paste("topic_",1:topics, sep = "")
+    colnames(topic_data) <- c("alpha","total_tokens")
 
+    for(i in 1:length(topic_report)){
+        cur <- topic_report[[i]]
+        for(j in 1:(length(cur)-1)){
+            top_words[i,j] <- cur[[j]]$text
+            top_word_counts[i,j] <- as.numeric(cur[[j]]$.attrs[2])
+        }
+        topic_data[i,1] <- as.numeric(cur[[length(cur)]][2])
+        topic_data[i,2] <- as.numeric(cur[[length(cur)]][3])
+    }
+
+    ###############################################################
+    # 4.4 Read in topic phrase report and put it in a nice format #
+    ###############################################################
+
+    top_phrases <- data.frame(matrix("",nrow = topics, ncol = num_top_words),
+                            stringsAsFactors = F)
+    rownames(top_phrases) <- paste("topic_",1:topics, sep = "")
+    colnames(top_phrases) <- paste("top_phrase_",1:num_top_words, sep = "")
+    top_phrase_counts <- data.frame(matrix(0,nrow = topics, ncol = num_top_words),
+                                  stringsAsFactors = F)
+    rownames(top_phrase_counts) <- paste("topic_",1:topics, sep = "")
+    colnames(top_phrase_counts) <- paste("top_phrase_",1:num_top_words, sep = "")
+
+
+    for(i in 1:length(topic_phrase_report)){
+        cur <- topic_phrase_report[[i]]
+        for(j in (num_top_words+1):(2*num_top_words)){
+            top_phrases[i,j] <- cur[[j]]$text
+            top_phrase_counts[i,j] <- as.numeric(cur[[j]]$.attrs[2])
+        }
+    }
+
+    LDA_Results <- list(lda_trace_stats = trace_stats,
+                        document_topic_proportions = document_topics,
+                        topic_metadata = topic_data,
+                        topic_top_words = top_words,
+                        topic_top_word_counts = top_word_counts,
+                        topic_top_phrases = top_phrases,
+                        topic_top_phrase_counts = top_phrase_counts)
 
     ###############################################
     #### Step 5: Cleanup and Return Everything ####
