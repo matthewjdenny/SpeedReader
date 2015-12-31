@@ -55,6 +55,8 @@ The SpeedReader package currently provides the following functions to aid in the
 * `tfidf()` -- Calculates and displays TF-IDF scores for a given document term matrix.
 * `contingency_table()` -- Generates a contingency table for a given document term matrix and set of document covariates.
 * `pmi()` -- Calculates a number of information theoretic quantities on a given contingency table.
+* `corenlp()` -- A wrapper for Stanfords wonderful CoreNLP libraries. Currently returns one dataframe per document with lots of CoreNLP token metadata including POS and NER tags. Also wraps syntactic parsing, and coreference resolution functionality as options.
+* `mallet_lda()` -- A wrapper for the incredibly efficient, robust and well tested implementation of latent Dirichlet allocation included in the MALLET libraries. Reads all output into R for easy reuse in other applications.
 
 The SpeedReader package also provides the following utility functions:
 
