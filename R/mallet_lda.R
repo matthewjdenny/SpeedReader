@@ -31,6 +31,18 @@ mallet_lda <- function(documents = NULL,
     ###############################
     #### Step 0: Preliminaries ####
     ###############################
+
+    #check to see that we have the selected version of corenlp installed
+    test1 <- system.file("extdata","mallet.jar", package = "SpeedReader")[1]
+    test2 <- system.file("extdata","mallet-deps.jar", package = "SpeedReader")[1]
+
+    if(test1 != "" & test2 != ""){
+        cat("Found MALLET JAR files...\n")
+    }else{
+        cat("MALLET Jar files not found, downloading...\n")
+        download_mallet()
+    }
+
     if(hyperparameter_optimization_interval == 0 & is.null(vocabulary)){
         stop("You must provide the vocabulary_size if you are not using hyperparameter optimization.")
     }
@@ -172,18 +184,6 @@ mallet_lda <- function(documents = NULL,
         stop("You must specify either a valid documents object or a valid document_directory directory path (but not both)...")
     }
 
-    # deal with different kinds of data -- turn it into a vector of strings (one string per document)
-    #check to see that we have the selected version of corenlp installed
-    test1 <- system.file("extdata","/mallet.jar", package = "SpeedReader")[1]
-    test2 <- system.file("extdata","/mallet-deps.jar", package = "SpeedReader")[1]
-
-    if(test1 != "" & test2 != ""){
-        cat("Found both MALLET JAR files...\n")
-    }else{
-        cat("MALLET Jar files not found, downloading...\n")
-        download_mallet()
-    }
-
     num_docs <- length(documents)
     directory <- system.file("extdata", package = "SpeedReader")[1]
 
@@ -249,6 +249,13 @@ mallet_lda <- function(documents = NULL,
     #######################################
 
     LDA_Results <- vector(mode = "list", length = 4)
+
+    topic_report <- XML::xmlParse("topic-report.xml")
+    topic_report <- XML::xmlToList(topic_report)
+    topic_phrase_report <- XML::xmlParse("topic-phrase-report.xml")
+    topic_phrase_report <- XML::xmlToList(topic_phrase_report)
+    stdout <- readLines("stdout.txt",warn = FALSE)
+    document_topics <- read.table(file = "doc-topics.txt",sep = "\t",header = FALSE)
 
 
 
