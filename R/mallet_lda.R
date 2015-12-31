@@ -15,7 +15,7 @@
 #' @param cores Number of cores to be used to train the topic model. Defualts to 1.
 #' @param delete_intermediate_files Defaults to TRUE. If FALSE, then all raw ouput from MALLET will be left in a "./mallet_intermediate_files" subdirectory of the current working directory.
 #' @return Returns a list object with the following fields: lda_trace_stats is a data frame reporting the beta hyperparameter value and model log likelihood per token every ten iterations, can be useful for assesing convergence; document_topic_proportions reports the document topic proportions for all topics; topic_metadata reports the alpha x basemeasure values for all topics, along with the total number of tokens assigned to each topic; topic_top_words reports the 'num_top_words' top words for each topic (in descending order); topic_top_word_counts reports the count of each top word in their respective topics; topic_top_phrases reports top phrases (as found post-hoc by MALLET) asscoiated with each topic; topic_top_phrase_counts reports the counts of these phrases in each topic.
-#' #' @examples
+#' @examples
 #' \dontrun{
 #'files <- get_file_paths(source = "test sparse doc-term")
 #'

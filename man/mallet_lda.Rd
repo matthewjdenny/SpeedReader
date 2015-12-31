@@ -42,7 +42,11 @@ mallet_lda(documents = NULL, document_directory = NULL, vocabulary = NULL,
 }
 \value{
 Returns a list object with the following fields: lda_trace_stats is a data frame reporting the beta hyperparameter value and model log likelihood per token every ten iterations, can be useful for assesing convergence; document_topic_proportions reports the document topic proportions for all topics; topic_metadata reports the alpha x basemeasure values for all topics, along with the total number of tokens assigned to each topic; topic_top_words reports the 'num_top_words' top words for each topic (in descending order); topic_top_word_counts reports the count of each top word in their respective topics; topic_top_phrases reports top phrases (as found post-hoc by MALLET) asscoiated with each topic; topic_top_phrase_counts reports the counts of these phrases in each topic.
-#' @examples
+}
+\description{
+A wrapper function for LDA using the MALLET machine learning toolkit -- an incredibly efficient, fast and well tested implementation of LDA. See http://mallet.cs.umass.edu/ and https://github.com/mimno/Mallet for much more information on this amazing set of libraries.
+}
+\examples{
 \dontrun{
 files <- get_file_paths(source = "test sparse doc-term")
 
@@ -60,8 +64,5 @@ test <- mallet_lda(documents = sdtm,
                   hyperparameter_optimization_interval = 5,
                   cores = 1)
 }
-}
-\description{
-A wrapper function for LDA using the MALLET machine learning toolkit -- an incredibly efficient, fast and well tested implementation of LDA. See http://mallet.cs.umass.edu/ and https://github.com/mimno/Mallet for much more information on this amazing set of libraries.
 }
 
