@@ -88,6 +88,7 @@ mallet_lda <- function(documents = NULL,
             for(i in 1:length(temp_docs)){
                 if(printseq[printseq_counter] == i){
                     cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                    printseq_counter <- printseq_counter +1
                 }
                 str <- NULL
                 colindexes <- which(documents[i,] > 0)
@@ -129,6 +130,7 @@ mallet_lda <- function(documents = NULL,
             for(i in 1:length(temp_docs)){
                 if(printseq[printseq_counter] == i){
                     cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                    printseq_counter <- printseq_counter +1
                 }
                 str <- NULL
                 colindexes <- which(documents$i == i)
@@ -184,11 +186,11 @@ mallet_lda <- function(documents = NULL,
     test1 <- system.file("extdata","/mallet.jar", package = "SpeedReader")[1]
     test2 <- system.file("extdata","/mallet-deps.jar", package = "SpeedReader")[1]
 
-    if(test1 != "" & test2 != "" & test3 != ""){
+    if(test1 != "" & test2 != ""){
         cat("Found both MALLET JAR files...\n")
     }else{
         cat("MALLET Jar files not found, downloading...\n")
-        download_mallet(version = version)
+        download_mallet()
     }
 
     num_docs <- length(documents)
