@@ -330,20 +330,22 @@ mallet_lda <- function(documents = NULL,
                             stringsAsFactors = F)
     rownames(top_words) <- paste("topic_",1:topics, sep = "")
     colnames(top_words) <- paste("top_word_",1:num_top_words, sep = "")
-    top_word_counts <- data.frame(matrix(0,nrow = topics, ncol = num_top_words),
+    top_word_counts <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
                             stringsAsFactors = F)
     rownames(top_word_counts) <- paste("topic_",1:topics, sep = "")
     colnames(top_word_counts) <- paste("top_word_",1:num_top_words, sep = "")
-    topic_data <- data.frame(matrix(0,nrow = topics, ncol = 2),
+    topic_data <- data.frame(matrix(NA,nrow = topics, ncol = 2),
                                   stringsAsFactors = F)
     rownames(topic_data) <- paste("topic_",1:topics, sep = "")
     colnames(topic_data) <- c("alpha","total_tokens")
 
     for(i in 1:length(topic_report)){
         cur <- topic_report[[i]]
-        for(j in 1:(length(cur)-1)){
-            top_words[i,j] <- cur[[j]]$text
-            top_word_counts[i,j] <- as.numeric(cur[[j]]$.attrs[2])
+        if(length(cur) == num_top_words+1){
+            for(j in 1:(length(cur)-1)){
+                top_words[i,j] <- cur[[j]]$text
+                top_word_counts[i,j] <- as.numeric(cur[[j]]$.attrs[2])
+            }
         }
         topic_data[i,1] <- as.numeric(cur[[length(cur)]][2])
         topic_data[i,2] <- as.numeric(cur[[length(cur)]][3])
@@ -353,21 +355,23 @@ mallet_lda <- function(documents = NULL,
     # 4.4 Read in topic phrase report and put it in a nice format #
     ###############################################################
 
-    top_phrases <- data.frame(matrix("",nrow = topics, ncol = num_top_words),
+    top_phrases <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
                             stringsAsFactors = F)
     rownames(top_phrases) <- paste("topic_",1:topics, sep = "")
     colnames(top_phrases) <- paste("top_phrase_",1:num_top_words, sep = "")
-    top_phrase_counts <- data.frame(matrix(0,nrow = topics, ncol = num_top_words),
+    top_phrase_counts <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
                                   stringsAsFactors = F)
     rownames(top_phrase_counts) <- paste("topic_",1:topics, sep = "")
     colnames(top_phrase_counts) <- paste("top_phrase_",1:num_top_words, sep = "")
 
 
     for(i in 1:length(topic_phrase_report)){
-        cur <- topic_phrase_report[[i]]
-        for(j in (num_top_words+1):(2*num_top_words)){
-            top_phrases[i,j] <- cur[[j]]$text
-            top_phrase_counts[i,j] <- as.numeric(cur[[j]]$.attrs[2])
+        cur2 <- topic_phrase_report[[i]]
+        if(length(cur2) == (2*num_top_words)+1){
+            for(j in 1:num_top_words){
+                top_phrases[i,j] <- cur2[[j+num_top_words]]$text
+                top_phrase_counts[i,j] <- as.numeric(cur2[[j+num_top_words]]$.attrs[2])
+            }
         }
     }
 
@@ -386,7 +390,7 @@ mallet_lda <- function(documents = NULL,
     # remove
     if(delete_intermediate_files){
         setwd("..")
-        unlink("./mallet_intermediate_files")
+        unlink("./mallet_intermediate_files",recursive = T)
     }
 
     #reset the working directory
