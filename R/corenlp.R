@@ -2,6 +2,7 @@
 #'
 #' @param documents An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.
 #' @param document_directory An optional directory path to a directory contianing only .txt files (one per document) to be run through CoreNLP. Cannot be supplied in addition to the 'documents' argument.
+#' @param file_list An optional list of .txt files to be used if document_directory option is specified. Can be useful if the user only wants to process a subset of documents in the directory such as when the corpus is extremely large.
 #' @param delete_intermediate_files Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.
 #' @param syntactic_parsing Logical indicating whether syntactic parsing should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.
 #' @param coreference_resolution Logical indicating whether coreference resolution should be included as an option. Defaults to FALSE. Caution, enabling this argument may greatly increase runtime. If TRUE, output will automatically be return in raw format.
@@ -13,17 +14,14 @@
 #' \dontrun{
 #' directory <- system.file("extdata", package = "SpeedReader")[1]
 #' Tokenized <- corenlp(
-#'      documents = NULL,
 #'      document_directory = directory,
-#'      delete_intermediate_files = TRUE,
 #'      syntactic_parsing = FALSE,
-#'      coreference_resolution =FALSE,
-#'      additional_options = "",
-#'      return_raw_output = FALSE)
+#'      coreference_resolution =FALSE)
 #' }
 #' @export
 corenlp <- function(documents = NULL,
                     document_directory = NULL,
+                    file_list = NULL,
                     delete_intermediate_files = TRUE,
                     syntactic_parsing = FALSE,
                     coreference_resolution = FALSE,
@@ -33,6 +31,22 @@ corenlp <- function(documents = NULL,
 
     #currently borken
     # @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
+
+    #check to see that we have the selected version of corenlp installed
+    test1 <- system.file("extdata",
+                         paste("stanford-corenlp-",version,".jar",sep = ""),
+                         package = "SpeedReader")[1]
+    test2 <- system.file("extdata",
+                         paste("stanford-corenlp-",version,"-models.jar",sep = ""),
+                         package = "SpeedReader")[1]
+    test3 <- system.file("extdata","xom.jar", package = "SpeedReader")[1]
+
+    if(test1 != "" & test2 != "" & test3 != ""){
+        cat("Found CoreNLP JAR files...\n")
+    }else{
+        cat("CoreNLP Jar files not found, downloading...\n")
+        download_corenlp(version = version)
+    }
 
     # save the current working directory
     currentwd <- getwd()
@@ -49,24 +63,24 @@ corenlp <- function(documents = NULL,
     if(!is.null(documents) & is.null(document_directory)){
         if(class(documents) != "list" & class(documents) != "character"){
             stop("You must provide a 'documents' object as either a vector of strings (one per document) or a list of string vectors (one entry per document)...")
-            success <- dir.create("corenlp_intermediate_files",showWarnings = FALSE)
-            if(!success){
-                file.remove("./corenlp_intermediate_files")
-                success <- dir.create("corenlp_intermediate_files")
-            }
-            if(!success){
-                stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
-            }
-            setwd("./corenlp_intermediate_files")
+        }
+        success <- dir.create("corenlp_intermediate_files",showWarnings = FALSE)
+        if(!success){
+            file.remove("./corenlp_intermediate_files")
+            success <- dir.create("corenlp_intermediate_files")
+        }
+        if(!success){
+            stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
+        }
+        setwd("./corenlp_intermediate_files")
 
-            if(class(documents) == "list"){
-                # deal with the case where we got a list of term vectors
-                temp <- rep("", length(documents))
-                for(i in 1:length(temp)){
-                    temp[i] <- paste0(documents[[i]],collapse = " ")
-                }
-                documents <- temp
+        if(class(documents) == "list"){
+            # deal with the case where we got a list of term vectors
+            temp <- rep("", length(documents))
+            for(i in 1:length(temp)){
+                temp[i] <- paste0(documents[[i]],collapse = " ")
             }
+            documents <- temp
         }
     }else if(is.null(documents) & !is.null(document_directory)){
         setwd(document_directory)
@@ -76,36 +90,24 @@ corenlp <- function(documents = NULL,
     }
 
 
-    #check to see that we have the selected version of corenlp installed
-    test1 <- system.file("extdata",
-                         paste("stanford-corenlp-",version,".jar",sep = ""),
-                         package = "SpeedReader")[1]
-    test2 <- system.file("extdata",
-                         paste("stanford-corenlp-",version,"-models.jar",sep = ""),
-                         package = "SpeedReader")[1]
-    test3 <- system.file("extdata","xom.jar", package = "SpeedReader")[1]
-
-    if(test1 != "" & test2 != "" & test3 != ""){
-        cat("Found both CoreNLP JAR files...\n")
-    }else{
-        cat("CoreNLP Jar files not found, downloading...\n")
-        download_corenlp(version = version)
-    }
-
     substrRight <- function(x, n){
         substr(x, nchar(x)-n+1, nchar(x))
     }
 
     # prepare text to be used
     if(USING_EXTERNAL_FILES){
-        documents <- list.files()
-        #only use files with a .txt ending
-        endings <- as.character(sapply(documents,substrRight,4))
-        txtfiles <- which(endings == ".txt")
-        if(length(txtfiles) > 0){
-            documents <- documents[txtfiles]
+        if(is.null(file_list)){
+            documents <- list.files()
+            #only use files with a .txt ending
+            endings <- as.character(sapply(documents,substrRight,4))
+            txtfiles <- which(endings == ".txt")
+            if(length(txtfiles) > 0){
+                documents <- documents[txtfiles]
+            }else{
+                stop("Did not find any valid .txt files in the specified directory...")
+            }
         }else{
-            stop("Did not find any valid .txt files in the specified directory...")
+            documents <- file_list
         }
     }
 
@@ -194,6 +196,8 @@ corenlp <- function(documents = NULL,
                                      lemma = rep("",numtokens),
                                      POS = rep("",numtokens),
                                      NER = rep("",numtokens),
+                                     punctuation = rep(0,numtokens),
+                                     numeric = rep(0,numtokens),
                                      sentence = rep(0,numtokens),
                                      document = rep(i,numtokens),
                                      stringsAsFactors = FALSE)
@@ -207,6 +211,12 @@ corenlp <- function(documents = NULL,
                     token_data$lemma[token_counter] <- xml_data[[j]][[1]][[k]]$lemma
                     token_data$POS[token_counter] <- xml_data[[j]][[1]][[k]]$POS
                     token_data$NER[token_counter] <- xml_data[[j]][[1]][[k]]$NER
+                    if(grepl("[[:punct:]]+",xml_data[[j]][[1]][[k]]$word)){
+                        token_data$punctuation[token_counter] <- 1
+                    }
+                    if(grepl("[[:digit:]]+",xml_data[[j]][[1]][[k]]$word)){
+                        token_data$numeric[token_counter] <- 1
+                    }
                     token_data$sentence[token_counter] <- j
                     token_counter <- token_counter + 1
                 }

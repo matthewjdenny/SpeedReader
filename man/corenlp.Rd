@@ -4,7 +4,7 @@
 \alias{corenlp}
 \title{Runs Stanford CoreNLP on a collection of documents}
 \usage{
-corenlp(documents = NULL, document_directory = NULL,
+corenlp(documents = NULL, document_directory = NULL, file_list = NULL,
   delete_intermediate_files = TRUE, syntactic_parsing = FALSE,
   coreference_resolution = FALSE, additional_options = "",
   return_raw_output = FALSE, version = "3.5.2")
@@ -13,6 +13,8 @@ corenlp(documents = NULL, document_directory = NULL,
 \item{documents}{An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.}
 
 \item{document_directory}{An optional directory path to a directory contianing only .txt files (one per document) to be run through CoreNLP. Cannot be supplied in addition to the 'documents' argument.}
+
+\item{file_list}{An optional list of .txt files to be used if document_directory option is specified. Can be useful if the user only wants to process a subset of documents in the directory such as when the corpus is extremely large.}
 
 \item{delete_intermediate_files}{Logical indicating whether intermediate files produced by CoreNLP should be deleted. Defaults to TRUE, but can be set to FALSE and the xml output of CoreNLP will be saved.}
 
@@ -36,13 +38,9 @@ Runs Stanford CoreNLP on a collection of documents
 \dontrun{
 directory <- system.file("extdata", package = "SpeedReader")[1]
 Tokenized <- corenlp(
-     documents = NULL,
      document_directory = directory,
-     delete_intermediate_files = TRUE,
      syntactic_parsing = FALSE,
-     coreference_resolution =FALSE,
-     additional_options = "",
-     return_raw_output = FALSE)
+     coreference_resolution =FALSE)
 }
 }
 
