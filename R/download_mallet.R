@@ -34,8 +34,8 @@ download_mallet <- function(){
     f2 <- paste(directory,"/mallet-deps.jar",sep = "")
 
     url <- "http://mjdenny.com/SpeedReader/JAR_Files/"
-    web1 <- paste(url,"/mallet.jar",sep = "")
-    web2 <- paste(url,"/mallet-deps.jar",sep = "")
+    web1 <- paste(url,"mallet.jar",sep = "")
+    web2 <- paste(url,"mallet-deps.jar",sep = "")
 
     # download the two jar files associated with the selected version
     cat("Downloading JAR files...\n" )
