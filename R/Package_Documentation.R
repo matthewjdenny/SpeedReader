@@ -17,6 +17,9 @@ NULL
 #' @import parallel
 NULL
 
+#' @import snowfall
+NULL
+
 #' @importFrom grDevices dev.off pdf rgb
 NULL
 
