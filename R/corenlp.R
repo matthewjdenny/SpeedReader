@@ -9,6 +9,7 @@
 #' @param additional_options An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!
 #' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
+#' @param block An internal file list identifier used by corenlp_blocked() to avoid collisions. Should not be set by the user.
 #' @return Returns a list of data.frame objects, one per document, where each row is a token observation (in order)
 #' @examples
 #' \dontrun{
@@ -27,7 +28,8 @@ corenlp <- function(documents = NULL,
                     coreference_resolution = FALSE,
                     additional_options = "",
                     return_raw_output = FALSE,
-                    version = "3.5.2"){
+                    version = "3.5.2",
+                    block = 1){
 
     #currently borken
     # @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
@@ -134,7 +136,7 @@ corenlp <- function(documents = NULL,
 
     # write filenames table to file so that it can be used by coreNLP
     write.table(filenames,
-                file = "CoreNLP_filenames.txt",
+                file = paste("CoreNLP_filenames_",block,".txt",sep = ""),
                 quote = FALSE,
                 row.names = F,
                 col.names= F,
@@ -156,11 +158,11 @@ corenlp <- function(documents = NULL,
                      '/*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP',
                      ' -annotators tokenize,ssplit,pos,lemma,ner',parse,dcoref,
                      ' ',additional_options,
-                     ' -filelist CoreNLP_filenames.txt',sep = ""),"r")
+                     ' -filelist CoreNLP_filenames_',block,'.txt',sep = ""),"r")
     close(p2)
 
     if(delete_intermediate_files){
-        file.remove(paste("CoreNLP_filenames.txt",sep = ""))
+        file.remove(paste("CoreNLP_filenames_",block,".txt",,sep = ""))
     }
 
     for(i in 1:numdocs){

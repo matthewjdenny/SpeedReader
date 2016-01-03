@@ -67,7 +67,8 @@ corenlp_blocked <- function(output_directory,
             coreference_resolution = coreference_resolution,
             additional_options = additional_options,
             return_raw_output = return_raw_output,
-            version = version)
+            version = version,
+            block = i)
 
         save(Processed_Text,
              file = paste(output_directory,
@@ -77,6 +78,7 @@ corenlp_blocked <- function(output_directory,
 
 
     if(parallel){
+        download_corenlp(version = version)
         #intitalizes snowfall session
         snowfall::sfInit(parallel = TRUE, cpus = cores)
 
@@ -115,7 +117,8 @@ corenlp_blocked <- function(output_directory,
                 coreference_resolution = coreference_resolution,
                 additional_options = additional_options,
                 return_raw_output = return_raw_output,
-                version = version)
+                version = version,
+                block = i)
 
             save(Processed_Text,
                  file = paste(output_directory,

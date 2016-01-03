@@ -7,7 +7,7 @@
 corenlp(documents = NULL, document_directory = NULL, file_list = NULL,
   delete_intermediate_files = TRUE, syntactic_parsing = FALSE,
   coreference_resolution = FALSE, additional_options = "",
-  return_raw_output = FALSE, version = "3.5.2")
+  return_raw_output = FALSE, version = "3.5.2", block = 1)
 }
 \arguments{
 \item{documents}{An optional list of character vectors or a vector of strings, with one entry per dcument. These documents will be run through CoreNLP.}
@@ -27,6 +27,8 @@ corenlp(documents = NULL, document_directory = NULL, file_list = NULL,
 \item{return_raw_output}{Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.}
 
 \item{version}{The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.}
+
+\item{block}{An internal file list identifier used by corenlp_blocked() to avoid collisions. Should not be set by the user.}
 }
 \value{
 Returns a list of data.frame objects, one per document, where each row is a token observation (in order)
