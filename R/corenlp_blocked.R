@@ -25,6 +25,10 @@ corenlp_blocked <- function(output_directory,
     setwd(document_directory)
     output_directory <- check_directory_name(output_directory)
 
+    substrRight <- function(x, n){
+        substr(x, nchar(x)-n+1, nchar(x))
+    }
+
     if(is.null(file_list)){
         documents <- list.files()
         #only use files with a .txt ending
