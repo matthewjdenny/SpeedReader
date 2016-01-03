@@ -9,6 +9,8 @@
 #' @param additional_options An optional string specifying additional options for CoreNLP. May cause unexpected behavior, use at your own risk!
 #' @param return_raw_output Defaults to FALSE, if TRUE, then CoreNLP output is not parsed and raw list objects are returned.
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
+#' @param parallel Logical indicating whether CoreNLP should be run in parallel.
+#' @param cores The number of cores to be used if CoreNLP is being run in parallel.
 #' @return Does not return anything, saves all output to disk.
 #' @export
 corenlp_blocked <- function(output_directory,
@@ -19,7 +21,9 @@ corenlp_blocked <- function(output_directory,
                             coreference_resolution = FALSE,
                             additional_options = "",
                             return_raw_output = FALSE,
-                            version = "3.5.2"){
+                            version = "3.5.2",
+                            parallel = FALSE,
+                            cores = 1){
 
     currentwd <- getwd()
     setwd(document_directory)
@@ -47,8 +51,8 @@ corenlp_blocked <- function(output_directory,
     num_docs <- length(documents)
     num_blocks <- ceiling(num_docs/block_size)
 
-    # now loop
-    for(i in 1:num_blocks){
+    # if parallel
+    single_block <- function(i){
         cat("Curently working on block:",i,"of",num_blocks,"...\n")
         # get the appropriate file list
         start <- block_size*(i-1) + 1
@@ -57,18 +61,68 @@ corenlp_blocked <- function(output_directory,
 
         #run corenlp on block of documents
         Processed_Text <- corenlp(
-          document_directory = document_directory,
-          file_list = current_file_list,
-          syntactic_parsing = syntactic_parsing ,
-          coreference_resolution = coreference_resolution,
-          additional_options = additional_options,
-          return_raw_output = return_raw_output,
-          version = version)
+            document_directory = document_directory,
+            file_list = current_file_list,
+            syntactic_parsing = syntactic_parsing ,
+            coreference_resolution = coreference_resolution,
+            additional_options = additional_options,
+            return_raw_output = return_raw_output,
+            version = version)
 
         save(Processed_Text,
              file = paste(output_directory,
                           "CoreNLP_Output_",i,".Rdata",sep = ""))
     }
+
+
+
+    if(parallel){
+        #intitalizes snowfall session
+        snowfall::sfInit(parallel = TRUE, cpus = cores)
+
+        #check to see if we are running in parallel
+        if(snowfall::sfParallel())
+            cat( "Running in parallel mode on", snowfall::sfCpus(), "nodes.\n" )
+        else
+            cat( "Running in sequential mode.\n" )
+
+        #export all packages and libraries currently loaded in workspace
+        for (i in 1:length(.packages())){
+            eval(call("sfLibrary", (.packages()[i]), character.only=TRUE))
+        }
+
+        # apply our problem across the cluster using hte indexes we have determined and load balancing
+        # Export a list of R data objects
+        snowfall::sfExportAll()
+        snowfall::sfClusterApplyLB(1:num_blocks,single_block)
+
+        #stop the cluster when we are done -- this is very important and must be done manually every time
+        snowfall::sfStop()
+    }else{
+        # now loop
+        for(i in 1:num_blocks){
+            cat("Curently working on block:",i,"of",num_blocks,"...\n")
+            # get the appropriate file list
+            start <- block_size*(i-1) + 1
+            end <- block_size*i
+            current_file_list <- documents[start:end]
+
+            #run corenlp on block of documents
+            Processed_Text <- corenlp(
+                document_directory = document_directory,
+                file_list = current_file_list,
+                syntactic_parsing = syntactic_parsing ,
+                coreference_resolution = coreference_resolution,
+                additional_options = additional_options,
+                return_raw_output = return_raw_output,
+                version = version)
+
+            save(Processed_Text,
+                 file = paste(output_directory,
+                              "CoreNLP_Output_",i,".Rdata",sep = ""))
+        }
+    }
+
 
 
     setwd(currentwd)

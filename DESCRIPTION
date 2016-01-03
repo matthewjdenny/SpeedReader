@@ -20,7 +20,8 @@ Imports:
     parallel,
     inline,
     XML,
-    coda
+    coda,
+    snowfall
 Depends:
     R (>= 3.2.1)
 LinkingTo: BH,
