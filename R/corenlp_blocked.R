@@ -45,6 +45,7 @@ corenlp_blocked <- function(output_directory,
 
     # now loop
     for(i in 1:num_blocks){
+        cat("Curently working on block:",i,"of",num_blocks,"...\n")
         # get the appropriate file list
         start <- block_size*(i-1) + 1
         end <- block_size*i
