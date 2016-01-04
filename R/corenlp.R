@@ -162,7 +162,7 @@ corenlp <- function(documents = NULL,
     close(p2)
 
     if(delete_intermediate_files){
-        file.remove(paste("CoreNLP_filenames_",block,".txt",,sep = ""))
+        file.remove(paste("CoreNLP_filenames_",block,".txt",sep = ""))
     }
 
     for(i in 1:numdocs){
