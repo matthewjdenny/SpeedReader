@@ -28,6 +28,7 @@ corenlp_blocked <- function(output_directory,
     currentwd <- getwd()
     setwd(document_directory)
     output_directory <- check_directory_name(output_directory)
+    cat("Saving Results to:", output_directory,"\n")
 
     substrRight <- function(x, n){
         substr(x, nchar(x)-n+1, nchar(x))
@@ -77,7 +78,7 @@ corenlp_blocked <- function(output_directory,
 
 
 
-    if(parallel){
+    if(parallel &  cores > 1){
         download_corenlp(version = version)
         #intitalizes snowfall session
         snowfall::sfInit(parallel = TRUE, cpus = cores)
@@ -125,9 +126,6 @@ corenlp_blocked <- function(output_directory,
                               "CoreNLP_Output_",i,".Rdata",sep = ""))
         }
     }
-
-
-
     setwd(currentwd)
 }
 
