@@ -11,6 +11,7 @@
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
 #' @param parallel Logical indicating whether CoreNLP should be run in parallel.
 #' @param cores The number of cores to be used if CoreNLP is being run in parallel.
+#' @param ... optional arguments first_block and last_block can be used to run CoreNLP on certain blocks of text.
 #' @return Does not return anything, saves all output to disk.
 #' @export
 corenlp_blocked <- function(output_directory,
@@ -23,7 +24,8 @@ corenlp_blocked <- function(output_directory,
                             return_raw_output = FALSE,
                             version = "3.5.2",
                             parallel = FALSE,
-                            cores = 1){
+                            cores = 1,
+                            ...){
 
     currentwd <- getwd()
     setwd(document_directory)
@@ -31,7 +33,7 @@ corenlp_blocked <- function(output_directory,
     cat("Saving Results to:", output_directory,"\n")
 
     substrRight <- function(x, n){
-        substr(x, nchar(x)-n+1, nchar(x))
+        substr(x, nchar(x) - n + 1, nchar(x))
     }
 
     if(is.null(file_list)){
@@ -52,11 +54,28 @@ corenlp_blocked <- function(output_directory,
     num_docs <- length(documents)
     num_blocks <- ceiling(num_docs/block_size)
 
+    # read in optional arguments
+    first_block <- 1
+    last_block <- num_blocks
+    object <- as.list(substitute(list(...)))[-1L]
+    if(length(object) > 0){
+        if(!is.null(object$first_block)){
+            if(is.numeric(object$first_block)){
+                first_block <- object$first_block
+            }
+        }
+        if(!is.null(object$last_block)){
+            if(is.numeric(object$last_block)){
+                last_block <- object$last_block
+            }
+        }
+    }
+
     # if parallel
     single_block <- function(i){
-        cat("Curently working on block:",i,"of",num_blocks,"...\n")
+        cat("Curently working on block:",i,"of",last_block,"...\n")
         # get the appropriate file list
-        start <- block_size*(i-1) + 1
+        start <- block_size * (i - 1) + 1
         end <- block_size*i
         current_file_list <- documents[start:end]
 
@@ -97,17 +116,17 @@ corenlp_blocked <- function(output_directory,
         # apply our problem across the cluster using hte indexes we have determined and load balancing
         # Export a list of R data objects
         snowfall::sfExportAll()
-        snowfall::sfClusterApplyLB(1:num_blocks,single_block)
+        snowfall::sfClusterApplyLB(first_block:last_block,single_block)
 
         #stop the cluster when we are done -- this is very important and must be done manually every time
         snowfall::sfStop()
     }else{
         # now loop
-        for(i in 1:num_blocks){
-            cat("Curently working on block:",i,"of",num_blocks,"...\n")
+        for(i in first_block:last_block){
+            cat("Curently working on block:",i,"of",last_block,"...\n")
             # get the appropriate file list
-            start <- block_size*(i-1) + 1
-            end <- block_size*i
+            start <- block_size * (i - 1) + 1
+            end <- min(block_size*i,num_docs)
             current_file_list <- documents[start:end]
 
             #run corenlp on block of documents
