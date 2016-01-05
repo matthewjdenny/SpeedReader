@@ -60,6 +60,14 @@ corenlp <- function(documents = NULL,
         return_raw_output <- TRUE
     }
 
+    FAST_PARSING <- FALSE
+    if(!syntactic_parsing  & !coreference_resolution){
+        FAST_PARSING <- TRUE
+        return_raw_output <- FALSE
+        additional_options <- paste(additional_options,
+                                    "-outputFormat conll",sep = "")
+    }
+
     USING_EXTERNAL_FILES <- FALSE
     #check to make sure that we have the right kind of input
     if(!is.null(documents) & is.null(document_directory)){
@@ -168,62 +176,132 @@ corenlp <- function(documents = NULL,
     for(i in 1:numdocs){
         #read everything in
         if(USING_EXTERNAL_FILES){
-            data <- XML::xmlParse(paste(filenames[i],".xml",sep = ""))
-            if(delete_intermediate_files){
-                file.remove(paste(filenames[i],".xml",sep = ""))
+            if(FAST_PARSING){
+                data <- readLines(paste(filenames[i],".conll",sep = ""))
+                if(delete_intermediate_files){
+                    file.remove(paste(filenames[i],".conll",sep = ""))
+                }
+            }else{
+                data <- XML::xmlParse(paste(filenames[i],".xml",sep = ""))
+                if(delete_intermediate_files){
+                    file.remove(paste(filenames[i],".xml",sep = ""))
+                }
             }
+
         }else{
-            data <- XML::xmlParse(paste("file",i,".txt.xml",sep = ""))
-            if(delete_intermediate_files){
-                file.remove(paste("file",i,".txt.xml",sep = ""))
-                file.remove(paste("file",i,".txt",sep = ""))
+            if(FAST_PARSING){
+                data <- readLines(paste("file",i,".txt.conll",sep = ""))
+                if(delete_intermediate_files){
+                    file.remove(paste("file",i,".txt.conll",sep = ""))
+                    file.remove(paste("file",i,".txt",sep = ""))
+                }
+            }else{
+                data <- XML::xmlParse(paste("file",i,".txt.xml",sep = ""))
+                if(delete_intermediate_files){
+                    file.remove(paste("file",i,".txt.xml",sep = ""))
+                    file.remove(paste("file",i,".txt",sep = ""))
+                }
             }
         }
 
-        # turn into a list of sentences
-        xml_data <- XML::xmlToList(data)[[1]][[1]]
-
-        if(return_raw_output){
-            Processed_Text[[i]] <- xml_data
-        }else{
-            #get number of tokens
-            numtokens <- 0
-            for(j in 1:length(xml_data)){
-                numtokens <- numtokens + length(xml_data[[j]][[1]])
-            }
-            cat("Reading in:", numtokens, "tokens from document:",i,"of",
-                numdocs,"\n")
-
-            token_data <- data.frame(word = rep("",numtokens),
-                                     lemma = rep("",numtokens),
-                                     POS = rep("",numtokens),
-                                     NER = rep("",numtokens),
-                                     punctuation = rep(0,numtokens),
-                                     numeric = rep(0,numtokens),
-                                     sentence = rep(0,numtokens),
-                                     document = rep(i,numtokens),
-                                     stringsAsFactors = FALSE)
 
 
-            #loop through every sentence in document
-            token_counter <- 1
-            for(j in 1:length(xml_data)){
-                for(k in 1:length(xml_data[[j]][[1]])){
-                    token_data$word[token_counter] <- xml_data[[j]][[1]][[k]]$word
-                    token_data$lemma[token_counter] <- xml_data[[j]][[1]][[k]]$lemma
-                    token_data$POS[token_counter] <- xml_data[[j]][[1]][[k]]$POS
-                    token_data$NER[token_counter] <- xml_data[[j]][[1]][[k]]$NER
-                    if(grepl("[[:punct:]]+",xml_data[[j]][[1]][[k]]$word)){
-                        token_data$punctuation[token_counter] <- 1
+        if(FAST_PARSING){
+            if(return_raw_output){
+                Processed_Text[[i]] <- data
+            }else{
+                #get number of tokens
+                numtokens <- 0
+                for(j in 1:length(data)){
+                    if(data[j] != ""){
+                        numtokens <- numtokens + 1
                     }
-                    if(grepl("[[:digit:]]+",xml_data[[j]][[1]][[k]]$word)){
-                        token_data$numeric[token_counter] <- 1
-                    }
-                    token_data$sentence[token_counter] <- j
-                    token_counter <- token_counter + 1
                 }
+                cat("Reading in:", numtokens, "tokens from document:",i,"of",
+                    numdocs,"\n")
+
+                token_data <- data.frame(word = rep("",numtokens),
+                                         lemma = rep("",numtokens),
+                                         POS = rep("",numtokens),
+                                         NER = rep("",numtokens),
+                                         punctuation = rep(0,numtokens),
+                                         numeric = rep(0,numtokens),
+                                         sentence = rep(0,numtokens),
+                                         document = rep(i,numtokens),
+                                         stringsAsFactors = FALSE)
+
+
+                #loop through every sentence in document
+                token_counter <- 1
+                sentence_counter <- 1
+                for(j in 1:length(data)){
+                    if(data[j] != ""){
+                        token <- stringr::str_split(data[j],"\\t")[[1]]
+                        token_data$word[token_counter] <- token[2]
+                        token_data$lemma[token_counter] <- token[3]
+                        token_data$POS[token_counter] <- token[4]
+                        token_data$NER[token_counter] <- token[5]
+                        if(grepl("[[:punct:]]+",token[2])){
+                            token_data$punctuation[token_counter] <- 1
+                        }
+                        if(grepl("[[:digit:]]+",token[2])){
+                            token_data$numeric[token_counter] <- 1
+                        }
+                        token_data$sentence[token_counter] <- sentence_counter
+                        token_counter <- token_counter + 1
+                    }else{
+                        sentence_counter <- sentence_counter + 1
+                    }
+                }
+                Processed_Text[[i]] <- token_data
             }
-            Processed_Text[[i]] <- token_data
+
+        }else{
+            # turn into a list of sentences
+            xml_data <- XML::xmlToList(data)[[1]][[1]]
+            if(return_raw_output){
+                Processed_Text[[i]] <- xml_data
+            }else{
+                #get number of tokens
+                numtokens <- 0
+                for(j in 1:length(xml_data)){
+                    numtokens <- numtokens + length(xml_data[[j]][[1]])
+                }
+                cat("Reading in:", numtokens, "tokens from document:",i,"of",
+                    numdocs,"\n")
+
+                token_data <- data.frame(word = rep("",numtokens),
+                                         lemma = rep("",numtokens),
+                                         POS = rep("",numtokens),
+                                         NER = rep("",numtokens),
+                                         punctuation = rep(0,numtokens),
+                                         numeric = rep(0,numtokens),
+                                         sentence = rep(0,numtokens),
+                                         document = rep(i,numtokens),
+                                         stringsAsFactors = FALSE)
+
+
+                #loop through every sentence in document
+                token_counter <- 1
+                for(j in 1:length(xml_data)){
+                    for(k in 1:length(xml_data[[j]][[1]])){
+                        token <- xml_data[[j]][[1]][[k]]
+                        token_data$word[token_counter] <- token$word
+                        token_data$lemma[token_counter] <- token$lemma
+                        token_data$POS[token_counter] <- token$POS
+                        token_data$NER[token_counter] <- token$NER
+                        if(grepl("[[:punct:]]+",token$word)){
+                            token_data$punctuation[token_counter] <- 1
+                        }
+                        if(grepl("[[:digit:]]+",token$word)){
+                            token_data$numeric[token_counter] <- 1
+                        }
+                        token_data$sentence[token_counter] <- j
+                        token_counter <- token_counter + 1
+                    }
+                }
+                Processed_Text[[i]] <- token_data
+            }
         }
     }
 
