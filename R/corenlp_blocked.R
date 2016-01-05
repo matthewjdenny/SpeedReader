@@ -73,7 +73,8 @@ corenlp_blocked <- function(output_directory,
 
     # if parallel
     single_block <- function(i){
-        cat("Curently working on block:",i,"of",last_block,"...\n")
+        cat("Curently working on block:",i,"of",last_block,"starting at",
+            Sys.time(),"...\n")
         # get the appropriate file list
         start <- block_size * (i - 1) + 1
         end <- block_size*i
@@ -123,7 +124,8 @@ corenlp_blocked <- function(output_directory,
     }else{
         # now loop
         for(i in first_block:last_block){
-            cat("Curently working on block:",i,"of",last_block,"...\n")
+            cat("Curently working on block:",i,"of",last_block,"starting at",
+                Sys.time(),"...\n")
             # get the appropriate file list
             start <- block_size * (i - 1) + 1
             end <- min(block_size*i,num_docs)

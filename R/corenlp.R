@@ -34,6 +34,7 @@ corenlp <- function(documents = NULL,
     #currently borken
     # @param ner_model The model to be used for named entity resolution. Can be one of 'english.all.3class', 'english.muc.7class', or 'english.conll.4class'. Defaults to 'english.all.3class'. These models are described in greater detail at teh following webpage: http://nlp.stanford.edu/software/CRF-NER.shtml#Models.
 
+    cat("Starting CoreNLP at:",toString(Sys.time()),"\n")
     #check to see that we have the selected version of corenlp installed
     test1 <- system.file("extdata",
                          paste("stanford-corenlp-",version,".jar",sep = ""),
@@ -234,7 +235,13 @@ corenlp <- function(documents = NULL,
                 #loop through every sentence in document
                 token_counter <- 1
                 sentence_counter <- 1
+                printseq <- round(seq(1,length(data), length.out = 11)[2:11],0)
+                print_counter <- 1
                 for(j in 1:length(data)){
+                    if(printseq[print_counter] == j){
+                        cat(".")
+                        print_counter <- print_counter + 1
+                    }
                     if(data[j] != ""){
                         token <- stringr::str_split(data[j],"\\t")[[1]]
                         token_data$word[token_counter] <- token[2]
@@ -253,6 +260,7 @@ corenlp <- function(documents = NULL,
                         sentence_counter <- sentence_counter + 1
                     }
                 }
+                cat("\n")
                 Processed_Text[[i]] <- token_data
             }
 
@@ -283,8 +291,13 @@ corenlp <- function(documents = NULL,
 
                 #loop through every sentence in document
                 token_counter <- 1
+                printseq <- round(seq(1,length(xml_data), length.out = 11)[2:11],0)
                 for(j in 1:length(xml_data)){
                     for(k in 1:length(xml_data[[j]][[1]])){
+                        if(printseq[print_counter] == token_counter){
+                            cat(".")
+                            print_counter <- print_counter + 1
+                        }
                         token <- xml_data[[j]][[1]][[k]]
                         token_data$word[token_counter] <- token$word
                         token_data$lemma[token_counter] <- token$lemma
@@ -300,11 +313,13 @@ corenlp <- function(documents = NULL,
                         token_counter <- token_counter + 1
                     }
                 }
+                cat("\n")
                 Processed_Text[[i]] <- token_data
             }
         }
     }
 
+    cat("Completed running CoreNLP at:",toString(Sys.time()),"\n")
     # reset the working directory
     setwd(currentwd)
     # return the list of data frames
