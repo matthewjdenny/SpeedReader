@@ -11,7 +11,8 @@
 #' @param version The version of Core-NLP to download. Defaults to '3.5.2'. Newer versions of CoreNLP will be made available at a later date.
 #' @param parallel Logical indicating whether CoreNLP should be run in parallel.
 #' @param cores The number of cores to be used if CoreNLP is being run in parallel.
-#' @param ... optional arguments first_block and last_block can be used to run CoreNLP on certain blocks of text.
+#' @param first_block Used to run CoreNLP on certain block ranges.
+#' @param last_block Used to run CoreNLP on certain block ranges.
 #' @return Does not return anything, saves all output to disk.
 #' @export
 corenlp_blocked <- function(output_directory,
@@ -25,7 +26,8 @@ corenlp_blocked <- function(output_directory,
                             version = "3.5.2",
                             parallel = FALSE,
                             cores = 1,
-                            ...){
+                            first_block = NULL,
+                            last_block = NULL){
 
     currentwd <- getwd()
     setwd(document_directory)
@@ -54,22 +56,27 @@ corenlp_blocked <- function(output_directory,
     num_docs <- length(documents)
     num_blocks <- ceiling(num_docs/block_size)
 
-    # read in optional arguments
-    first_block <- 1
-    last_block <- num_blocks
-    object <- as.list(substitute(list(...)))[-1L]
-    if(length(object) > 0){
-        if(!is.null(object$first_block)){
-            if(is.numeric(object$first_block)){
-                first_block <- object$first_block
-            }
-        }
-        if(!is.null(object$last_block)){
-            if(is.numeric(object$last_block)){
-                last_block <- object$last_block
-            }
-        }
+    # set first and last blocks
+    if (is.null(first_block)) {
+        first_block <- 1
     }
+    if (is.null(last_block)) {
+        last_block <- num_blocks
+    }
+
+#     object <- as.list(substitute(list(...)))[-1L]
+#     if(length(object) > 0){
+#         if(!is.null(object$first_block)){
+#             if(is.numeric(object$first_block)){
+#                 first_block <- object$first_block
+#             }
+#         }
+#         if(!is.null(object$last_block)){
+#             if(is.numeric(object$last_block)){
+#                 last_block <- object$last_block
+#             }
+#         }
+#     }
 
     # if parallel
     single_block <- function(i){

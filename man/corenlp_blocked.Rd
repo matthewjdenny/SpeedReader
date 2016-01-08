@@ -8,7 +8,7 @@ corenlp_blocked(output_directory, document_directory, file_list = NULL,
   block_size = 1000, syntactic_parsing = FALSE,
   coreference_resolution = FALSE, additional_options = "",
   return_raw_output = FALSE, version = "3.5.2", parallel = FALSE,
-  cores = 1, ...)
+  cores = 1, first_block = NULL, last_block = NULL)
 }
 \arguments{
 \item{output_directory}{The path to a directory where the user would like CoreNLP output to be stored. Output will be saved to this directory in .Rdata files named CoreNLP_Output_1.Rdata ... CoreNLP_Output_N.Rdata}
@@ -33,7 +33,9 @@ corenlp_blocked(output_directory, document_directory, file_list = NULL,
 
 \item{cores}{The number of cores to be used if CoreNLP is being run in parallel.}
 
-\item{...}{optional arguments first_block and last_block can be used to run CoreNLP on certain blocks of text.}
+\item{first_block}{Used to run CoreNLP on certain block ranges.}
+
+\item{last_block}{Used to run CoreNLP on certain block ranges.}
 }
 \value{
 Does not return anything, saves all output to disk.
