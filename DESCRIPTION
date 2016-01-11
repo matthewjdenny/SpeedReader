@@ -1,7 +1,7 @@
 Package: SpeedReader
 Type: Package
 Title: High Performance Text Processing Libraries
-Version: 0.3.2
+Version: 0.4.1
 Date: 2015-12-31
 Author: Matthew J. Denny <mdenny@psu.edu>
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
