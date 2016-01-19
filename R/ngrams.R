@@ -1,4 +1,4 @@
-#' Runs Stanford CoreNLP on a collection of documents
+#' Extracts N-Grams and phrases from a collection od documents that has been preprocessed by the corenlp() function.
 #'
 #' @param tokenized_documents An optional list object output by the corenlp()
 #' or corenlp_blocked() functions containing tokenized document dataframes (one
@@ -7,6 +7,10 @@
 #' directory contianing CoreNLP_Output_x.Rdata files output by the corenlp()
 #' or corenlp_blocked() functions. Cannot be supplied in addition to the
 #' 'tokenized_documents' argument.
+#' @param output_directory If a tokenized_documents_directory is provided, an
+#' alternate output directory may be provided in which case n-gram extractions
+#' for each block are saved in the alternative directory If NULL, then
+#' output_directory will be set to tokenized_documents_directory.
 #' @param file_list An optional list of CoreNLP_Output_x.Rdata  files to be used
 #' if tokenized_documents_directory option is specified. Can be useful if the
 #' user only wants to process a subset of documents in the directory such as
@@ -55,6 +59,7 @@
 #' @export
 ngrams <- function(tokenized_documents = NULL,
                    tokenized_documents_directory = NULL,
+                   output_directory = NULL,
                    file_list = NULL,
                    ngram_lengths = c(1,2,3),
                    remove_punctuation = TRUE,
@@ -81,13 +86,18 @@ ngrams <- function(tokenized_documents = NULL,
 
     USING_EXTERNAL_FILES <- FALSE
     #check to make sure that we have the right kind of input
-    if(!is.null(tokenized_documents) & is.null(tokenized_documents_directory)){
-        if(class(tokenized_documents) != "list"){
+    if (!is.null(tokenized_documents) & is.null(tokenized_documents_directory)) {
+        if (class(tokenized_documents) != "list") {
             stop("You must provide a 'tokenized_documents' object as a list of dataframes produced by the corenlp() or corenlp_blocked() functions...")
         }
-    }else if(is.null(tokenized_documents) & !is.null(tokenized_documents_directory)){
+    }else if (is.null(tokenized_documents) & !is.null(tokenized_documents_directory)) {
         setwd(tokenized_documents_directory)
         USING_EXTERNAL_FILES <- TRUE
+        if (is.null(output_directory)) {
+            cat("Since output_directory was NULL, setting output_directory to:",
+                tokenized_documents_directory, "\n")
+            output_directory <- tokenized_documents_directory
+        }
     }else{
         stop("You must specify either a valid tokenized_documents object or a valid tokenized_documents_directory directory path (but not both)...")
     }
@@ -139,7 +149,8 @@ ngrams <- function(tokenized_documents = NULL,
                 JK_filtering = JK_filtering,
                 verb_filtering = verb_filtering,
                 phrase_extraction = phrase_extraction,
-                tokenized_documents_directory = tokenized_documents_directory)
+                tokenized_documents_directory = tokenized_documents_directory,
+                output_directory = output_directory)
             # stop the cluster when we are done
             parallel::stopCluster(cl)
         } else {
@@ -156,7 +167,8 @@ ngrams <- function(tokenized_documents = NULL,
                 JK_filtering = JK_filtering,
                 verb_filtering = verb_filtering,
                 phrase_extraction = phrase_extraction,
-                tokenized_documents_directory = tokenized_documents_directory)
+                tokenized_documents_directory = tokenized_documents_directory,
+                output_directory = output_directory)
             }
         }
     }else{

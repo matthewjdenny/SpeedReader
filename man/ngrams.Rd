@@ -2,13 +2,14 @@
 % Please edit documentation in R/ngrams.R
 \name{ngrams}
 \alias{ngrams}
-\title{Runs Stanford CoreNLP on a collection of documents}
+\title{Extracts N-Grams and phrases from a collection od documents that has been preprocessed by the corenlp() function.}
 \usage{
 ngrams(tokenized_documents = NULL, tokenized_documents_directory = NULL,
-  file_list = NULL, ngram_lengths = c(1, 2, 3), remove_punctuation = TRUE,
-  remove_numeric = TRUE, JK_filtering = FALSE, verb_filtering = FALSE,
-  phrase_extraction = FALSE, return_tag_patterns = FALSE,
-  lemmatize = FALSE, lowercase = FALSE, parallel = FALSE, cores = 2)
+  output_directory = NULL, file_list = NULL, ngram_lengths = c(1, 2, 3),
+  remove_punctuation = TRUE, remove_numeric = TRUE, JK_filtering = FALSE,
+  verb_filtering = FALSE, phrase_extraction = FALSE,
+  return_tag_patterns = FALSE, lemmatize = FALSE, lowercase = FALSE,
+  parallel = FALSE, cores = 2)
 }
 \arguments{
 \item{tokenized_documents}{An optional list object output by the corenlp()
@@ -19,6 +20,11 @@ per document).}
 directory contianing CoreNLP_Output_x.Rdata files output by the corenlp()
 or corenlp_blocked() functions. Cannot be supplied in addition to the
 'tokenized_documents' argument.}
+
+\item{output_directory}{If a tokenized_documents_directory is provided, an
+alternate output directory may be provided in which case n-gram extractions
+for each block are saved in the alternative directory If NULL, then
+output_directory will be set to tokenized_documents_directory.}
 
 \item{file_list}{An optional list of CoreNLP_Output_x.Rdata  files to be used
 if tokenized_documents_directory option is specified. Can be useful if the
@@ -75,7 +81,7 @@ of each size specified in the ngram_lengths argument. May also return metadata
 if return_tag_patterns = TRUE.
 }
 \description{
-Runs Stanford CoreNLP on a collection of documents
+Extracts N-Grams and phrases from a collection od documents that has been preprocessed by the corenlp() function.
 }
 \examples{
 \dontrun{
