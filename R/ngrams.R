@@ -44,6 +44,9 @@
 #' @return Returns a list of lists (one list per document) with entries for n-grams
 #' of each size specified in the ngram_lengths argument. May also return metadata
 #' if return_tag_patterns = TRUE.
+#' @param parallel Logical: should documents be processed in parallel? Defaults
+#' to FALSE.
+#' @param cores Number of cores to be used if parallel = TRUE, defaults to 2.
 #' @examples
 #' \dontrun{
 #' directory <- system.file("extdata", package = "SpeedReader")[1]
@@ -61,7 +64,9 @@ ngrams <- function(tokenized_documents = NULL,
                    phrase_extraction = FALSE,
                    return_tag_patterns = FALSE,
                    lemmatize = FALSE,
-                   lowercase = FALSE){
+                   lowercase = FALSE,
+                   parallel = FALSE,
+                   cores = 2){
 
     cat("Starting N-Gram extraction at:",toString(Sys.time()),"\n")
 
@@ -114,112 +119,86 @@ ngrams <- function(tokenized_documents = NULL,
 
     # now do actual extractions
     if(USING_EXTERNAL_FILES){
-        Processed_Text <- NULL
         # if we are using external files, generate ngrams for the curent block,
         # then save them to disk
-        for(i in 1:numdocs){
-            #load the POS tagged data
-            load(tokenized_documents[i])
-            cur_numdocs <- length(Processed_Text)
-            # create list object to store results
-            NGrams  <- vector(length = cur_numdocs, mode = "list")
-            for(j in 1:cur_numdocs){
-                # initialize list object
-                current <- list()
-                current$ngrams <- NULL
-                current$jk_filtered <- NULL
-                current$verb_filtered <- NULL
-                current$phrases <- NULL
-                current$ngram_lengths <- ngram_lengths
-                current$remove_punctuation <- remove_punctuation
-                current$remove_numeric <- remove_numeric
+        if (parallel) {
+            cat("Extracting N-Grams from",numdocs,"blocks of documents on",
+                cores,"cores. This may take a while...\n")
+            cl <- parallel::makeCluster(getOption("cl.cores", cores))
 
-                if(EXTRACT_NGRAMS){
-                    current$ngrams <- extract_ngrams(
-                        tokenized_document = tokenized_documents[[j]],
-                        ngram_lengths = ngram_lengths,
-                        remove_punctuation = remove_punctuation,
-                        remove_numeric = remove_numeric,
-                        lemmatize = lemmatize,
-                        lowercase = lowercase)
-                }
-                if(JK_filtering){
-                    current$jk_filtered <- extract_jk(
-                        tokenized_document = tokenized_documents[[j]],
-                        lemmatize = lemmatize,
-                        lowercase = lowercase
-                    )
-                }
-                if(verb_filtering){
-                    current$verb_filtered <- extract_verbs(
-                        tokenized_document = tokenized_documents[[j]],
-                        lemmatize = lemmatize,
-                        lowercase = lowercase
-                    )
-                }
-                if(phrase_extraction){
-                    stop("phrase_extraction not currently implemented")
-                    # current$phrases <- extract_phrases(
-                    #     tokenized_document = tokenized_documents[[j]],
-                    #     lemmatize = lemmatize,
-                    #     lowercase = lowercase
-                    # )
-                }
-                # save everthing into the list object
-                NGrams[[j]] <- current
+            success <- parallel::clusterApplyLB(cl = cl,
+                x = 1:numdocs,
+                fun = ngrams_single_block,
+                ngram_lengths = ngram_lengths,
+                remove_punctuation = remove_punctuation,
+                remove_numeric = remove_numeric,
+                lemmatize = lemmatize,
+                lowercase = lowercase,
+                tokenized_documents = tokenized_documents,
+                EXTRACT_NGRAMS = EXTRACT_NGRAMS,
+                JK_filtering = JK_filtering,
+                verb_filtering = verb_filtering,
+                phrase_extraction = phrase_extraction,
+                tokenized_documents_directory = tokenized_documents_directory)
+            # stop the cluster when we are done
+            parallel::stopCluster(cl)
+        } else {
+            for(i in 1:numdocs){
+                success <- ngrams_single_block(i = i,
+                ngram_lengths = ngram_lengths,
+                remove_punctuation = remove_punctuation,
+                remove_numeric = remove_numeric,
+                lemmatize = lemmatize,
+                lowercase = lowercase,
+                tokenized_documents = tokenized_documents,
+                EXTRACT_NGRAMS = EXTRACT_NGRAMS,
+                JK_filtering = JK_filtering,
+                verb_filtering = verb_filtering,
+                phrase_extraction = phrase_extraction,
+                tokenized_documents_directory = tokenized_documents_directory)
             }
-            save(NGrams,file = paste("NGram_Extractions_",i,".Rdata"))
         }
     }else{
         # if we are using internal data, generate ngrams for all documents and
         # return list object
-        NGrams  <- vector(length = numdocs, mode = "list")
-        for(i in 1:numdocs){
-            # initialize list object
-            current <- list()
-            current$ngrams <- NULL
-            current$jk_filtered <- NULL
-            current$verb_filtered <- NULL
-            current$phrases <- NULL
-            current$ngram_lengths <- ngram_lengths
-            current$remove_punctuation <- remove_punctuation
-            current$remove_numeric <- remove_numeric
+        if (parallel) {
+            cat("Extracting N-Grams from",numdocs,"documents on",
+                cores,"cores. This may take a while...\n")
+            cl <- parallel::makeCluster(getOption("cl.cores", cores))
 
-            if(EXTRACT_NGRAMS){
-                current$ngrams <- extract_ngrams(
-                    tokenized_document = tokenized_documents[[i]],
+            success <- parallel::clusterApplyLB(cl = cl,
+                x = 1:numdocs,
+                fun = ngrams_single_document,
+                ngram_lengths = ngram_lengths,
+                remove_punctuation = remove_punctuation,
+                remove_numeric = remove_numeric,
+                lemmatize = lemmatize,
+                lowercase = lowercase,
+                tokenized_documents = tokenized_documents,
+                EXTRACT_NGRAMS = EXTRACT_NGRAMS,
+                JK_filtering = JK_filtering,
+                verb_filtering = verb_filtering,
+                phrase_extraction = phrase_extraction)
+            # stop the cluster when we are done
+            parallel::stopCluster(cl)
+        } else {
+            NGrams  <- vector(length = numdocs, mode = "list")
+            for(i in 1:numdocs){
+                NGrams[[i]] <- ngrams_single_document(
+                    j = i,
                     ngram_lengths = ngram_lengths,
                     remove_punctuation = remove_punctuation,
                     remove_numeric = remove_numeric,
                     lemmatize = lemmatize,
-                    lowercase = lowercase)
+                    lowercase = lowercase,
+                    tokenized_documents = tokenized_documents,
+                    EXTRACT_NGRAMS = EXTRACT_NGRAMS,
+                    JK_filtering = JK_filtering,
+                    verb_filtering = verb_filtering,
+                    phrase_extraction = phrase_extraction)
             }
-            if(JK_filtering){
-                current$jk_filtered <- extract_jk(
-                    tokenized_document = tokenized_documents[[i]],
-                    lemmatize = lemmatize,
-                    lowercase = lowercase
-                )
-            }
-            if(verb_filtering){
-                current$verb_filtered <- extract_verbs(
-                    tokenized_document = tokenized_documents[[i]],
-                    lemmatize = lemmatize,
-                    lowercase = lowercase
-                )
-            }
-            if(phrase_extraction){
-                stop("phrase_extraction not currently implemented")
-                # current$phrases <- extract_phrases(
-                #     tokenized_document = tokenized_documents[[i]],
-                #     lemmatize = lemmatize,
-                #     lowercase = lowercase
-                # )
-            }
-            # save everthing into the list object
-            NGrams[[i]] <- current
-        }
-    }
+        } # end of parallel conditional
+    } # end of blocks conditional
 
     cat("Completed running N-GRam extraction at:",toString(Sys.time()),"\n")
     # reset the working directory

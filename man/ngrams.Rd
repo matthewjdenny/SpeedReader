@@ -8,7 +8,7 @@ ngrams(tokenized_documents = NULL, tokenized_documents_directory = NULL,
   file_list = NULL, ngram_lengths = c(1, 2, 3), remove_punctuation = TRUE,
   remove_numeric = TRUE, JK_filtering = FALSE, verb_filtering = FALSE,
   phrase_extraction = FALSE, return_tag_patterns = FALSE,
-  lemmatize = FALSE, lowercase = FALSE)
+  lemmatize = FALSE, lowercase = FALSE, parallel = FALSE, cores = 2)
 }
 \arguments{
 \item{tokenized_documents}{An optional list object output by the corenlp()
@@ -63,6 +63,11 @@ tokens, Defaults to FALSE.}
 
 \item{lowercase}{If TRUE, all n-grams are lowercased before being returned.
 Defaults to TRUE.}
+
+\item{parallel}{Logical: should documents be processed in parallel? Defaults
+to FALSE.}
+
+\item{cores}{Number of cores to be used if parallel = TRUE, defaults to 2.}
 }
 \value{
 Returns a list of lists (one list per document) with entries for n-grams
