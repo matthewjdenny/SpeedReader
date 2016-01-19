@@ -85,8 +85,14 @@ Extracts N-Grams and phrases from a collection od documents that has been prepro
 }
 \examples{
 \dontrun{
-directory <- system.file("extdata", package = "SpeedReader")[1]
-Ngrams <- ngrams()
+data("Processed_Text")
+NGrams <- ngrams(tokenized_documents = Processed_Text,
+                 ngram_lengths = c(1,2,3),
+                 remove_punctuation = TRUE,
+                 remove_numeric = TRUE,
+                 lowercase = TRUE,
+                 parallel = FALSE,
+                 cores = 1)
 }
 }
 

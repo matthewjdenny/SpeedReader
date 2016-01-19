@@ -53,8 +53,14 @@
 #' @param cores Number of cores to be used if parallel = TRUE, defaults to 2.
 #' @examples
 #' \dontrun{
-#' directory <- system.file("extdata", package = "SpeedReader")[1]
-#' Ngrams <- ngrams()
+#' data("Processed_Text")
+#' NGrams <- ngrams(tokenized_documents = Processed_Text,
+#'                  ngram_lengths = c(1,2,3),
+#'                  remove_punctuation = TRUE,
+#'                  remove_numeric = TRUE,
+#'                  lowercase = TRUE,
+#'                  parallel = FALSE,
+#'                  cores = 1)
 #' }
 #' @export
 ngrams <- function(tokenized_documents = NULL,
