@@ -144,6 +144,7 @@ ngrams <- function(tokenized_documents = NULL,
             parallel::stopCluster(cl)
         } else {
             for(i in 1:numdocs){
+                cat("Currently working on block",i,"of",numdocs,"\n")
                 success <- ngrams_single_block(i = i,
                 ngram_lengths = ngram_lengths,
                 remove_punctuation = remove_punctuation,
@@ -166,7 +167,7 @@ ngrams <- function(tokenized_documents = NULL,
                 cores,"cores. This may take a while...\n")
             cl <- parallel::makeCluster(getOption("cl.cores", cores))
 
-            success <- parallel::clusterApplyLB(cl = cl,
+            NGrams <- parallel::clusterApplyLB(cl = cl,
                 x = 1:numdocs,
                 fun = ngrams_single_document,
                 ngram_lengths = ngram_lengths,
@@ -184,6 +185,7 @@ ngrams <- function(tokenized_documents = NULL,
         } else {
             NGrams  <- vector(length = numdocs, mode = "list")
             for(i in 1:numdocs){
+                cat("Currently working on document",i,"of",numdocs,"\n")
                 NGrams[[i]] <- ngrams_single_document(
                     j = i,
                     ngram_lengths = ngram_lengths,
