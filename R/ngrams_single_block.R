@@ -9,7 +9,8 @@ ngrams_single_block <- function(i,
                                 JK_filtering,
                                 verb_filtering,
                                 phrase_extraction,
-                                tokenized_documents_directory){
+                                tokenized_documents_directory,
+                                output_directory){
     setwd(tokenized_documents_directory)
     Processed_Text <- NULL
     #load the POS tagged data
@@ -33,6 +34,7 @@ ngrams_single_block <- function(i,
             verb_filtering = verb_filtering,
             phrase_extraction = phrase_extraction)
     }
+    setwd(output_directory)
     save(NGrams,file = paste("NGram_Extractions_",i,".Rdata"))
     return("Success!")
 }
