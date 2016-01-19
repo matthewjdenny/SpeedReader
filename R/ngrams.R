@@ -37,6 +37,10 @@
 #' = TRUE, verb_filtering = TRUE, or phrase_extraction = TRUE, then the tag
 #' pattern matched in forming the n-gram/phrase will be returned as an
 #' accompanying vector.
+#' @param lemmatize If TRUE, then n-grams are constructed out of lemmatized
+#' tokens, Defaults to FALSE.
+#' @param lowercase If TRUE, all n-grams are lowercased before being returned.
+#' Defaults to TRUE.
 #' @return Returns a list of lists (one list per document) with entries for n-grams
 #' of each size specified in the ngram_lengths argument. May also return metadata
 #' if return_tag_patterns = TRUE.
@@ -55,7 +59,9 @@ ngrams <- function(tokenized_documents = NULL,
                    JK_filtering = FALSE,
                    verb_filtering = FALSE,
                    phrase_extraction = FALSE,
-                   return_tag_patterns = FALSE){
+                   return_tag_patterns = FALSE,
+                   lemmatize = FALSE,
+                   lowercase = FALSE){
 
     cat("Starting N-Gram extraction at:",toString(Sys.time()),"\n")
 
@@ -133,21 +139,30 @@ ngrams <- function(tokenized_documents = NULL,
                         tokenized_document = tokenized_documents[[j]],
                         ngram_lengths = ngram_lengths,
                         remove_punctuation = remove_punctuation,
-                        remove_numeric = remove_numeric)
+                        remove_numeric = remove_numeric,
+                        lemmatize = lemmatize,
+                        lowercase = lowercase)
                 }
                 if(JK_filtering){
                     current$jk_filtered <- extract_jk(
-                        tokenized_document = tokenized_documents[[j]]
+                        tokenized_document = tokenized_documents[[j]],
+                        lemmatize = lemmatize,
+                        lowercase = lowercase
                     )
                 }
                 if(verb_filtering){
                     current$verb_filtered <- extract_verbs(
-                        tokenized_document = tokenized_documents[[j]]
+                        tokenized_document = tokenized_documents[[j]],
+                        lemmatize = lemmatize,
+                        lowercase = lowercase
                     )
                 }
                 if(phrase_extraction){
+                    stop("phrase_extraction not currently implemented")
                     # current$phrases <- extract_phrases(
-                    #     tokenized_document = tokenized_documents[[j]]
+                    #     tokenized_document = tokenized_documents[[j]],
+                    #     lemmatize = lemmatize,
+                    #     lowercase = lowercase
                     # )
                 }
                 # save everthing into the list object
@@ -175,21 +190,30 @@ ngrams <- function(tokenized_documents = NULL,
                     tokenized_document = tokenized_documents[[i]],
                     ngram_lengths = ngram_lengths,
                     remove_punctuation = remove_punctuation,
-                    remove_numeric = remove_numeric)
+                    remove_numeric = remove_numeric,
+                    lemmatize = lemmatize,
+                    lowercase = lowercase)
             }
             if(JK_filtering){
                 current$jk_filtered <- extract_jk(
-                    tokenized_document = tokenized_documents[[i]]
+                    tokenized_document = tokenized_documents[[i]],
+                    lemmatize = lemmatize,
+                    lowercase = lowercase
                 )
             }
             if(verb_filtering){
                 current$verb_filtered <- extract_verbs(
-                    tokenized_document = tokenized_documents[[i]]
+                    tokenized_document = tokenized_documents[[i]],
+                    lemmatize = lemmatize,
+                    lowercase = lowercase
                 )
             }
             if(phrase_extraction){
+                stop("phrase_extraction not currently implemented")
                 # current$phrases <- extract_phrases(
-                #     tokenized_document = tokenized_documents[[i]]
+                #     tokenized_document = tokenized_documents[[i]],
+                #     lemmatize = lemmatize,
+                #     lowercase = lowercase
                 # )
             }
             # save everthing into the list object

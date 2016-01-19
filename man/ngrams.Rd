@@ -7,7 +7,8 @@
 ngrams(tokenized_documents = NULL, tokenized_documents_directory = NULL,
   file_list = NULL, ngram_lengths = c(1, 2, 3), remove_punctuation = TRUE,
   remove_numeric = TRUE, JK_filtering = FALSE, verb_filtering = FALSE,
-  phrase_extraction = FALSE, return_tag_patterns = FALSE)
+  phrase_extraction = FALSE, return_tag_patterns = FALSE,
+  lemmatize = FALSE, lowercase = FALSE)
 }
 \arguments{
 \item{tokenized_documents}{An optional list object output by the corenlp()
@@ -40,27 +41,28 @@ extracted, and filtered according to the tag patterns described in Justeson,
 John S., and Slava M. Katz. "Technical terminology: some linguistic properties
 and an algorithm for identification in text." Natural language engineering
 1.01 (1995): 9-27. Available: https://brenocon.com/JustesonKatz1995.pdf.
-The POS tag patterns used are: AN, NN, AAN, ANN, NAN, NNN, NPN. Note that
-this method requires input produced by the corenlp() or corenlp_blocked()
-functions.}
+The POS tag patterns used are: AN, NN, AAN, ANN, NAN, NNN, NPN.}
 
 \item{verb_filtering}{Defaults to FALSE. If TRUE, then short verb phrases
 will be extracted in a manner similar to that described in JK_filtering
-above. The POS tag patterns used are: VN, VAN, VNN, VPN, ANV, VDN. Note that
-this method requires input produced by the corenlp() or corenlp_blocked()
-functions.}
+above. The POS tag patterns used are: VN, VAN, VNN, VPN, ANV, VDN.}
 
 \item{phrase_extraction}{Defaults to FALSE. If TRUE, then full phrases of
 arbitrary length will be extracted following the procedure described in Denny,
 O'Connor, and Wallach (2016). This method will produce the most phrases, of
 highest quality, but will take significantly longer than other methods. Not
-currently implemented. Note that this method requires input produced by the
-corenlp() or corenlp_blocked() functions.}
+currently implemented.}
 
 \item{return_tag_patterns}{Defaults to FALSE. If TRUE and either JK_filtering
 = TRUE, verb_filtering = TRUE, or phrase_extraction = TRUE, then the tag
 pattern matched in forming the n-gram/phrase will be returned as an
 accompanying vector.}
+
+\item{lemmatize}{If TRUE, then n-grams are constructed out of lemmatized
+tokens, Defaults to FALSE.}
+
+\item{lowercase}{If TRUE, all n-grams are lowercased before being returned.
+Defaults to TRUE.}
 }
 \value{
 Returns a list of lists (one list per document) with entries for n-grams
