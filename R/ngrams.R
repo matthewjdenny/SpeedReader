@@ -116,6 +116,9 @@ ngrams <- function(tokenized_documents = NULL,
             files <- which(endings == ".Rdata")
             if(length(files) > 0){
                 tokenized_documents <- tokenized_documents[files]
+                cat("Found",length(files),
+                    "valid .Rdata files in directory. Here are a few examples:\n")
+                print(head(tokenized_documents))
             }else{
                 stop("Did not find any valid .Rdata files in the specified directory...")
             }
