@@ -24,3 +24,16 @@ NULL
 #' @format A list object with 5 fields.
 NULL
 
+#' Twenty bills tokenized and tagged by CORENLP
+#'
+#' A list of twenty congressional bills from 1991 that have been preprocessed
+#' and tokenized by the corenlp() function. For use in testing the ngrams()
+#' function.
+#'
+#' @docType data
+#' @keywords datasets
+#' @name Processed_Text
+#' @usage data(Processed_Text)
+#' @format A list object containing 20 data.frames.
+NULL
+
