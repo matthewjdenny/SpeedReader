@@ -75,9 +75,19 @@ count_ngrams <- function(ngrams = NULL,
             cat("Currently working on block",i,"of",length(ngrams),"...\n")
             # load in the file
             load(ngrams[i])
-            filenames <- output_ngrams(NGrams = NGrams,
-                                       combine_ngrams = combine_ngrams,
-                                       directory = input_directory)
+            if (i == 1) {
+                filenames <- output_ngrams(NGrams = NGrams,
+                                           combine_ngrams = combine_ngrams,
+                                           directory = input_directory)
+            } else {
+                add <- output_ngrams(NGrams = NGrams,
+                                     combine_ngrams = combine_ngrams,
+                                     directory = input_directory)
+                if (length(add$filenames) > length(filenames$filenames)) {
+                  filenames <- add
+                }
+            }
+
 
         }
     } else {
