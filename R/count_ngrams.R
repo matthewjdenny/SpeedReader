@@ -151,6 +151,8 @@ count_ngrams <- function(ngrams = NULL,
 
         vocab_and_counts[[i]] <- list(term = terms,
                                       count = counts)
+        cat("Documents contain",length(counts),"unique",filenames$types[i],
+            "and a total of",sum(counts),"of these terms...\n")
         cat("Ending current job at:",toString(Sys.time()),"\n")
     }
 
