@@ -3,8 +3,8 @@ output_ngrams <- function(NGrams,
                           directory){
     setwd(directory)
     # loop over NGrams
-    if(length(NGrams) > 20){
-        printseq <- round(seq(1,length(NGrams), length.out = 21)[2:21],0)
+    if(length(NGrams) > 50){
+        printseq <- round(seq(1,length(NGrams), length.out = 51)[2:51],0)
     } else {
         printseq <- 1:length(NGrams)
     }
@@ -36,17 +36,22 @@ output_ngrams <- function(NGrams,
                 }
             }
         }
-
-        if (!is.na(current$jk_filtered)) {
-            output$jk_filtered <- paste0(current$jk_filtered,collapse = " ")
+        if (!is.null(current$jk_filtered)) {
+            if (!is.na(current$jk_filtered)) {
+                output$jk_filtered <- paste0(current$jk_filtered,collapse = " ")
+            }
         }
 
-        if (!is.na(current$verb_filtered)) {
-            output$verb_filtered <- paste0(current$verb_filtered,collapse = " ")
+        if (!is.null(current$verb_filtered)) {
+            if (!is.na(current$verb_filtered)) {
+                output$verb_filtered <- paste0(current$verb_filtered,collapse = " ")
+            }
         }
 
-        if (!is.na(current$phrases)) {
-            output$phrases <- paste0(current$phrases,collapse = " ")
+        if (!is.null(current$phrases)) {
+            if (!is.na(current$phrases)) {
+                output$phrases <- paste0(current$phrases,collapse = " ")
+            }
         }
 
         # if we are on the first iteration create the filenames
