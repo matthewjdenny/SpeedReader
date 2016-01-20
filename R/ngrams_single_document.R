@@ -12,10 +12,10 @@ ngrams_single_document <- function(j,
     tokenized_document <- tokenized_documents[[j]]
     # initialize list object
     current <- list()
-    current$ngrams <- NULL
-    current$jk_filtered <- NULL
-    current$verb_filtered <- NULL
-    current$phrases <- NULL
+    current$ngrams <- NA
+    current$jk_filtered <- NA
+    current$verb_filtered <- NA
+    current$phrases <- NA
     current$ngram_lengths <- ngram_lengths
     current$remove_punctuation <- remove_punctuation
     current$remove_numeric <- remove_numeric
