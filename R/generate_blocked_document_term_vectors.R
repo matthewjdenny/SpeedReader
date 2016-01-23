@@ -38,6 +38,7 @@ generate_blocked_document_term_vectors <- function(
     # if we are using ngrams, it will already be in blocks
     if (data_type == "ngrams") {
         num_blocks <- length(input)
+        block_size <- 1
     }
 
     # generate a list object containign the relevant block information
