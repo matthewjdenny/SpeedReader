@@ -16,6 +16,7 @@ test_that("That parallel and regular ngram extraction works", {
                          cores = 2)
     })
 
+    skip("This will not work on travis")
     cat("\n")
     system.time({
         NGrams2 <- ngrams(tokenized_documents = Processed_Text,
