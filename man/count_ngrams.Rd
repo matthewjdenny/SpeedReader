@@ -3,8 +3,9 @@
 \name{count_ngrams}
 \alias{count_ngrams}
 \title{An experimental function to efficiently generate a vocabulary in parallel
-from output produced by the ngrams() function. This will only work for users
-with GNU coreutils > 8.13 as the sort --parallel option is used.}
+from output produced by the ngrams() function. Cores > 1 will only work for
+users with GNU coreutils > 8.13 as the sort --parallel option is used. If you
+have an older version use cores = 1.}
 \usage{
 count_ngrams(ngrams = NULL, input_directory = NULL, file_list = NULL,
   combine_ngrams = FALSE, cores = 2, mac_brew = FALSE)
@@ -34,7 +35,8 @@ and word counts.
 }
 \description{
 An experimental function to efficiently generate a vocabulary in parallel
-from output produced by the ngrams() function. This will only work for users
-with GNU coreutils > 8.13 as the sort --parallel option is used.
+from output produced by the ngrams() function. Cores > 1 will only work for
+users with GNU coreutils > 8.13 as the sort --parallel option is used. If you
+have an older version use cores = 1.
 }
 

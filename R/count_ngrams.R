@@ -1,6 +1,7 @@
 #' An experimental function to efficiently generate a vocabulary in parallel
-#' from output produced by the ngrams() function. This will only work for users
-#' with GNU coreutils > 8.13 as the sort --parallel option is used.
+#' from output produced by the ngrams() function. Cores > 1 will only work for
+#' users with GNU coreutils > 8.13 as the sort --parallel option is used. If you
+#' have an older version use cores = 1.
 #'
 #' @param ngrams An optional list object output by the ngrams() function.
 #' @param input_directory An optional input directory where blocked output from
@@ -108,15 +109,29 @@ count_ngrams <- function(ngrams = NULL,
             length(filenames$filenames),") starting at:",
             toString(Sys.time()),"\n")
         if (mac_brew) {
-            command <- paste("gtr -sc 'A-Za-z\\_' '\\012' < ",
-                             filenames$filenames[i],
-                             " | gsort --parallel=",cores," | guniq -c > Vocab_",i,".txt",
-                             sep = "")
+            if (cores == 1) {
+                command <- paste("gtr -sc 'A-Za-z\\_' '\\012' < ",
+                                 filenames$filenames[i],
+                                 " | gsort | guniq -c > Vocab_",i,".txt",
+                                 sep = "")
+            } else {
+                command <- paste("gtr -sc 'A-Za-z\\_' '\\012' < ",
+                filenames$filenames[i],
+                " | gsort --parallel=",cores," | guniq -c > Vocab_",i,".txt",
+                sep = "")
+            }
         } else {
-            command <- paste("tr -sc 'A-Za-z\\_' '\\012' < ",
-                             filenames$filenames[i],
-                             " | sort --parallel=",cores," | uniq -c > Vocab_",i,".txt",
-                             sep = "")
+            if (cores == 1) {
+                command <- paste("tr -sc 'A-Za-z\\_' '\\012' < ",
+                                 filenames$filenames[i],
+                                 " | sort | uniq -c > Vocab_",i,".txt",
+                                 sep = "")
+            } else {
+                command <- paste("tr -sc 'A-Za-z\\_' '\\012' < ",
+                 filenames$filenames[i],
+                 " | sort --parallel=",cores," | uniq -c > Vocab_",i,".txt",
+                 sep = "")
+            }
         }
 
         p1 <- pipe(command,"r")
