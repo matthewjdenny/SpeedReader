@@ -12,7 +12,40 @@ generate_document_term_matrix <- function(document_term_vector_list,
                                           return_sparse_matrix = FALSE){
 
     if(is.null(document_term_count_list) & return_sparse_matrix){
-        stop("If you wish to return a sparse document term matrix, you must provide a document_term_count_list, as the function will require a unique set of words for each document.")
+        cat("No document_term_count_list was provided, generating one...\n")
+        # allocate the list
+        document_term_count_list <- vector(mode = "list",
+            length = length(document_term_vector_list))
+
+        num_of_each_term <- function(index,vec,uni_terms){
+            return(length(which(vec == uni_terms[index])))
+        }
+
+        if (length(document_term_vector_list) < 51) {
+            printseq <- 1:length(document_term_vector_list)
+        } else {
+            printseq <- round(seq(1,length(document_term_vector_list),
+                                  length.out = 51)[2:51],0)
+        }
+        print_counter <- 1
+        #reformat the lists so they work with sparse matrices
+        for (j in 1:length(document_term_vector_list)) {
+            if(j == printseq[print_counter]) {
+                cat(".")
+                print_counter <- print_counter + 1
+            }
+            cur <- document_term_vector_list[[j]]
+            uni_cur <- unique(cur)
+            indices <- 1:length(uni_cur)
+            counts <- sapply(X = indices,
+                             FUN = num_of_each_term,
+                             vec = cur,
+                             uni_terms = uni_cur)
+            document_term_count_list[[j]] <- counts
+            document_term_vector_list[[j]] <- uni_cur
+        }
+        cat("\n")
+        cat("Completed generating document_term_count_list...\n")
     }
 
     USING_STEM_LOOKUP_VOCABULARY = FALSE
