@@ -55,6 +55,9 @@ speed_set_vocabulary <- function(vocab,
         if(unique_first_3[counter] == first_3_chars[i]){
             first_time_used[counter] <- i
             counter <- counter + 1
+            if (counter > length(unique_first_3)) {
+                break
+            }
         }
     }
 
