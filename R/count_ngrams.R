@@ -164,8 +164,10 @@ count_ngrams <- function(ngrams = NULL,
         counts <- sapply(cur_vocab[,1],get_count, USE.NAMES = FALSE)
         terms <- sapply(cur_vocab[,1],get_term, USE.NAMES = FALSE)
 
-        vocab_and_counts[[i]] <- list(term = terms,
-                                      count = counts)
+        vocab_and_counts[[i]] <- list(unique_words = terms,
+                                      word_counts = counts,
+                                      total_unique_words = length(terms),
+                                      type = "alphabetized")
         cat("Documents contain",length(counts),"unique",filenames$types[i],
             "and a total of",sum(counts),"of these terms...\n")
         cat("Ending current job at:",toString(Sys.time()),"\n")
