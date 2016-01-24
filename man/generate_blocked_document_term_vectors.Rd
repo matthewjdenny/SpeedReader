@@ -18,6 +18,9 @@ generate_blocked_document_term_vectors(input, output_stem, data_directory,
 
 \item{data_directory}{Argument specifying where the data is stored.}
 
+\item{output_directory}{Optional directory to store blocked document term
+vector output.}
+
 \item{block_size}{THe number of documents to group together in a ingle block of text to save. Defaults to 100.}
 
 \item{data_type}{The type of data provided to the function.}
