@@ -35,6 +35,6 @@ ngrams_single_block <- function(i,
             phrase_extraction = phrase_extraction)
     }
     setwd(output_directory)
-    save(NGrams,file = paste("NGram_Extractions_",i,".Rdata"))
+    save(NGrams,file = paste("NGram_Extractions_",i,".Rdata", sep = ""))
     return("Success!")
 }
