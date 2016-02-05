@@ -13,10 +13,9 @@
 #' most analyses).
 #' @param method Currently only "informed_Dirichlet" is availalbe.
 #' "informed_Dirichlet" implements the model described in section 3.5.1 of
-#' Monroe, B. L., Colaresi, M. P., & Quinn, K. M. (2008). Fightin’ words:
+#' Monroe, B. L., Colaresi, M. P., and Quinn, K. M. (2008). Fightin' words:
 #' Lexical feature selection and evaluation for identifying the content of
 #' political conflict. Political Analysis, 16, 372–403.
-#' http://doi.org/10.1093/pan/mpn018
 #' @return A list object containing two dataframes (one for each comparison
 #' category) with ranked top words. All words included in each dataset obtain
 #' a z-score greater in magnitude than 1.96.
