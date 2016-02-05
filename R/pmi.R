@@ -42,12 +42,24 @@ pmi <- function(contingency_table,
 
     if(every_category_counts){
         for(i in 1:categories){
-            if(i == 1){
-                keep1 <- which(contingency_table[1,] >= term_threshold)
+            if(is_sparse_matrix){
+                if(i == 1){
+                    colsums <- slam::col_sums(contingency_table[1,])
+                    keep1 <- which(colsums >= term_threshold)
+                }else{
+                    colsums <- slam::col_sums(contingency_table[i,])
+                    temp <- which(colsums >= term_threshold)
+                    temp2 <- unlist(sapply(1:length(keep1),check))
+                    keep1 <- keep1[which(temp2 > 0)]
+                }
             }else{
-                temp <- which(contingency_table[i,] >= term_threshold)
-                temp2 <- unlist(sapply(1:length(keep1),check))
-                keep1 <- keep1[which(temp2 > 0)]
+                if(i == 1){
+                    keep1 <- which(contingency_table[1,] >= term_threshold)
+                }else{
+                    temp <- which(contingency_table[i,] >= term_threshold)
+                    temp2 <- unlist(sapply(1:length(keep1),check))
+                    keep1 <- keep1[which(temp2 > 0)]
+                }
             }
         }
     }else{
