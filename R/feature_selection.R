@@ -69,20 +69,25 @@ feature_selection <- function(contingency_table,
     log_odds_ratios <- log_odds_ratios[-remove]
     variance <- variance[-remove]
     vocabulary <- vocabulary[-remove]
+    category_1 <- category_1[-remove]
+    category_2 <- category_2[-remove]
 
     # calculate z scores
     z_scores <- log_odds_ratios/sqrt(variance)
 
     #now get the significant words and rank them.
-    cat("Finding top words in each category...\n")
+    cat("Finding top words in each category...\n\n")
     inds <- which(z_scores > 1.96)
     category_1_significant_words <- data.frame(
         term = vocabulary[inds],
         log_odds_ratio = log_odds_ratios[inds],
         variance = variance[inds],
+        z_scores = z_scores[inds],
+        count = category_1[inds],
+        other_count = category_2[inds],
         stringsAsFactors = FALSE)
     rownames(category_1_significant_words) <- vocabulary[inds]
-    ordering <- order(category_1_significant_words$log_odds_ratio,
+    ordering <- order(category_1_significant_words$z_scores,
                       decreasing = T)
     category_1_significant_words <- category_1_significant_words[ordering,]
 
@@ -91,19 +96,22 @@ feature_selection <- function(contingency_table,
         term = vocabulary[inds],
         log_odds_ratio = log_odds_ratios[inds],
         variance = variance[inds],
+        z_scores = z_scores[inds],
+        count = category_2[inds],
+        other_count = category_1[inds],
         stringsAsFactors = FALSE)
     rownames(category_2_significant_words) <- vocabulary[inds]
-    ordering <- order(category_2_significant_words$log_odds_ratio,
+    ordering <- order(category_2_significant_words$z_scores,
                       decreasing = F)
     category_2_significant_words <- category_2_significant_words[ordering,]
 
     #print out resutls
     cat("Top 10 terms for category:",
         rownames(contingency_table)[rows_to_compare[1]], "...\n")
-    print(head(category_1_significant_words[,2:3],n = 10))
+    print(head(category_1_significant_words[,2:6],n = 20))
     cat("\n\nTop 10 terms for category:",
         rownames(contingency_table)[rows_to_compare[2]], "...\n")
-    print(head(category_2_significant_words[,2:3],n = 10))
+    print(head(category_2_significant_words[,2:6],n = 20))
 
     to_return <- list(c1 = category_1_significant_words,
                       c2 = category_2_significant_words)
