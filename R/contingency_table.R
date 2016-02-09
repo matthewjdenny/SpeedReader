@@ -139,6 +139,7 @@ contingency_table  <- function(metadata,
 
 
     cat("Compiling Contingency Table...\n")
+    document_index_list <- vector(mode = "list",length = Num_Categories)
 
     #populate contingency tables
     if(NUM_VARS == 1){
@@ -153,6 +154,7 @@ contingency_table  <- function(metadata,
             }else{
                 contingency_table[i,] <- colSums(cur)
             }
+            document_index_list[[i]] <- indexes
         }
         rownames(contingency_table) <- Cateogry_Names
         colnames(contingency_table) <- vocabulary
@@ -162,6 +164,8 @@ contingency_table  <- function(metadata,
             cat("Currently compiling contingency table row for:",Cateogry_Names[i],"\n")
             #now generate the conditional contingency tables
             indexes <- which(metadata[,variables_to_use[1]] == Category_Combination_Lookup[i,1])
+            #store the document indexes so we can get them back later
+            document_indexes <- indexes
             cur <- document_term_matrix[indexes,]
             met <- metadata[indexes,]
             NONE = FALSE
@@ -172,12 +176,13 @@ contingency_table  <- function(metadata,
                     if(length(indexes) > 0){
                         cur <- cur[indexes,]
                         met <- met[indexes,]
+                        document_indexes <- document_indexes[indexes]
                     }else{
                         NONE = TRUE
                     }
                 }
             }
-
+            document_index_list[[i]] <- document_indexes
             if (!NONE) {
                 cat("There were",nrow(cur),"observations for category:",Cateogry_Names[i],"\n")
                 if (is_sparse_matrix) {
@@ -206,6 +211,8 @@ contingency_table  <- function(metadata,
         colnames(contingency_table) <- vocabulary
     }
 
+    attributes(contingency_table) <- append(attributes(contingency_table),
+        list(document_indices = document_index_list))
     #return everything
     return(contingency_table)
 }
