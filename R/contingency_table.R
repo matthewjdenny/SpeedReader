@@ -17,7 +17,7 @@ contingency_table  <- function(metadata,
 
     # get dimensions
     #Num_Docs = nrow(document_term_matrix)
-
+    rownames(document_term_matrix) <- 1:nrow(document_term_matrix)
 
     is_sparse_matrix <- FALSE
     if(class(document_term_matrix) == "simple_triplet_matrix"){
@@ -154,7 +154,7 @@ contingency_table  <- function(metadata,
             }else{
                 contingency_table[i,] <- colSums(cur)
             }
-            document_index_list[[i]] <- indexes
+            document_index_list[[i]] <- rownames(cur)
         }
         rownames(contingency_table) <- Cateogry_Names
         colnames(contingency_table) <- vocabulary
@@ -165,26 +165,26 @@ contingency_table  <- function(metadata,
             #now generate the conditional contingency tables
             indexes <- which(metadata[,variables_to_use[1]] == Category_Combination_Lookup[i,1])
             #store the document indexes so we can get them back later
-            document_indexes <- indexes
             cur <- document_term_matrix[indexes,]
             met <- metadata[indexes,]
             NONE = FALSE
             for(j in 2:NUM_VARS){
                 #if we have not already gotten to an empty category
                 if(!NONE){
-                    indexes <- which(met[,variables_to_use[j]] == Category_Combination_Lookup[i,j])
+                    indexes <- which(met[,variables_to_use[j]] ==
+                                         Category_Combination_Lookup[i,j])
                     if(length(indexes) > 0){
                         cur <- cur[indexes,]
                         met <- met[indexes,]
-                        document_indexes <- document_indexes[indexes]
                     }else{
                         NONE = TRUE
                     }
                 }
             }
-            document_index_list[[i]] <- document_indexes
+
             if (!NONE) {
                 cat("There were",nrow(cur),"observations for category:",Cateogry_Names[i],"\n")
+                document_index_list[[i]] <- rownames(cur)
                 if (is_sparse_matrix) {
                     if (force_dense) {
                         temp <- slam::col_sums(cur)

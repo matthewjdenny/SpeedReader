@@ -201,6 +201,7 @@ feature_selection <- function(contingency_table,
             category_11 <- cat1
             doc_frequency1 <- document_frequency
             remove <- c(remove,which(is.nan(scores_1)))
+            remove <- c(remove,which(is.infinite(scores_1)))
             remove <- unique(remove)
             if (length(remove) > 0) {
                 scores_1 <- scores_1[-remove]
