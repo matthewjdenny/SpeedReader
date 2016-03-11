@@ -20,6 +20,8 @@
 #' @param right_margin Parameter controling how much space should be reserved
 #' for the right margin in the plot (for displaying top terms). Defaults to 20
 #' but can be adjusted depending on the length of terms.
+#' @param max_terms_to_display Defaults to 100,000. Used to prevent overloading 
+#' the plotting device with very large vocabularies. Can be set by the user.
 #' @return A Fightin' Words plot
 #' @export
 fightin_words_plot <- function(feature_selection_object,
@@ -30,7 +32,8 @@ fightin_words_plot <- function(feature_selection_object,
                                display_top_words = 20,
                                display_terms_next_to_points = FALSE,
                                size_terms_by_frequency = FALSE,
-                               right_margin = 20) {
+                               right_margin = 20,
+                               max_terms_to_display = 100000) {
   options(scipen = 999)
   par(mar = c(5.1, 4.1, 4.1, right_margin))
   UMASS_BLUE <- rgb(51, 51, 153, 255, maxColorValue = 255)
@@ -46,6 +49,14 @@ fightin_words_plot <- function(feature_selection_object,
     words <- feature_selection_object$terms
   } else {
     stop("You must provide an object generate by the feature_selection function...")
+  }
+  
+  if (length(zeta) > max_terms_to_display) {
+    tot <- length(zeta)
+    bound <- floor(max_terms_to_display/2)
+    zeta <- c(zeta[1:bound], zeta[(tot-bound+1):tot]) 
+    y.tot <- c(y.tot[1:bound], y.tot[(tot-bound+1):tot]) 
+    words <- c(words[1:bound], words[(tot-bound+1):tot]) 
   }
 
   max_y.tot <- max(y.tot)
