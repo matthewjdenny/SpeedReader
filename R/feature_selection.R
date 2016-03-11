@@ -74,7 +74,8 @@ feature_selection <- function(contingency_table,
             category_list[[i]] <- as.numeric(
                 contingency_table[rows_to_compare[i],])
         }
-        all_classes <- as.numeric(contingency_table[rows_to_compare,])
+        all_classes <- as.numeric(apply(contingency_table[rows_to_compare,],
+                                        2,sum))
     }
 
     to_return <- vector(mode = "list", length = length(rows_to_compare))
@@ -115,11 +116,20 @@ feature_selection <- function(contingency_table,
                 vocab <- vocabulary[-remove]
                 cat1 <- cat1[-remove]
                 cat2 <- cat2[-remove]
+                all_classes <- all_classes[-remove]
             }
 
 
             # calculate z scores
             z_scores <- log_odds_ratio/sqrt(variance)
+
+            # generate the overal rankings for use in fightin words plots
+            if (i == 1) {
+                zsordering <- order(z_scores, decreasing = TRUE)
+                ordered_data <- data.frame(scores = z_scores[ordering],
+                                           total_count = all_classes[ordering],
+                                           terms = vocab[ordering])
+            }
 
             #now get the significant words and rank them.
             cat("Finding top words in each category...\n\n")
@@ -234,10 +244,23 @@ feature_selection <- function(contingency_table,
 
             to_return[[i]] <- category_1_significant_words
         }
+
+        # now generate full ordered dataset if for first two categories
+        # (only using significant words)
+
+        scores <- c(to_return[[1]]$tfidf, rev(to_return[[2]]$tfidf))
+        cnts <- c(to_return[[1]]$count, rev(to_return[[2]]$count))
+        vcb <- c(to_return[[1]]$term, rev(to_return[[2]]$term))
+        ordered_data <- data.frame(scores = scores,
+                                   total_count = cnts,
+                                   terms = vcb)
+
     }
 
+    to_return <- append(to_return, ordered_data)
 
-    names(to_return) <- c(rownames(contingency_table)[rows_to_compare])
+    names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
+                          "Term_Ordering")
 
     return(to_return)
 }
