@@ -116,7 +116,7 @@ feature_selection <- function(contingency_table,
                 vocab <- vocabulary[-remove]
                 cat1 <- cat1[-remove]
                 cat2 <- cat2[-remove]
-                all_classes <- all_classes[-remove]
+                all_c <- all_classes[-remove]
             }
 
 
@@ -125,10 +125,11 @@ feature_selection <- function(contingency_table,
 
             # generate the overal rankings for use in fightin words plots
             if (i == 1) {
-                zsordering <- order(z_scores, decreasing = TRUE)
+                ordering <- order(z_scores, decreasing = TRUE)
                 ordered_data <- data.frame(scores = z_scores[ordering],
-                                           total_count = all_classes[ordering],
-                                           terms = vocab[ordering])
+                                           total_count = all_c[ordering],
+                                           terms = vocab[ordering],
+                                           stringsAsFactors = FALSE)
             }
 
             #now get the significant words and rank them.
@@ -253,11 +254,12 @@ feature_selection <- function(contingency_table,
         vcb <- c(to_return[[1]]$term, rev(to_return[[2]]$term))
         ordered_data <- data.frame(scores = scores,
                                    total_count = cnts,
-                                   terms = vcb)
+                                   terms = vcb,
+                                   stringsAsFactors = FALSE)
 
     }
 
-    to_return <- append(to_return, ordered_data)
+    to_return <- append(to_return, list(ordered_data))
 
     names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
                           "Term_Ordering")
