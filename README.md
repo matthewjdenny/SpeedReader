@@ -57,6 +57,8 @@ The SpeedReader package currently provides the following functions to aid in the
 * `pmi()` -- Calculates a number of information theoretic quantities on a given contingency table.
 * `corenlp()` -- A wrapper for Stanfords wonderful CoreNLP libraries. Currently returns one dataframe per document with lots of CoreNLP token metadata including POS and NER tags. Also wraps syntactic parsing, and coreference resolution functionality as options.
 * `mallet_lda()` -- A wrapper for the incredibly efficient, robust and well tested implementation of latent Dirichlet allocation included in the MALLET libraries. Reads all output into R for easy reuse in other applications.
+* `feature_selection()` -- Allows the user to perform feature selection on a contingency table using a number of different formulations of TF-IDF as well as the informed Dirichlet model from the Monroe et al. "Fightin' Words" paper.
+* `fightin_words_plot()` -- Makes really nice looking funnel plots similar to those in the Monroe et al. "Fightin' Words" paper from the output of the `feature_selection()` function.
 
 The SpeedReader package also provides the following utility functions:
 
