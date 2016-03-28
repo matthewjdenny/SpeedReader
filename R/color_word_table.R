@@ -18,7 +18,7 @@ color_word_table <- function(word_table,
                              min_black = 30,
                              print_first = 60,
                              all_same = FALSE,
-                             remove_words = "will",
+                             remove_words = "",
                              second_table = NULL,
                              max_char_width = 60,
                              bold_covariates = T){

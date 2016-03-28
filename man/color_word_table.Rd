@@ -5,9 +5,8 @@
 \title{A function to generate LaTeX output from a dataframe containing covariates and top words.}
 \usage{
 color_word_table(word_table, covariate_columns = 1, word_columns = 4:13,
-  min_black = 30, print_first = 60, all_same = FALSE,
-  remove_words = "will", second_table = NULL, max_char_width = 60,
-  bold_covariates = T)
+  min_black = 30, print_first = 60, all_same = FALSE, remove_words = "",
+  second_table = NULL, max_char_width = 60, bold_covariates = T)
 }
 \arguments{
 \item{word_table}{A dataframe with optional covariates and then some number of fields each of which is a top word.}
