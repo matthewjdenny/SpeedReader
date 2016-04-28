@@ -22,6 +22,12 @@
 #' @param document_term_matrix The document term matrix used to construct the
 #' contingency_table. Necessary if the user selects method = "TF-IDF". Defaults
 #' to NULL.
+#' @param subsume_ngrams Optional argument allowing the user to combine highly
+#' correlated ngrams in resulting output. Only useful if terms in the document
+#' term matrix can overlap.
+#' @param ngram_subsumption_correlation_threshold Defualts to 0.9, can be set
+#' higher or lower depending on the correlation threshold at which the user
+#' would like to subsume n-grams.
 #' @return A list object containing two dataframes (one for each comparison
 #' category) with ranked top words. All words included in each dataset obtain
 #' a z-score greater in magnitude than 1.96.
@@ -34,7 +40,9 @@ feature_selection <- function(contingency_table,
                                          "TF-IDF-log(tf)",
                                          "TF-IDF-augmented(tf)"),
                               maximum_top_words = 5000,
-                              document_term_matrix = NULL){
+                              document_term_matrix = NULL,
+                              subsume_ngrams = FALSE,
+                              ngram_subsumption_correlation_threshold = 0.9){
 
     if (is.null(rows_to_compare)) {
         rows_to_compare <- 1:nrow(contingency_table)
@@ -60,17 +68,17 @@ feature_selection <- function(contingency_table,
     cat("Generating column sums...\n")
     # get column sums
     category_list <- vector(mode = "list", length = length(rows_to_compare))
-    if(is_sparse_matrix){
+    if (is_sparse_matrix) {
         colsums <- as.numeric(slam::col_sums(contingency_table))
-        for(i in 1:length(rows_to_compare)) {
+        for (i in 1:length(rows_to_compare)) {
             category_list[[i]] <- as.numeric(slam::col_sums(
                 contingency_table[rows_to_compare[i],]))
         }
         all_classes <- as.numeric(slam::col_sums(
             contingency_table[rows_to_compare,]))
-    }else{
+    } else {
         colsums <- as.numeric(apply(contingency_table,2,sum))
-        for(i in 1:length(rows_to_compare)) {
+        for (i in 1:length(rows_to_compare)) {
             category_list[[i]] <- as.numeric(
                 contingency_table[rows_to_compare[i],])
         }
@@ -109,6 +117,7 @@ feature_selection <- function(contingency_table,
             # subset everything to remove any NaNs (this comes in if we are using a
             # subset of documents where some words do not appear at all in any of them)
             vocab <- vocabulary
+            column_indicies <- 1:length(vocabulary)
             remove <- which(is.nan(log_odds_ratio))
             if (length(remove) > 0) {
                 log_odds_ratio <- log_odds_ratio[-remove]
@@ -117,6 +126,7 @@ feature_selection <- function(contingency_table,
                 cat1 <- cat1[-remove]
                 cat2 <- cat2[-remove]
                 all_c <- all_classes[-remove]
+                column_indicies <- column_indicies[-remove]
             }
 
 
@@ -129,6 +139,7 @@ feature_selection <- function(contingency_table,
                 ordered_data <- data.frame(scores = z_scores[ordering],
                                            total_count = all_c[ordering],
                                            terms = vocab[ordering],
+                                           term_indicies = column_indicies[ordering],
                                            stringsAsFactors = FALSE)
             }
 
@@ -142,6 +153,7 @@ feature_selection <- function(contingency_table,
                 z_scores = z_scores[inds],
                 count = cat1[inds],
                 other_count = cat2[inds],
+                term_indicies = column_indicies[inds],
                 stringsAsFactors = FALSE)
             ordering <- order(category_1_significant_words$z_scores,
                               decreasing = T)
@@ -208,6 +220,7 @@ feature_selection <- function(contingency_table,
             scores_1 <- cat1*log(num_docs/(1 + document_frequency))
 
             #remove NaN entries
+            column_indicies <- 1:length(vocabulary)
             vocabulary1 <- vocabulary
             category_11 <- cat1
             doc_frequency1 <- document_frequency
@@ -219,6 +232,7 @@ feature_selection <- function(contingency_table,
                 vocabulary1 <- vocabulary[-remove]
                 category_11 <- cat1[-remove]
                 doc_frequency1 <- document_frequency[-remove]
+                column_indicies <- column_indicies[-remove]
             }
 
             # make the dataframe to return
@@ -227,6 +241,7 @@ feature_selection <- function(contingency_table,
                 tfidf = scores_1,
                 count = category_11,
                 idf = doc_frequency1,
+                term_indicies = column_indicies,
                 stringsAsFactors = FALSE)
             ordering <- order(category_1_significant_words$tfidf,
                               decreasing = T)
@@ -252,17 +267,56 @@ feature_selection <- function(contingency_table,
         scores <- c(to_return[[1]]$tfidf, rev(to_return[[2]]$tfidf))
         cnts <- c(to_return[[1]]$count, rev(to_return[[2]]$count))
         vcb <- c(to_return[[1]]$term, rev(to_return[[2]]$term))
+        term_inds <- c(to_return[[1]]$term_indicies,
+                           rev(to_return[[2]]$term_indicies))
         ordered_data <- data.frame(scores = scores,
                                    total_count = cnts,
                                    terms = vcb,
+                                   term_indicies = term_inds,
                                    stringsAsFactors = FALSE)
 
     }
 
-    to_return <- append(to_return, list(ordered_data))
+    # now if we are subsuming n-grams, then do so and provide an additional list
+    if (subsume_ngrams) {
+        cat("Subsuming N-Grams...\n")
+        # list with subsumed n-grams for each entry
+        subsumed_ngrams <- vector(mode = "list", length = length(rows_to_compare))
+        # get the row indices which will stay constant.
+        document_indices <- attr(contingency_table,"document_indices")
+        row_inds <- NULL
+        for (k in 1:length(rows_to_compare)) {
+            row_inds <- c(row_inds,
+                          as.numeric(document_indices[[rows_to_compare[k]]]))
+        }
+        for (k in 1:length(rows_to_compare)) {
+            # get the document term matrix
+            col_inds <- as.numeric(to_return[[k]]$term_indicies)
+            doc_term_mat <- document_term_matrix[row_inds, col_inds]
+            # subsume the n-grams
+            subsumed <- subsume_ngrams(
+                ranked_terms = to_return[[k]],
+                document_term_matrix = doc_term_mat ,
+                term_clusters_to_output = 200,
+                top_terms_to_search = 200,
+                correlation_threshold = ngram_subsumption_correlation_threshold)
 
-    names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
-                          "Term_Ordering")
-
+            subsumed_ngrams[[k]] <- subsumed
+        }
+        # name everything correctly
+        names(subsumed_ngrams) <- rownames(contingency_table)[rows_to_compare]
+        to_return <- append(to_return,
+                            list(ordered_data))
+        to_return <- append(to_return,
+                            list(subsumed_ngrams))
+        names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
+                              "Term_Ordering",
+                              "Subsumed_NGrams")
+    } else {
+        # if we are not subsuming n-grams, then just name stuff and return it.
+        to_return <- append(to_return, list(ordered_data))
+        names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
+                              "Term_Ordering")
+    }
     return(to_return)
 }
