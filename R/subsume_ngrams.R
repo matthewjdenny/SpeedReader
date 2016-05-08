@@ -108,13 +108,17 @@ subsume_ngrams <- function(ranked_terms,
     ranked_term_cluster_list <- ranked_term_cluster_list[1:clusters_returned]
 
     # determine if there are any missing rows
-    rmr <- which(is.na(rownames(ranked_term_clusters)))
+    rmr <- c(which(is.na(rownames(ranked_term_clusters))),
+             which(is.null(rownames(ranked_term_clusters))),
+             which(is.na(ranked_term_clusters[,1])))
     if(length(rmr) > 0) {
+        cat("Removing NA rows:",rmr,"\n")
         ranked_term_clusters <- ranked_term_clusters[-rmr,]
         ranked_term_cluster_list <- ranked_term_cluster_list[-rmr]
     }
 
     # get the correct names for everything
+    print(ranked_term_clusters[,1])
     rownames(ranked_term_clusters) <- ranked_term_clusters[,1]
     names(ranked_term_cluster_list) <- ranked_term_clusters[,1]
 
