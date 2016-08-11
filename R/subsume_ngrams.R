@@ -22,83 +22,90 @@ subsume_ngrams <- function(ranked_terms,
 
     # loop over term_clusters_to_output and populate
     for (i in 1:term_clusters_to_output) {
+        # print(i)
+        # print(paste("nrow:", nrow(ranked_terms)))
         # get the focal term
         focal_term <- ranked_terms[1,1]
         focal_term_metadata <- ranked_terms[1,2:ncol(ranked_terms)]
 
         # find all terms that subsume the focal term
-        max_row <- min(top_terms_to_search, ncol(document_term_matrix))
-        inds <- 1 # becasue we look for subterms of the current term
-        for (j in 2:max_row) {
-            if (grepl(focal_term, ranked_terms[j,1])) {
-                inds <- c(inds,j)
-            }
-        }
-        # now get the actual terms
-        larger_terms <- ranked_terms[inds,1]
-        # now loop over max_length terms and find all of their subterms
-        for (j in 1:length(larger_terms)) {
-            cur <- larger_terms[j]
-            for (k in 2:max_row) {
-                if (grepl(ranked_terms[k,1], cur)) {
-                    inds <- c(inds,k)
-                }
-            }
-        }
+        max_row <- min(top_terms_to_search, nrow(ranked_terms))
 
-        # get the unique term indicies
-        inds <- unique(inds)
-
-        # if there is only one term in the cluster, then add it to the
-        # appropriate data structures and move on.
-        if (length(inds) == 1) {
-            # only the first term can be in the cluster
-           in_cluster <- 1
-           correlations <- 1
-           in_cluster_indicator <- 1
-           largest_term <- focal_term
-        } else {
-            # if there are more than one terms in the cluster
-            # now get the sub-doc-term-matrix
-            sub_dt <- document_term_matrix[,inds]
-            # get the correlations to the focal term
-            correlations <- sapply(1:length(inds),
-                                   get_correlation,
-                                   dtm = sub_dt)
-
-            # determine which terms qualify for the cluster based on threshold
-            in_cluster <- inds[which(correlations > correlation_threshold)]
-            in_cluster_indicator <- rep(0,length(correlations))
-            in_cluster_indicator[which(correlations > correlation_threshold)] <- 1
-
-            # get the largest term
-            lt <- ranked_terms[in_cluster,1]
-            nchars <- as.numeric(sapply(lt,nchar))
-            largest_term <- lt[which(nchars == max(nchars))[1]]
-        }
-
-        # now generate the data we are going put in the object we return
-        ranked_term_clusters[i,1] <- largest_term
-        ranked_term_clusters[i,2:ncol(ranked_terms)] <- focal_term_metadata
-
-        # record the nubmer of terms subsumed
-        terms_subsumed[i] <- length(in_cluster)
-
-        # create a cluster dataset to stick in the list
-        cluster_data <- data.frame(term = ranked_terms[inds,1],
-                                   correlations = correlations,
-                                   in_cluster = in_cluster_indicator,
-                                   stringsAsFactors = FALSE)
-        ranked_term_cluster_list[[i]] <- cluster_data
-
-        # remove the terms inclued in the cluster and keep going as long as
-        # there is still input data
-        clusters_returned <- clusters_returned + 1
-        if (nrow(ranked_terms) == length(in_cluster)) {
+        if (max_row == 0) {
             break
         } else {
-            ranked_terms <- ranked_terms[-in_cluster,]
-            document_term_matrix <- document_term_matrix[,-in_cluster]
+            inds <- 1 # becasue we look for subterms of the current term
+            for (j in 2:max_row) {
+                if (grepl(focal_term, ranked_terms[j,1])) {
+                    inds <- c(inds,j)
+                }
+            }
+            # now get the actual terms
+            larger_terms <- ranked_terms[inds,1]
+            # now loop over max_length terms and find all of their subterms
+            for (j in 1:length(larger_terms)) {
+                cur <- larger_terms[j]
+                for (k in 2:max_row) {
+                    if (grepl(ranked_terms[k,1], cur)) {
+                        inds <- c(inds,k)
+                    }
+                }
+            }
+
+            # get the unique term indicies
+            inds <- unique(inds)
+
+            # if there is only one term in the cluster, then add it to the
+            # appropriate data structures and move on.
+            if (length(inds) == 1) {
+                # only the first term can be in the cluster
+                in_cluster <- 1
+                correlations <- 1
+                in_cluster_indicator <- 1
+                largest_term <- focal_term
+            } else {
+                # if there are more than one terms in the cluster
+                # now get the sub-doc-term-matrix
+                sub_dt <- document_term_matrix[,inds]
+                # get the correlations to the focal term
+                correlations <- sapply(1:length(inds),
+                                       get_correlation,
+                                       dtm = sub_dt)
+
+                # determine which terms qualify for the cluster based on threshold
+                in_cluster <- inds[which(correlations > correlation_threshold)]
+                in_cluster_indicator <- rep(0,length(correlations))
+                in_cluster_indicator[which(correlations > correlation_threshold)] <- 1
+
+                # get the largest term
+                lt <- ranked_terms[in_cluster,1]
+                nchars <- as.numeric(sapply(lt,nchar))
+                largest_term <- lt[which(nchars == max(nchars))[1]]
+            }
+
+            # now generate the data we are going put in the object we return
+            ranked_term_clusters[i,1] <- largest_term
+            ranked_term_clusters[i,2:ncol(ranked_terms)] <- focal_term_metadata
+
+            # record the nubmer of terms subsumed
+            terms_subsumed[i] <- length(in_cluster)
+
+            # create a cluster dataset to stick in the list
+            cluster_data <- data.frame(term = ranked_terms[inds,1],
+                                       correlations = correlations,
+                                       in_cluster = in_cluster_indicator,
+                                       stringsAsFactors = FALSE)
+            ranked_term_cluster_list[[i]] <- cluster_data
+
+            # remove the terms inclued in the cluster and keep going as long as
+            # there is still input data
+            clusters_returned <- clusters_returned + 1
+            if (nrow(ranked_terms) == length(in_cluster)) {
+                break
+            } else {
+                ranked_terms <- ranked_terms[-in_cluster,]
+                document_term_matrix <- document_term_matrix[,-in_cluster]
+            }
         }
     }
 
@@ -133,7 +140,12 @@ n_terms <- function (str) {
 }
 
 get_correlation <- function(ind,dtm) {
-    cor(dtm[,1], dtm[,ind])
+    current <- cor(dtm[,1], dtm[,ind])
+    # deal with case of constant data which should be correlated at 1
+    if (is.na(current)) {
+      current <- 1
+    }
+    return(current)
 }
 
 # test <- subsume_ngrams(ranked_terms,
