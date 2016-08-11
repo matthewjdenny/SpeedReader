@@ -26,6 +26,11 @@
 #' be used when displaying top terms. This will only work if the user has
 #' selected subsume_ngrams  = TRUE in the feature_selection() function (and is
 #' using a vocabulary contianing overlapping n-grams).
+#' @param limits An optional numeric vector of length two where the first number
+#' is the upper x limit (term count) and the second term is the absolute value
+#' of the maximum z-score to display (the y limit). Defaults to NULL, in which
+#' case the optimal values are automatically determined. Can be useful for
+#' comparison between plots.
 #' @return A Fightin' Words plot
 #' @export
 fightin_words_plot <- function(feature_selection_object,
@@ -38,7 +43,8 @@ fightin_words_plot <- function(feature_selection_object,
                                size_terms_by_frequency = FALSE,
                                right_margin = 20,
                                max_terms_to_display = 100000,
-                               use_subsumed_ngrams = FALSE) {
+                               use_subsumed_ngrams = FALSE,
+                               limits = NULL) {
   options(scipen = 999)
   par(mar = c(5.1, 4.1, 4.1, right_margin))
   UMASS_BLUE <- rgb(51, 51, 153, 255, maxColorValue = 255)
@@ -77,10 +83,20 @@ fightin_words_plot <- function(feature_selection_object,
   max.zeta.two <- length(zeta):(length(zeta) - display_top_words +
     1)
 
-  display_limits <- 1.2 * max(abs(zeta))
+  # determine if the user has specified limits and if so sets them manually
+  if (!is.null(limits)) {
+      display_limits <- 1.2 * abs(limits[2])
+      ylims <- c(-display_limits, display_limits)
+      xlims <- c(1, abs(limits[1]))
+  } else {
+      display_limits <- 1.2 * max(abs(zeta))
+      ylims <- c(-display_limits, display_limits)
+      xlims <- c(1, 2 * max_y.tot)
+  }
+
   sig.z <- abs(zeta) > 1.96
   psize <- 2 * abs(zeta)/max(abs(zeta))
-  plot(c(1, 2 * max_y.tot), c(-display_limits, display_limits),
+  plot(xlims, ylims,
     type = "n", log = "x", pch = 19, col = "black", cex = psize,
     main = title, ylab = paste(negative_category, " vs. ",
       positive_category, sep = ""), xlab = xlab)
