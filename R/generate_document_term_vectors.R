@@ -126,10 +126,15 @@ generate_document_term_vectors <- function(
                 data <- readr::read_delim(file = input[i],
                                  delim = csv_separator,
                                  col_names = csv_header)
+                # deal with the new tibble format from readr.
+                data <- as.data.frame(data, stringsAsFactors = FALSE)
+                temp1 <- list(as.character(data[,csv_word_column]))
+                temp2 <- list(counts = as.numeric(data[,csv_count_column]))
+
                 vocab <- count_words(
-                    document_term_vector_list = list(as.character(data[,csv_word_column])),
+                    document_term_vector_list = temp1,
                     maximum_vocabulary_size = -1,
-                    document_term_count_list = list(as.numeric(data[,csv_count_column])))
+                    document_term_count_list = temp2)
                 document_term_vector_list[[i]] <- vocab$unique_words
                 document_term_count_list[[i]] <- vocab$word_counts
             }
