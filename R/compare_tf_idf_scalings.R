@@ -23,7 +23,7 @@ compare_tf_idf_scalings <- function(document_term_matrix){
     num_doc <- nrow(document_term_matrix)
     vocab_size <- ncol(document_term_matrix)
     binary_doc_term <- document_term_matrix
-    binary_doc_term[which(binary_doc_term) >0] <- 1
+    binary_doc_term[which(binary_doc_term > 0)] <- 1
     term_doc_counts <- colSums(binary_doc_term)
     doc_sums <- rowSums(document_term_matrix)
     max_tf_doc <- apply(document_term_matrix,1,max)
