@@ -25,7 +25,7 @@ compare_tf_idf_scalings <- function(document_term_matrix){
     binary_doc_term <- document_term_matrix
     binary_doc_term[which(binary_doc_term > 0)] <- 1
     term_doc_counts <- colSums(binary_doc_term)
-    doc_sums <- rowSums(document_term_matrix)
+    # doc_sums <- rowSums(document_term_matrix)
     max_tf_doc <- apply(document_term_matrix,1,max)
 
     double_normalization <- function(vec, cur_max_tf_doc) {
@@ -115,8 +115,13 @@ compare_tf_idf_scalings <- function(document_term_matrix){
     # max log idf
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
+        max_vec <- rep(0,vocab_size)
         for(j in 1:vocab_size) {
-            temp_dtm[i,j] <- temp_dtm[i,j] * log(1 + max_tf_doc[i]/(1+temp_dtm[i,j]))
+            max_vec[j] <- binary_doc_term[i,j]*term_doc_counts[j]
+        }
+        max_df_i <- max(max_vec)
+        for(j in 1:vocab_size) {
+            temp_dtm[i,j] <- temp_dtm[i,j] * log(1 + max_df_i/(1 + term_doc_counts[j]))
         }
     }
     dtm_list$max_smooth_log_idf <- list(
