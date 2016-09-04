@@ -22,7 +22,9 @@ compare_tf_idf_scalings <- function(document_term_matrix){
 
     num_doc <- nrow(document_term_matrix)
     vocab_size <- ncol(document_term_matrix)
-    term_sums <- colSums(document_term_matrix)
+    binary_doc_term <- document_term_matrix
+    binary_doc_term[which(binary_doc_term) >0] <- 1
+    term_doc_counts <- colSums(binary_doc_term)
     doc_sums <- rowSums(document_term_matrix)
     max_tf_doc <- apply(document_term_matrix,1,max)
 
@@ -71,42 +73,42 @@ compare_tf_idf_scalings <- function(document_term_matrix){
         scaling = "double normalized (0.5) term frequencies",
         dtm = temp_dtm)
 
-    cat("IDF...\n")
+    cat("TF IDF...\n")
     # no-log idf
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
         for(j in 1:vocab_size) {
-            temp_dtm[i,j] <- term_sums[j]/(1+temp_dtm[i,j])
+            temp_dtm[i,j] <- temp_dtm[i,j] * (num_doc/(1+term_doc_counts[j]))
         }
     }
     dtm_list$idf <- list(
-        scaling = "idf scaling: (N/(1+ df))",
+        scaling = "TF - idf scaling: (N/(1+ df))",
         dtm = temp_dtm)
 
-    cat("log IDF...\n")
+    cat("TF log IDF...\n")
     # log idf
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
         for(j in 1:vocab_size) {
             if (temp_dtm[i,j]) {
-                temp_dtm[i,j] <- log(term_sums[j]/(1+temp_dtm[i,j]))
+                temp_dtm[i,j] <- temp_dtm[i,j] * log(num_doc/(1+term_doc_counts[j]))
             }
         }
     }
     dtm_list$log_idf <- list(
-        scaling = "log idf scaling: log(N/(1+ df))",
+        scaling = "TF - log idf scaling: log(N/(1+ df))",
         dtm = temp_dtm)
 
-    cat("smooth log IDF...\n")
+    cat("TF smooth log IDF...\n")
     # smooth log idf
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
         for(j in 1:vocab_size) {
-            temp_dtm[i,j] <- log(1 + term_sums[j]/(1+temp_dtm[i,j]))
+            temp_dtm[i,j] <- temp_dtm[i,j] * log(1 + num_doc/(1 + term_doc_counts[j]))
         }
     }
     dtm_list$smooth_log_idf <- list(
-        scaling = "smooth log idf scaling: log(1 + (N/(1+ df)))",
+        scaling = "TF - smooth log idf scaling: log(1 + (N/(1+ df)))",
         dtm = temp_dtm)
 
     cat("max smooth log IDF...\n")
@@ -114,25 +116,25 @@ compare_tf_idf_scalings <- function(document_term_matrix){
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
         for(j in 1:vocab_size) {
-            temp_dtm[i,j] <- log(1 + max_tf_doc[i]/(1+temp_dtm[i,j]))
+            temp_dtm[i,j] <- temp_dtm[i,j] * log(1 + max_tf_doc[i]/(1+temp_dtm[i,j]))
         }
     }
     dtm_list$max_smooth_log_idf <- list(
-        scaling = "smooth log idf scaling with max tf in document: log(1 + (max_{d}df/(1+ df)))",
+        scaling = "TF - smooth log idf scaling with max tf in document: log(1 + (max_{d}df/(1+ df)))",
         dtm = temp_dtm)
 
-    cat("probabilitic log IDF...\n")
+    cat("TF probabilitic log IDF...\n")
     # probabilistic log idf
     temp_dtm <- document_term_matrix
     for (i in 1:num_doc) {
         for(j in 1:vocab_size) {
             if (temp_dtm[i,j]) {
-                temp_dtm[i,j] <- log((term_sums[j] - temp_dtm[i,j])/temp_dtm[i,j])
+                temp_dtm[i,j] <- temp_dtm[i,j] * log((num_doc - term_doc_counts[j])/term_doc_counts[j])
             }
         }
     }
     dtm_list$prob_log_idf <- list(
-        scaling = "probabilistic log idf scaling: log((N - df)/df)",
+        scaling = "TF - probabilistic log idf scaling: log((N - df)/df)",
         dtm = temp_dtm)
 
     return(dtm_list)
