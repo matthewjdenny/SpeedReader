@@ -59,6 +59,8 @@ The SpeedReader package currently provides the following functions to aid in the
 * `mallet_lda()` -- A wrapper for the incredibly efficient, robust and well tested implementation of latent Dirichlet allocation included in the MALLET libraries. Reads all output into R for easy reuse in other applications.
 * `feature_selection()` -- Allows the user to perform feature selection on a contingency table using a number of different formulations of TF-IDF as well as the informed Dirichlet model from the Monroe et al. "Fightin' Words" paper.
 * `fightin_words_plot()` -- Makes really nice looking funnel plots similar to those in the Monroe et al. "Fightin' Words" paper from the output of the `feature_selection()` function.
+* `calculate_document_pair_distances()` calculates cosine distances between pairs of documents for a given document-term matrix.
+* `dice_coefficient_line_matching()` -- Uses Dice coefficents calculated on token Bigrams to determine the number of lines/sentences in document 1 that are also in document 2 (based on some Dice coefficient threshold) and vice versa.
 
 The SpeedReader package also provides the following utility functions:
 
