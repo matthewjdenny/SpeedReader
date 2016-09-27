@@ -141,6 +141,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// LineWise_Dice_Coefficients
+arma::mat LineWise_Dice_Coefficients(int number_of_lines, List Lines, int number_of_lines2, List Lines2);
+RcppExport SEXP SpeedReader_LineWise_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type number_of_lines(number_of_linesSEXP);
+    Rcpp::traits::input_parameter< List >::type Lines(LinesSEXP);
+    Rcpp::traits::input_parameter< int >::type number_of_lines2(number_of_lines2SEXP);
+    Rcpp::traits::input_parameter< List >::type Lines2(Lines2SEXP);
+    __result = Rcpp::wrap(LineWise_Dice_Coefficients(number_of_lines, Lines, number_of_lines2, Lines2));
+    return __result;
+END_RCPP
+}
 // Mutual_Information
 double Mutual_Information(arma::mat joint_dist);
 RcppExport SEXP SpeedReader_Mutual_Information(SEXP joint_distSEXP) {

@@ -37,6 +37,10 @@ Generate_Sparse_Document_Term_Matrix <- function(number_of_documents, number_of_
     .Call('SpeedReader_Generate_Sparse_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms)
 }
 
+LineWise_Dice_Coefficients <- function(number_of_lines, Lines, number_of_lines2, Lines2) {
+    .Call('SpeedReader_LineWise_Dice_Coefficients', PACKAGE = 'SpeedReader', number_of_lines, Lines, number_of_lines2, Lines2)
+}
+
 Mutual_Information <- function(joint_dist) {
     .Call('SpeedReader_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist)
 }
