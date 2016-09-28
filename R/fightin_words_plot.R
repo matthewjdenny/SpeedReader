@@ -31,20 +31,23 @@
 #' of the maximum z-score to display (the y limit). Defaults to NULL, in which
 #' case the optimal values are automatically determined. Can be useful for
 #' comparison between plots.
+#' @param clean_publication_plots Logical to remove labels inside of plot and
+#' color all dots uniformly. Defaults to FALSE
 #' @return A Fightin' Words plot
 #' @export
 fightin_words_plot <- function(feature_selection_object,
                                title,
                                positive_category,
                                negative_category,
-                               xlab = "Term Frequency",
+                               xlab = "term count",
                                display_top_words = 20,
                                display_terms_next_to_points = FALSE,
                                size_terms_by_frequency = FALSE,
                                right_margin = 20,
                                max_terms_to_display = 100000,
                                use_subsumed_ngrams = FALSE,
-                               limits = NULL) {
+                               limits = NULL,
+                               clean_publication_plots = FALSE) {
   options(scipen = 999)
   par(mar = c(5.1, 4.1, 4.1, right_margin))
   UMASS_BLUE <- rgb(51, 51, 153, 255, maxColorValue = 255)
@@ -79,9 +82,16 @@ fightin_words_plot <- function(feature_selection_object,
 
   max_y.tot <- max(y.tot)
 
-  max.zeta.one <- 1:display_top_words
-  max.zeta.two <- length(zeta):(length(zeta) - display_top_words +
-    1)
+  if (clean_publication_plots) {
+      max.zeta.one <- 1:length(which(zeta > 1.96))
+      max.zeta.two <- length(zeta):(length(zeta) - length(which(zeta < -1.96)) +
+                                        1)
+  } else {
+      max.zeta.one <- 1:display_top_words
+      max.zeta.two <- length(zeta):(length(zeta) - display_top_words +
+                                        1)
+  }
+
 
   # determine if the user has specified limits and if so sets them manually
   if (!is.null(limits)) {
@@ -98,45 +108,46 @@ fightin_words_plot <- function(feature_selection_object,
   psize <- 2 * abs(zeta)/max(abs(zeta))
   plot(xlims, ylims,
     type = "n", log = "x", pch = 19, col = "black", cex = psize,
-    main = title, ylab = paste(negative_category, " vs. ",
-      positive_category, sep = ""), xlab = xlab)
+    main = title, ylab = expression(italic(z)-score), xlab = xlab)
   points(y.tot, zeta, pch = 19, col = "gray", cex = psize)
   points(y.tot[sig.z], zeta[sig.z], pch = 19, col = "black",
     cex = psize[sig.z])
+
   points(y.tot[max.zeta.one], zeta[max.zeta.one], pch = 19,
-    col = UMASS_BLUE, cex = psize[max.zeta.one])
+         col = UMASS_BLUE, cex = psize[max.zeta.one])
   points(y.tot[max.zeta.two], zeta[max.zeta.two], pch = 19,
-    col = UMASS_RED, cex = psize[max.zeta.two])
+         col = UMASS_RED, cex = psize[max.zeta.two])
 
-  if (size_terms_by_frequency) {
-      mtext(text = words[max.zeta.one], side = 4, col = UMASS_BLUE,
-            las = 1, line = 1, at = seq(0.95 * display_limits,
-            0.05 * display_limits, length.out = display_top_words),
-            cex = psize[max.zeta.one])
-      mtext(text = words[max.zeta.two], side = 4, col = UMASS_RED,
-            las = 1, line = 1, at = seq(-0.95 * display_limits,
-            -0.05 * display_limits, length.out = display_top_words),
-            cex = psize[max.zeta.two])
-  } else {
-    mtext(text = words[max.zeta.one], side = 4, col = UMASS_BLUE,
-      las = 1, line = 1, at = seq(0.95 * display_limits,
-        0.05 * display_limits, length.out = display_top_words))
-    mtext(text = words[max.zeta.two], side = 4, col = UMASS_RED,
-      las = 1, line = 1, at = seq(-0.95 * display_limits,
-        -0.05 * display_limits, length.out = display_top_words))
+  if (!clean_publication_plots) {
+      if (size_terms_by_frequency) {
+          mtext(text = words[max.zeta.one], side = 4, col = UMASS_BLUE,
+                las = 1, line = 1, at = seq(0.95 * display_limits,
+                                            0.05 * display_limits, length.out = display_top_words),
+                cex = psize[max.zeta.one])
+          mtext(text = words[max.zeta.two], side = 4, col = UMASS_RED,
+                las = 1, line = 1, at = seq(-0.95 * display_limits,
+                                            -0.05 * display_limits, length.out = display_top_words),
+                cex = psize[max.zeta.two])
+      } else {
+          mtext(text = words[max.zeta.one], side = 4, col = UMASS_BLUE,
+                las = 1, line = 1, at = seq(0.95 * display_limits,
+                                            0.05 * display_limits, length.out = display_top_words))
+          mtext(text = words[max.zeta.two], side = 4, col = UMASS_RED,
+                las = 1, line = 1, at = seq(-0.95 * display_limits,
+                                            -0.05 * display_limits, length.out = display_top_words))
+      }
+
+      if (display_terms_next_to_points) {
+          text(y.tot[max.zeta.one], zeta[max.zeta.one], words[max.zeta.one],
+               pch = 19, col = UMASS_BLUE, pos = 4, cex = psize[max.zeta.one])
+          text(y.tot[max.zeta.two], zeta[max.zeta.two], words[max.zeta.two],
+               pch = 19, col = UMASS_RED, pos = 4, cex = psize[max.zeta.two])
+      }
+
+      text(1, 0.9 * display_limits, positive_category, col = UMASS_BLUE,
+           pos = 4, cex = 2)
+      text(1, -0.9 * display_limits, negative_category, col = UMASS_RED,
+           pos = 4, cex = 2)
   }
-
-
-  if (display_terms_next_to_points) {
-    text(y.tot[max.zeta.one], zeta[max.zeta.one], words[max.zeta.one],
-      pch = 19, col = UMASS_BLUE, pos = 4, cex = psize[max.zeta.one])
-    text(y.tot[max.zeta.two], zeta[max.zeta.two], words[max.zeta.two],
-      pch = 19, col = UMASS_RED, pos = 4, cex = psize[max.zeta.two])
-  }
-
-  text(1, 0.9 * display_limits, positive_category, col = UMASS_BLUE,
-    pos = 4, cex = 2)
-  text(1, -0.9 * display_limits, negative_category, col = UMASS_RED,
-    pos = 4, cex = 2)
 
 }
