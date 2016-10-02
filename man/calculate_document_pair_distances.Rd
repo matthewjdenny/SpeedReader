@@ -8,8 +8,8 @@ calculate_document_pair_distances(document_term_matrix, document_indicies,
   distance_method = "cosine")
 }
 \arguments{
-\item{document_term_matrix}{A sparse matrix object of class 
-"simple_triplet_matrix", or a dense matrix object, with documents as rows and 
+\item{document_term_matrix}{A sparse matrix object of class
+"simple_triplet_matrix", or a dense matrix object, with documents as rows and
 vocabulary entries as columns.}
 
 \item{document_indicies}{A numeric vector of length two (document_a_row_index,
