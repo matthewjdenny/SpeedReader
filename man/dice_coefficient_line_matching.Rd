@@ -5,7 +5,8 @@
 \title{Lines In Both Documents via Dice Coefficients}
 \usage{
 dice_coefficient_line_matching(document_1, document_2, threshold = 0.8,
-  return_dice_matrix = TRUE, compare_consecutive_line_pairs = TRUE)
+  return_dice_matrix = TRUE, compare_consecutive_line_pairs = TRUE,
+  whole_document = FALSE)
 }
 \arguments{
 \item{document_1}{A vector of strings (one per line or one per sentence), or
@@ -21,6 +22,9 @@ matrix should be returned. Defualts to TRUE.}
 
 \item{compare_consecutive_line_pairs}{Logical indicating whether consecutive
 pairs of lines should be compared. Defaults to TRUE.}
+
+\item{whole_document}{Logical, defaults to FALSE. If TRUE, then all lines are
+combined and full documents are compared.}
 }
 \value{
 A list with two vectors, each giving the inidices of the lines

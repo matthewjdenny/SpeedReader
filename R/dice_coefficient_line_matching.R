@@ -11,6 +11,8 @@
 #' matrix should be returned. Defualts to TRUE.
 #' @param compare_consecutive_line_pairs Logical indicating whether consecutive
 #' pairs of lines should be compared. Defaults to TRUE.
+#' @param whole_document Logical, defaults to FALSE. If TRUE, then all lines are
+#' combined and full documents are compared.
 #' @return A list with two vectors, each giving the inidices of the lines
 #' in document 1/2 that are in the other document based on the dice coefficient
 #' threshold.
@@ -19,7 +21,8 @@ dice_coefficient_line_matching <- function(document_1,
                                            document_2,
                                            threshold = 0.8,
                                            return_dice_matrix = TRUE,
-                                           compare_consecutive_line_pairs = TRUE){
+                                           compare_consecutive_line_pairs = TRUE,
+                                           whole_document = FALSE){
 
     ptm <- proc.time()
     cat("Whitespace tokenizing (if necessary)...\n")
@@ -51,6 +54,20 @@ dice_coefficient_line_matching <- function(document_1,
         for (i in 1:length(document_2a)) {
             document_2a[[i]] <- c(document_2[[i]],document_2[[i+1]])
         }
+    }
+
+    # if we are comparing whole documents, make sure that everything is changed up
+    if (whole_document) {
+        doc <- paste0(unlist(document_1),collapse = " ")
+        doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+        doc <- stringr::str_split(doc, " ")[[1]]
+        document_1 <- list(doc = doc)
+        document_1a <- document_1
+        doc <- paste0(unlist(document_2),collapse = " ")
+        doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+        doc <- stringr::str_split(doc, " ")[[1]]
+        document_2 <- list(doc = doc)
+        document_2a <- document_2
     }
 
     # get dice coefficients
