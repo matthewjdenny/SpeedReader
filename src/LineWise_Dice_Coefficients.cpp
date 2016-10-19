@@ -42,10 +42,12 @@ arma::mat LineWise_Dice_Coefficients(
             // figure out which bigrams are in both sets
             double both_count = 0;
             for(int k = 0; k < bigrams_1.size(); ++k){
+                // get matches in current doc
                 for(int l = 0; l < bigrams_2.size(); ++l){
                     if(bigrams_1[k] == bigrams_2[l]) {
                          //Rcpp::Rcout << "Bigram 1: " << bigrams_1[k] << "Bigram 2: " << bigrams_2[l] <<std::endl;
                         both_count += 1;
+                        break;
                     }
                 }
             }
