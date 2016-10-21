@@ -200,3 +200,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Variable_Dice_Coefficients
+arma::mat Variable_Dice_Coefficients(int number_of_lines, List Lines, int number_of_lines2, List Lines2, int Dice_Terms);
+RcppExport SEXP SpeedReader_Variable_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type number_of_lines(number_of_linesSEXP);
+    Rcpp::traits::input_parameter< List >::type Lines(LinesSEXP);
+    Rcpp::traits::input_parameter< int >::type number_of_lines2(number_of_lines2SEXP);
+    Rcpp::traits::input_parameter< List >::type Lines2(Lines2SEXP);
+    Rcpp::traits::input_parameter< int >::type Dice_Terms(Dice_TermsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Variable_Dice_Coefficients(number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms));
+    return rcpp_result_gen;
+END_RCPP
+}
