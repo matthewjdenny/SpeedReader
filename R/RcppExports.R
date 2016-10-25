@@ -53,7 +53,7 @@ Sparse_PMI_Statistics <- function(length_sparse_counts, table_sum, colsums, rows
     .Call('SpeedReader_Sparse_PMI_Statistics', PACKAGE = 'SpeedReader', length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length)
 }
 
-Variable_Dice_Coefficients <- function(number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms) {
-    .Call('SpeedReader_Variable_Dice_Coefficients', PACKAGE = 'SpeedReader', number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms)
+Variable_Dice_Coefficients <- function(number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms, rem_duplicates) {
+    .Call('SpeedReader_Variable_Dice_Coefficients', PACKAGE = 'SpeedReader', number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms, rem_duplicates)
 }
 
