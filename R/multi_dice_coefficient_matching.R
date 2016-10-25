@@ -7,11 +7,14 @@
 #' @param document_2 Same as document_1, will be used for comparison.
 #' @param ngram_sizes A numeric vector of N-Gram lengths for us in calculating
 #' Dice coefficients.
+#' @param remove_duplicates Logical indicating whether dublicate ngrams should be removed before
+#' matching. Defaults to TRUE.
 #' @return A data.frame with Dice coefficients based on different N-Gram lengths.
 #' @export
 multi_dice_coefficient_matching <- function(document_1,
                                             document_2,
-                                            ngram_sizes = c(1:50)){
+                                            ngram_sizes = c(1:50),
+                                            remove_duplicates = TRUE){
 
     ptm <- proc.time()
     cat("Whitespace tokenizing (if necessary)...\n")
@@ -44,7 +47,13 @@ multi_dice_coefficient_matching <- function(document_1,
 
 
     Dice_coefs <- data.frame(ngram_size = ngram_sizes,
-                             dice_coef = rep(0,length(ngram_sizes)))
+                             dice_coef = rep(0,length(ngram_sizes)),
+                             prop_both_in_a = rep(0,length(ngram_sizes)),
+                             prop_both_in_b = rep(0,length(ngram_sizes)),
+                             add_or_subtract_prop = rep(0,length(ngram_sizes)),
+                             ngrams_a = rep(0,length(ngram_sizes)),
+                             ngrams_b = rep(0,length(ngram_sizes)),
+                             matches = rep(0,length(ngram_sizes)))
     # get dice coefficients
     cat("Calculating Dice coefficients..\n")
     for(i in 1:length(ngram_sizes)) {
@@ -54,9 +63,18 @@ multi_dice_coefficient_matching <- function(document_1,
             document_1,
             length(document_2),
             document_2,
-            ngram_sizes[i])
+            ngram_sizes[i],
+            remove_duplicates)
 
-        Dice_coefs[i,2] <- dice_value
+        agrams <- dice_value[[4]]
+        bgrams <- dice_value[[5]]
+        Dice_coefs[i,2] <- dice_value[[1]]
+        Dice_coefs[i,3] <- dice_value[[2]]
+        Dice_coefs[i,4] <- dice_value[[3]]
+        Dice_coefs[i,5] <- (bgrams - agrams)/max(agrams,bgrams)
+        Dice_coefs[i,6] <- agrams
+        Dice_coefs[i,7] <- bgrams
+        Dice_coefs[i,8] <- dice_value[[6]]
     }
 
     t2 <- proc.time() - ptm

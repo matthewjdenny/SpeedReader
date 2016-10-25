@@ -4,7 +4,8 @@
 \alias{multi_dice_coefficient_matching}
 \title{Multiple N-Gram Lngth Dice Coefficient Document Matching}
 \usage{
-multi_dice_coefficient_matching(document_1, document_2, ngram_sizes = c(1:50))
+multi_dice_coefficient_matching(document_1, document_2, ngram_sizes = c(1:50),
+  remove_duplicates = TRUE)
 }
 \arguments{
 \item{document_1}{A vector of strings (one per line or one per sentence), or
@@ -14,6 +15,9 @@ a list of vectors of tokens  (one per line or one per sentence).}
 
 \item{ngram_sizes}{A numeric vector of N-Gram lengths for us in calculating
 Dice coefficients.}
+
+\item{remove_duplicates}{Logical indicating whether dublicate ngrams should be removed before
+matching. Defaults to TRUE.}
 }
 \value{
 A data.frame with Dice coefficients based on different N-Gram lengths.
