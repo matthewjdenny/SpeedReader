@@ -5,19 +5,40 @@ using namespace Rcpp;
 
 namespace mjd {
     std::vector<std::string>remove_duplicates(std::vector<std::string> ngrams){
+        // sort
+        int len = ngrams.size();
+        for( int i=0; i < len; i++ ) {
+            std::sort(ngrams[i].begin(), ngrams[i].end());
+        }
+
         int current = 0;
         while (current < ngrams.size()) {
             int k = current + 1;
-            while (k < ngrams.size()) {
+            if (k < ngrams.size()) {
                 if (ngrams[k] == ngrams[current]) {
                     ngrams.erase(ngrams.begin() + k);
                 }
-                k += 1;
             }
             current += 1;
         }
         return ngrams;
     }
+
+    //original
+    // std::vector<std::string>remove_duplicates(std::vector<std::string> ngrams){
+    //     int current = 0;
+    //     while (current < ngrams.size()) {
+    //         int k = current + 1;
+    //         while (k < ngrams.size()) {
+    //             if (ngrams[k] == ngrams[current]) {
+    //                 ngrams.erase(ngrams.begin() + k);
+    //             }
+    //             k += 1;
+    //         }
+    //         current += 1;
+    //     }
+    //     return ngrams;
+    // }
 }
 
 // [[Rcpp::export]]
