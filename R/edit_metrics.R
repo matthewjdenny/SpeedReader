@@ -20,6 +20,9 @@ edit_metrics <- function(document_1,
     # cacluate scope
     scope <- 1 - mean(dice$dice_coef)
 
+    vocabulary_reduction <- 1 - mean(dice$prop_both_in_a)
+    vocabulary_addition <- 1 - mean(dice$prop_both_in_b)
+
     # calculate granularity
     max_dice <- max(dice$dice_coef)
     min_dice <- min(dice$dice_coef)
@@ -38,9 +41,12 @@ edit_metrics <- function(document_1,
         }
     }
 
+    df <- data.frame(granularity = granularity,
+                     scope = scope,
+                     vocabulary_reduction = vocabulary_reduction,
+                     vocabulary_addition = vocabulary_addition)
     # return everything
-    ret <- list(granularity = granularity,
-                scope = scope,
+    ret <- list(metrics = df,
                 dice_coefficients = dice)
 
     return(ret)
