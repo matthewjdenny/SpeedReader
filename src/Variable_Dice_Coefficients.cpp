@@ -6,21 +6,11 @@ using namespace Rcpp;
 namespace mjd {
     std::vector<std::string>remove_duplicates(std::vector<std::string> ngrams){
         // sort
-        int len = ngrams.size();
-        for( int i=0; i < len; i++ ) {
-            std::sort(ngrams[i].begin(), ngrams[i].end());
-        }
-
-        int current = 0;
-        while (current < ngrams.size()) {
-            int k = current + 1;
-            if (k < ngrams.size()) {
-                if (ngrams[k] == ngrams[current]) {
-                    ngrams.erase(ngrams.begin() + k);
-                }
-            }
-            current += 1;
-        }
+        // int len = ngrams.size();
+        std::sort(ngrams.begin(),ngrams.end());
+        auto last = std::unique(ngrams.begin(), ngrams.end());
+        // v now holds {1 2 3 4 5 6 7 x x x x x x}, where 'x' is indeterminate
+        ngrams.erase(last, ngrams.end());
         return ngrams;
     }
 
@@ -84,9 +74,13 @@ List Variable_Dice_Coefficients(
             }
         }
 
-        if (rem_duplicates) {
-            bigrams_1 = mjd::remove_duplicates(bigrams_1);
-        }
+        //Rcpp::Rcout << "Grams 1 Before: " <<  bigrams_1.size()  <<std::endl;
+        std::vector<std::string> bigrams_1a = mjd::remove_duplicates(bigrams_1);
+        //Rcpp::Rcout << "Grams 1 After: " <<  bigrams_1a.size()  <<std::endl;
+        // for(int i = 0; i < bigrams_1.size(); ++i){
+        //     Rcpp::Rcout <<  bigrams_1[i]  <<std::endl;
+        // }
+
         for(int j = 0; j < number_of_lines2; ++j){
             std::vector<std::string> line2 = Lines2[j];
             //allocate vector to hold bigrams
@@ -107,27 +101,31 @@ List Variable_Dice_Coefficients(
                     bigrams_2[k] = cur;
                 }
             }
-            if (rem_duplicates) {
-                bigrams_2 = mjd::remove_duplicates(bigrams_2);
-            }
+            //Rcpp::Rcout << "Grams 2 Before: " <<  bigrams_2.size()  <<std::endl;
+            std::vector<std::string> bigrams_2a = mjd::remove_duplicates(bigrams_2);
+            //Rcpp::Rcout << "Grams 2 After: " <<  bigrams_2a.size()  <<std::endl;
             // figure out which bigrams are in both sets
-            double both_count = 0;
-            for(int k = 0; k < bigrams_1.size(); ++k){
+            arma::vec both_vec = arma::zeros(bigrams_1a.size());
+            for(int k = 0; k < bigrams_1a.size(); ++k){
                 // get matches in current doc
-                for(int l = 0; l < bigrams_2.size(); ++l){
-                    if(bigrams_1[k] == bigrams_2[l]) {
-                        //Rcpp::Rcout << "Bigram 1: " << bigrams_1[k] << "Bigram 2: " << bigrams_2[l] <<std::endl;
-                        both_count += 1;
+                for(int l = 0; l < bigrams_2a.size(); ++l){
+                    if(bigrams_1a[k] == bigrams_2a[l]) {
+                        //Rcpp::Rcout << "Bigram 1: " << bigrams_1a[k] << "Bigram 2: " << bigrams_2a[l] <<std::endl;
+                        both_vec[k] = 1;
                         break;
                     }
                 }
             }
-            double dice = (2*both_count)/double(bigrams_1.size() + bigrams_2.size());
+            double both_count = arma::sum(both_vec);
+
+            //Rcpp::Rcout << "Both: " <<  both_count  <<std::endl;
+            double dice = (2*both_count)/double(bigrams_1a.size() + bigrams_2a.size());
+            Rcpp::Rcout << "Dice Coefficient: " <<  dice  <<std::endl;
             linewise_dice_coefficients(i,j) = dice;
-            both_in_a(i,j) = both_count/double(bigrams_1.size());
-            both_in_b(i,j) = both_count/double(bigrams_2.size());
-            ngrams_a(i,j) = double(bigrams_1.size());
-            ngrams_b(i,j) = double(bigrams_2.size());
+            both_in_a(i,j) = both_count/double(bigrams_1a.size());
+            both_in_b(i,j) = both_count/double(bigrams_2a.size());
+            ngrams_a(i,j) = double(bigrams_1a.size());
+            ngrams_b(i,j) = double(bigrams_2a.size());
             both(i,j) = both_count;
         }
     }
