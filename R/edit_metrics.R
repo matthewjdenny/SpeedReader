@@ -20,6 +20,8 @@ edit_metrics <- function(document_1,
     # cacluate scope
     scope <- 1 - mean(dice$dice_coef)
 
+    unigram_reduction <- 1 - dice$prop_both_in_a[1]
+    unigram_addition <- 1 - dice$prop_both_in_b[1]
     vocabulary_reduction <- 1 - mean(dice$prop_both_in_a)
     vocabulary_addition <- 1 - mean(dice$prop_both_in_b)
 
@@ -44,7 +46,9 @@ edit_metrics <- function(document_1,
     df <- data.frame(granularity = granularity,
                      scope = scope,
                      vocabulary_reduction = vocabulary_reduction,
-                     vocabulary_addition = vocabulary_addition)
+                     vocabulary_addition = vocabulary_addition,
+                     unigram_reduction = unigram_reduction,
+                     unigram_addition = unigram_addition)
     # return everything
     ret <- list(metrics = df,
                 dice_coefficients = dice)
