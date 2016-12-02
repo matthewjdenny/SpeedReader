@@ -24,11 +24,14 @@ ngram_sequence_matching <- function(document_1,
     doc <- stringr::str_split(doc, " ")[[1]]
     document_2 <- list(doc = doc)
 
-    result <- Sequential_Raw_Term_Dice_Matches(document_1,
+    res <- Sequential_Raw_Term_Dice_Matches(document_1,
                                                document_2,
                                                ngram_size)
 
 
+    result <- list(matches_document_1 = res[[1]],
+                   matches_document_2 = res[[2]],
+                   ngram_length = ngram_size)
     t2 <- proc.time() - ptm
     cat("Complete in:",t2[[3]],"seconds...\n")
     return(result)
