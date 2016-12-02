@@ -25,6 +25,10 @@ Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {
     .Call('SpeedReader_Fast_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist, non_zero_cols)
 }
 
+Fast_Sparse_Mutual_Information <- function(rows, cols, vals, colsums, rowsums, num_entries) {
+    .Call('SpeedReader_Fast_Sparse_Mutual_Information', PACKAGE = 'SpeedReader', rows, cols, vals, colsums, rowsums, num_entries)
+}
+
 Generate_Document_Term_Matrix <- function(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, using_wordcounts, Document_Word_Counts) {
     .Call('SpeedReader_Generate_Document_Term_Matrix', PACKAGE = 'SpeedReader', number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, using_wordcounts, Document_Word_Counts)
 }
@@ -51,6 +55,10 @@ Sparse_Document_Frequencies <- function(length_sparse_counts, sparse_counts, doc
 
 Sparse_PMI_Statistics <- function(length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length) {
     .Call('SpeedReader_Sparse_PMI_Statistics', PACKAGE = 'SpeedReader', length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length)
+}
+
+Sequential_Raw_Term_Dice_Matches <- function(Lines, Lines2, Dice_Terms) {
+    .Call('SpeedReader_Sequential_Raw_Term_Dice_Matches', PACKAGE = 'SpeedReader', Lines, Lines2, Dice_Terms)
 }
 
 Variable_Dice_Coefficients <- function(number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms, rem_duplicates) {

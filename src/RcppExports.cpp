@@ -86,6 +86,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Fast_Sparse_Mutual_Information
+double Fast_Sparse_Mutual_Information(arma::vec rows, arma::vec cols, arma::vec vals, arma::vec colsums, arma::vec rowsums, int num_entries);
+RcppExport SEXP SpeedReader_Fast_Sparse_Mutual_Information(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type rows(rowsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type cols(colsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_entries(num_entriesSEXP);
+    rcpp_result_gen = Rcpp::wrap(Fast_Sparse_Mutual_Information(rows, cols, vals, colsums, rowsums, num_entries));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Generate_Document_Term_Matrix
 arma::mat Generate_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, int using_wordcounts, List Document_Word_Counts);
 RcppExport SEXP SpeedReader_Generate_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP) {
@@ -197,6 +213,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type print_sequence(print_sequenceSEXP);
     Rcpp::traits::input_parameter< int >::type print_sequence_length(print_sequence_lengthSEXP);
     rcpp_result_gen = Rcpp::wrap(Sparse_PMI_Statistics(length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Sequential_Raw_Term_Dice_Matches
+List Sequential_Raw_Term_Dice_Matches(List Lines, List Lines2, int Dice_Terms);
+RcppExport SEXP SpeedReader_Sequential_Raw_Term_Dice_Matches(SEXP LinesSEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type Lines(LinesSEXP);
+    Rcpp::traits::input_parameter< List >::type Lines2(Lines2SEXP);
+    Rcpp::traits::input_parameter< int >::type Dice_Terms(Dice_TermsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Sequential_Raw_Term_Dice_Matches(Lines, Lines2, Dice_Terms));
     return rcpp_result_gen;
 END_RCPP
 }
