@@ -139,6 +139,10 @@ ngram_sequence_matching <- function(document_1,
     as <- 1 - sum(res[[2]])/length(res[[2]])
     ds <- 1 - sum(res[[1]])/length(res[[1]])
 
+    prop_deletions <- 2 * length(n_seq_1)/length(res[[1]])
+    prop_additions <- 2 * length(n_seq_2)/length(res[[2]])
+    prop_changes <- mean(prop_deletions, prop_additions)
+
     mss <- as.data.frame(t(mss))
     result <- list(matches_version_1 = res[[1]],
                    matches_version_2 = res[[2]],
@@ -151,7 +155,10 @@ ngram_sequence_matching <- function(document_1,
                    average_addition_size = mean(n_seq_2),
                    average_deletion_size = mean(n_seq_1),
                    scope = mean(as, ds),
-                   average_edit_size = mean(c(n_seq_2, n_seq_1)))
+                   average_edit_size = mean(c(n_seq_2, n_seq_1)),
+                   prop_deletions = prop_deletions,
+                   prop_additions  = prop_additions,
+                   prop_changes = prop_changes)
     t2 <- proc.time() - ptm
     cat("Complete in:",t2[[3]],"seconds...\n")
     return(result)
