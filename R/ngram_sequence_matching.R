@@ -147,7 +147,11 @@ ngram_sequence_matching <- function(document_1,
                    addition_granularity = ag,
                    deletion_granularity = dg,
                    addition_scope = as,
-                   deletion_scope = ds)
+                   deletion_scope = ds,
+                   average_addition_size = mean(n_seq_2),
+                   average_deletion_size = mean(n_seq_1),
+                   scope = mean(as, ds),
+                   average_edit_size = mean(c(n_seq_2, n_seq_1)))
     t2 <- proc.time() - ptm
     cat("Complete in:",t2[[3]],"seconds...\n")
     return(result)
