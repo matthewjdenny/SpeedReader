@@ -139,8 +139,15 @@ ngram_sequence_matching <- function(document_1,
     as <- 1 - sum(res[[2]])/length(res[[2]])
     ds <- 1 - sum(res[[1]])/length(res[[1]])
 
-    prop_deletions <- 2 * length(n_seq_1)/length(res[[1]])
-    prop_additions <- 2 * length(n_seq_2)/length(res[[2]])
+    prop_deletions <- (ngram_size + 1 )*length(n_seq_1)/length(res[[1]])
+    prop_additions <- (ngram_size + 1 )*length(n_seq_2)/length(res[[2]])
+
+    if(n_seq_1[1] == 0) {
+        prop_deletions <- 0
+    }
+    if(n_seq_2[1] == 0) {
+        prop_additions <- 0
+    }
     prop_changes <- mean(prop_deletions, prop_additions)
 
     mss <- as.data.frame(t(mss))
