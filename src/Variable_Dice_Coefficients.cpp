@@ -32,6 +32,92 @@ namespace mjd {
 }
 
 // [[Rcpp::export]]
+List Sequential_Raw_Term_Dice_Matches(
+        List Lines,
+        List Lines2,
+        int Dice_Terms){
+
+    std::vector<std::string> line1 = Lines[0];
+    //allocate vector to hold bigrams
+    std::vector<std::string> bigrams_1 = line1;
+    //take out the first element since we will have one less bigram than
+    //unigrams
+
+    //generate bigrams only if the line has more than one term
+    if(bigrams_1.size() > (Dice_Terms - 1)) {
+        // only erase terms if ngram length is atleast 1
+        if(Dice_Terms > 1) {
+            bigrams_1.erase(bigrams_1.begin(),bigrams_1.begin() + (Dice_Terms - 1));
+        }
+
+        // create the line, then add to it.
+
+        for(int k = 0; k < bigrams_1.size(); ++k){
+            std::string cur = line1[k];
+            if(Dice_Terms > 1) {
+                for(int l = 1; l < (Dice_Terms-1); ++l){
+                    cur += line1[k+l];
+                }
+            }
+            bigrams_1[k] = cur;
+        }
+    }
+
+    std::vector<std::string> line2 = Lines2[0];
+    //allocate vector to hold bigrams
+    std::vector<std::string> bigrams_2 = line2;
+    //take out the first element since we will have one less bigram than
+    //unigrams
+    if( bigrams_2.size() > (Dice_Terms - 1)) {
+        if(Dice_Terms > 1) {
+            bigrams_2.erase(bigrams_2.begin(),bigrams_2.begin() + (Dice_Terms - 1));
+        }
+        for(int k = 0; k < bigrams_2.size(); ++k){
+            std::string cur = line2[k];
+            if(Dice_Terms > 1) {
+                for(int l = 1; l < (Dice_Terms-1); ++l){
+                    cur += line2[k+l];
+                }
+            }
+            bigrams_2[k] = cur;
+        }
+    }
+
+    //vectors to store matches (in sequence)
+    arma::vec which_a_in_b = arma::zeros(bigrams_1.size());
+    arma::vec which_b_in_a = arma::zeros(bigrams_2.size());
+
+    for(int k = 0; k < bigrams_1.size(); ++k){
+        // get matches in current doc
+        for(int l = 0; l < bigrams_2.size(); ++l){
+            if(bigrams_1[k] == bigrams_2[l]) {
+                which_a_in_b[k] = 1;
+                break;
+            }
+        }
+    }
+
+    for(int k = 0; k < bigrams_2.size(); ++k){
+        // get matches in current doc
+        for(int l = 0; l < bigrams_1.size(); ++l){
+            if(bigrams_2[k] == bigrams_1[l]) {
+                which_b_in_a[k] = 1;
+                break;
+            }
+        }
+    }
+
+    List to_return(4);
+    to_return[0] = which_a_in_b;
+    to_return[1] = which_b_in_a;
+    to_return[2] = bigrams_1;
+    to_return[3] = bigrams_2;
+    return to_return;
+}
+
+
+
+// [[Rcpp::export]]
 List Variable_Dice_Coefficients(
         int number_of_lines,
         List Lines,
