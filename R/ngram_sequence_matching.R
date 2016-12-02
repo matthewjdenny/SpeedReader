@@ -44,6 +44,11 @@ ngram_sequence_matching <- function(document_1,
         }
     }
 
+    # deal with case of no matches
+    if(is.null(m_seq_1)) {
+        m_seq_1 <- 0
+    }
+
     m_seq_2 <- NULL
     cur_match <- 0
     ms <- res[[2]]
@@ -58,17 +63,91 @@ ngram_sequence_matching <- function(document_1,
         }
     }
 
-    mss <- data.frame(num_match_blocks = c(length(m_seq_1),length(m_seq_2)),
-                      max_block_length = c(max(m_seq_1),max(m_seq_2)),
-                      min_block_length = c(min(m_seq_1),min(m_seq_2)),
-                      mean_block_length = c(mean(m_seq_1),mean(m_seq_2)),
-                      median_block_length = c(median(m_seq_1),median(m_seq_2)),
-                      total_blocks = c(length(res[[1]]), length(res[[2]])))
+    # deal with case of no matches
+    if(is.null(m_seq_2)) {
+        m_seq_2 <- 0
+    }
 
-    result <- list(matches_document_1 = res[[1]],
-                   matches_document_2 = res[[2]],
+    # now look for non-matches
+    n_seq_1 <- NULL
+    cur_match <- 0
+    ms <- res[[1]]
+    for (i in 1:length(ms)) {
+        if (ms[i] == 0) {
+            cur_match <- cur_match + 1
+        } else {
+            if (cur_match != 0) {
+                n_seq_1 <- c(n_seq_1,cur_match)
+                cur_match <- 0
+            }
+        }
+    }
+
+    # deal with case of no matches
+    if(is.null(n_seq_1)) {
+        n_seq_1 <- 0
+    }
+
+    n_seq_2 <- NULL
+    cur_match <- 0
+    ms <- res[[2]]
+    for (i in 1:length(ms)) {
+        if (ms[i] == 0) {
+            cur_match <- cur_match + 1
+        } else {
+            if (cur_match != 0) {
+                n_seq_2 <- c(n_seq_2,cur_match)
+                cur_match <- 0
+            }
+        }
+    }
+
+    # deal with case of no matches
+    if(is.null(n_seq_2)) {
+        n_seq_2 <- 0
+    }
+
+
+    # blockiness can be captured through state transition probabilities,
+
+    mss <- data.frame(num_match_blocks = c(length(m_seq_1),length(m_seq_2)),
+                      max_match_length = c(max(m_seq_1),max(m_seq_2)),
+                      min_match_length = c(min(m_seq_1),min(m_seq_2)),
+                      mean_match_length = c(mean(m_seq_1),mean(m_seq_2)),
+                      median_match_length = c(median(m_seq_1),median(m_seq_2)),
+                      match_length_variance = c(var(m_seq_1),var(m_seq_2)),
+                      num_nonmatch_blocks = c(length(n_seq_1),length(n_seq_2)),
+                      max_nonmatch_length = c(max(n_seq_1),max(n_seq_2)),
+                      min_nonmatch_length = c(min(n_seq_1),min(n_seq_2)),
+                      mean_nonmatch_length = c(mean(n_seq_1),mean(n_seq_2)),
+                      median_nonmatch_length = c(median(n_seq_1),median(n_seq_2)),
+                      nonmatch_length_variance = c(var(n_seq_1),var(n_seq_2)),
+                      total_ngrams = c(length(res[[1]]), length(res[[2]])))
+
+    row.names(mss) <- c("Version_1", "Version_2")
+
+    ag <- 1 - (mean(n_seq_2)/length(res[[2]]))
+    if (ag == 1) {
+        ag <- 0
+    }
+
+    dg <- 1 - (mean(n_seq_1)/length(res[[1]]))
+    if (dg == 1) {
+        dg <- 0
+    }
+
+    as <- 1 - sum(res[[2]])/length(res[[2]])
+    ds <- 1 - sum(res[[1]])/length(res[[1]])
+
+    mss <- as.data.frame(t(mss))
+    result <- list(matches_version_1 = res[[1]],
+                   matches_version_2 = res[[2]],
                    ngram_length = ngram_size,
-                   match_sequence_statistics = mss)
+                   match_sequence_statistics = mss,
+                   addition_granularity = ag,
+                   deletion_granularity = dg,
+                   addition_scope = as,
+                   deletion_scope = ds)
     t2 <- proc.time() - ptm
     cat("Complete in:",t2[[3]],"seconds...\n")
     return(result)
