@@ -24,10 +24,10 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
     ngram_length <- ngram_sequnce_results$ngram_length
 
     if (document == 1) {
-        matches <- ngram_sequnce_results$matches_document_1
+        matches <- ngram_sequnce_results$matches_version_1
     }
     if (document == 2) {
-        matches <- ngram_sequnce_results$matches_document_2
+        matches <- ngram_sequnce_results$matches_version_2
     }
 
     # recode matches as text variable
