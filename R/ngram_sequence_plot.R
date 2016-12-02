@@ -11,15 +11,18 @@
 #' are include in the plot. Can be set to FALSE for multi-plotting.
 #' @param return_plot_object Logical defaults to FALSE. If TRUE, then the plot
 #' is not printed, only returned.
+#' @param custom_title Optional custom plot title.
 #' @return A plot
 #' @export
 ngram_sequnce_plot <- function(ngram_sequnce_results,
                                document = 1,
-                               columns = NA,
+                               columns = NULL,
                                include_title_legend = TRUE,
-                               return_plot_object = FALSE) {
+                               return_plot_object = FALSE,
+                               custom_title = NULL) {
 
     ngram_length <- ngram_sequnce_results$ngram_length
+
     if (document == 1) {
         matches <- ngram_sequnce_results$matches_document_1
     }
@@ -32,7 +35,7 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
     m[which(matches == 0)] <- "Non-Match"
     matches <- m
 
-    if (is.na(columns)) {
+    if (is.null(columns)) {
       columns <- min(length(matches), 50)
     }
 
@@ -70,6 +73,10 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
             ggplot2::labs(x = "", y = "") +
             ggplot2::scale_x_discrete(expand = c(0, 0)) +
             ggplot2::scale_y_reverse(expand = c(0,0))
+    }
+
+    if (!is.null(custom_title)) {
+        p <- p + ggplot2::ggtitle(custom_title)
     }
 
     if (return_plot_object) {

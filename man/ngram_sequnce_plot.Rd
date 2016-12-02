@@ -4,8 +4,9 @@
 \alias{ngram_sequnce_plot}
 \title{N-Gram Sequence Matching}
 \usage{
-ngram_sequnce_plot(ngram_sequnce_results, document = 1, columns = NA,
-  include_title_legend = TRUE, return_plot_object = FALSE)
+ngram_sequnce_plot(ngram_sequnce_results, document = 1, columns = NULL,
+  include_title_legend = TRUE, return_plot_object = FALSE,
+  custom_title = NULL)
 }
 \arguments{
 \item{ngram_sequnce_results}{A List object produced by the
@@ -21,6 +22,8 @@ are include in the plot. Can be set to FALSE for multi-plotting.}
 
 \item{return_plot_object}{Logical defaults to FALSE. If TRUE, then the plot
 is not printed, only returned.}
+
+\item{custom_title}{Optional custom plot title.}
 }
 \value{
 A plot
