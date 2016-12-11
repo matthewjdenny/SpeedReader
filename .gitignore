@@ -11,3 +11,9 @@
 *.so
 
 *.jar
+
+*.so
+
+src/SpeedReader.so
+
+src/SpeedReader.so
