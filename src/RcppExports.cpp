@@ -6,6 +6,42 @@
 
 using namespace Rcpp;
 
+// calculate_ACMI_contribution
+arma::vec calculate_ACMI_contribution(double dist_sum, arma::vec colsums, arma::vec rowsums, int num_cols, arma::vec column_contributions, arma::vec row_index_counts, arma::mat joint, int total_non_zeros, double full_MI);
+RcppExport SEXP SpeedReader_calculate_ACMI_contribution(SEXP dist_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP column_contributionsSEXP, SEXP row_index_countsSEXP, SEXP jointSEXP, SEXP total_non_zerosSEXP, SEXP full_MISEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type column_contributions(column_contributionsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type row_index_counts(row_index_countsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
+    Rcpp::traits::input_parameter< int >::type total_non_zeros(total_non_zerosSEXP);
+    Rcpp::traits::input_parameter< double >::type full_MI(full_MISEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_ACMI_contribution(dist_sum, colsums, rowsums, num_cols, column_contributions, row_index_counts, joint, total_non_zeros, full_MI));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calculate_unique_MI_contribution
+arma::vec calculate_unique_MI_contribution(arma::vec colsums, arma::vec rowsums, int num_cols, int num_rows, arma::mat joint, arma::vec column_type_counts, double dist_sum);
+RcppExport SEXP SpeedReader_calculate_unique_MI_contribution(SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP num_rowsSEXP, SEXP jointSEXP, SEXP column_type_countsSEXP, SEXP dist_sumSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_rows(num_rowsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type column_type_counts(column_type_countsSEXP);
+    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_unique_MI_contribution(colsums, rowsums, num_cols, num_rows, joint, column_type_counts, dist_sum));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calculate_document_frequency
 arma::vec calculate_document_frequency(arma::mat document_word_matrix);
 RcppExport SEXP SpeedReader_calculate_document_frequency(SEXP document_word_matrixSEXP) {
@@ -99,6 +135,22 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
     Rcpp::traits::input_parameter< int >::type num_entries(num_entriesSEXP);
     rcpp_result_gen = Rcpp::wrap(Fast_Sparse_Mutual_Information(rows, cols, vals, colsums, rowsums, num_entries));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Fast_Sparse_Mutual_Information_Full
+List Fast_Sparse_Mutual_Information_Full(arma::vec rows, arma::vec cols, arma::vec vals, arma::vec colsums, arma::vec rowsums, int num_entries);
+RcppExport SEXP SpeedReader_Fast_Sparse_Mutual_Information_Full(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type rows(rowsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type cols(colsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type vals(valsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_entries(num_entriesSEXP);
+    rcpp_result_gen = Rcpp::wrap(Fast_Sparse_Mutual_Information_Full(rows, cols, vals, colsums, rowsums, num_entries));
     return rcpp_result_gen;
 END_RCPP
 }

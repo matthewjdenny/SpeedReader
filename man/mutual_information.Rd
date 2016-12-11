@@ -11,7 +11,7 @@ mutual_information(joint_dist, normalized = FALSE,
 \item{joint_dist}{A matrix of class "simple_triplet_matrix"
 or a standard dense matrix.}
 
-\item{normalized}{Defaults to FALSE. If TRUE, then the fucntion expects a
+\item{normalized}{Defaults to FALSE. If TRUE, then the function expects a
 matrix which sums to one. WARNING -- this function will not check to see if
 the matrix sums  to one if TRUE (for speed reasons).}
 

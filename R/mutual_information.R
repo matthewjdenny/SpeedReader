@@ -3,7 +3,7 @@
 #'
 #' @param joint_dist A matrix of class "simple_triplet_matrix"
 #' or a standard dense matrix.
-#' @param normalized Defaults to FALSE. If TRUE, then the fucntion expects a
+#' @param normalized Defaults to FALSE. If TRUE, then the function expects a
 #' matrix which sums to one. WARNING -- this function will not check to see if
 #' the matrix sums  to one if TRUE (for speed reasons).
 #' @param non_zero_column_entries Defaults to NULL, otherwise, a vector of
