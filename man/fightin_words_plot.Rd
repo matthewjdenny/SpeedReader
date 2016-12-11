@@ -8,7 +8,7 @@
 fightin_words_plot(feature_selection_object, title, positive_category,
   negative_category, xlab = "term count", display_top_words = 20,
   display_terms_next_to_points = FALSE, size_terms_by_frequency = FALSE,
-  right_margin = 20, max_terms_to_display = 1e+05,
+  right_margin = 20, max_terms_to_display = 100000,
   use_subsumed_ngrams = FALSE, limits = NULL,
   clean_publication_plots = FALSE)
 }
