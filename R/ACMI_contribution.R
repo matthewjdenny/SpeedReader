@@ -72,7 +72,7 @@ ACMI_contribution <- function(joint_dist){
                 dist_sum)
 
             #store the current entries
-            colinds <-
+            colinds <- which(contributions != 0)
             curdat <- data.frame(column_index = colinds,
                                  contribution = contributions[colinds])
 
