@@ -26,10 +26,10 @@ NULL
 #' @importFrom graphics axis legend matplot mtext par plot points segments text
 NULL
 
-#' @importFrom stats cor qnorm
+#' @importFrom stats cor qnorm median var
 NULL
 
-#' @importFrom utils download.file head read.delim read.table str write.table
+#' @importFrom utils download.file head read.delim read.table str write.table capture.output
 NULL
 
 #' @useDynLib SpeedReader
