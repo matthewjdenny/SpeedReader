@@ -27,7 +27,7 @@ ACMI_contribution <- function(joint_dist){
     num_row_pairs <- joint_dist$nrow/2
 
     # store all contributions for each pair
-    storage_list <- vector(mode = "list", length = num_row_pairs)
+    # storage_list <- vector(mode = "list", length = num_row_pairs)
     all_negative_vocab <- NULL
 
     # loop over row pairs and calculate ACMI contribution
@@ -71,21 +71,23 @@ ACMI_contribution <- function(joint_dist){
                 cur$ncol,
                 dist_sum)
 
-            #store the current entries
-            colinds <- which(contributions != 0)
-            curdat <- data.frame(column_index = colinds,
-                                 contribution = contributions[colinds])
-
-            storage_list[[l]] <- curdat
-
-            all_negative_vocab <- c(all_negative_vocab, cur$dimnames[[2]][which(contributions < 0)])
-
             if (length(which(is.na(contributions))) > 0) {
                 cat("There was a problem with NA contributions! \n")
             } else {
                 contributions <- MI - contributions
 
                 average_contribution <- average_contribution + (cur_weight/total_weight) * contributions
+
+                #store the current entries
+                # colinds <- which(contributions != 0)
+                # curdat <- data.frame(column_index = colinds,
+                #                      contribution = contributions[colinds])
+
+                temp <- which(contributions < 0)
+                if (length(temp) > 0) {
+                    # storage_list[[l]] <- cur$dimnames[[2]][temp]
+                    all_negative_vocab <- c(all_negative_vocab,temp)
+                }
             }
         } else {
             cat("MI too close to zero or negative (problem with machine precision)...\n")
@@ -99,7 +101,7 @@ ACMI_contribution <- function(joint_dist){
 
     ret <- list(average_contribution = average_contribution,
                 negative_vocab = negative_vocab,
-                individual_pair_results = storage_list)
+                all_negative_vocab = all_negative_vocab)
 
     t2 <- proc.time() - ptm
     cat("Full calculation complete in:",t2[[3]],"seconds...\n")
