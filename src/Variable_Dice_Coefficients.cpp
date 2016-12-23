@@ -1,5 +1,7 @@
+// [[Rcpp::plugins(cpp11)]]
 #include <RcppArmadillo.h>
 #include <string>
+#include <unordered_set>
 //[[Rcpp::depends(RcppArmadillo)]]
 // [[Rcpp::depends(BH)]]
 using namespace Rcpp;
