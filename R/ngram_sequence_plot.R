@@ -21,6 +21,9 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
                                return_plot_object = FALSE,
                                custom_title = NULL) {
 
+    # null out variables in DF
+    col_number <-  row_number <- NULL
+
     ngram_length <- ngram_sequnce_results$ngram_length
 
     if (document == 1) {
