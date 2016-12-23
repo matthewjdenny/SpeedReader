@@ -7,26 +7,54 @@
 #' @param document_2 A string (or a character vector) representing the later
 #' document version.
 #' @param ngram_size The length of n-grams to be compared
+#' @param use_hashmap Defaults to FALSE. If TRUE, then a hashmap is used for
+#' faster lookup and comparisons.
+#' @param tokenized_strings_provided Defaults to FALSE. If TRUE, then
+#' pre-tokenized strings are expected as character vectors.
 #' @return A List object.
 #' @export
 ngram_sequence_matching <- function(document_1,
                                     document_2,
-                                    ngram_size){
+                                    ngram_size,
+                                    use_hashmap = FALSE,
+                                    tokenized_strings_provided = FALSE){
 
     ptm <- proc.time()
 
-    doc <- paste0(document_1,collapse = " ")
-    doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
-    doc <- stringr::str_split(doc, " ")[[1]]
-    document_1 <- list(doc = doc)
-    doc <- paste0(document_2,collapse = " ")
-    doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
-    doc <- stringr::str_split(doc, " ")[[1]]
-    document_2 <- list(doc = doc)
+    if (tokenized_strings_provided) {
+        if (!use_hashmap) {
+            document_1 <- list(doc = document_1)
+            document_2 <- list(doc = document_2)
+        }
+    } else {
+        doc <- paste0(document_1,collapse = " ")
+        doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+        doc <- stringr::str_split(doc, " ")[[1]]
+        document_1 <- list(doc = doc)
+        doc <- paste0(document_2,collapse = " ")
+        doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+        doc <- stringr::str_split(doc, " ")[[1]]
+        document_2 <- list(doc = doc)
+    }
 
-    res <- Sequential_Raw_Term_Dice_Matches(document_1,
-                                               document_2,
-                                               ngram_size)
+
+    if (use_hashmap) {
+        if (ngram_size == 1) {
+            res <- Sequential_Token_Set_Hash_Comparison(document_1,
+                                                        document_2)
+
+        } else {
+            res <- Sequential_string_Set_Hash_Comparison(document_1,
+                                                         document_2,
+                                                         ngram_size)
+        }
+
+    } else {
+        res <- Sequential_Raw_Term_Dice_Matches(document_1,
+                                                document_2,
+                                                ngram_size)
+    }
+
 
     # we can also calculate some metrics on these like the average length of
     # contiguous match sequence

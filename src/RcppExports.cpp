@@ -281,6 +281,31 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Sequential_string_Set_Hash_Comparison
+List Sequential_string_Set_Hash_Comparison(std::vector<std::string> doc1, std::vector<std::string> doc2, int Dice_Terms);
+RcppExport SEXP SpeedReader_Sequential_string_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP, SEXP Dice_TermsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type doc1(doc1SEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type doc2(doc2SEXP);
+    Rcpp::traits::input_parameter< int >::type Dice_Terms(Dice_TermsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Sequential_string_Set_Hash_Comparison(doc1, doc2, Dice_Terms));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Sequential_Token_Set_Hash_Comparison
+List Sequential_Token_Set_Hash_Comparison(std::vector<std::string> doc1, std::vector<std::string> doc2);
+RcppExport SEXP SpeedReader_Sequential_Token_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type doc1(doc1SEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type doc2(doc2SEXP);
+    rcpp_result_gen = Rcpp::wrap(Sequential_Token_Set_Hash_Comparison(doc1, doc2));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Variable_Dice_Coefficients
 List Variable_Dice_Coefficients(int number_of_lines, List Lines, int number_of_lines2, List Lines2, int Dice_Terms, bool rem_duplicates);
 RcppExport SEXP SpeedReader_Variable_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP, SEXP rem_duplicatesSEXP) {

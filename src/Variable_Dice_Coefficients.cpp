@@ -1,6 +1,7 @@
 #include <RcppArmadillo.h>
 #include <string>
 //[[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(BH)]]
 using namespace Rcpp;
 
 namespace mjd {
@@ -116,6 +117,131 @@ List Sequential_Raw_Term_Dice_Matches(
 }
 
 
+// [[Rcpp::export]]
+List Sequential_string_Set_Hash_Comparison(
+        std::vector<std::string> doc1,
+        std::vector<std::string> doc2,
+        int Dice_Terms){
+
+    //allocate vector to hold bigrams
+    std::vector<std::string> bigrams_1 = doc1;
+    //take out the first element since we will have one less bigram than
+    //unigrams
+    std::unordered_set<std::string> dictionary1;
+    std::unordered_set<std::string> dictionary2;
+
+    //generate bigrams only if the line has more than one term
+    if(bigrams_1.size() > (Dice_Terms - 1)) {
+        // only erase terms if ngram length is atleast 1
+        if(Dice_Terms > 1) {
+            bigrams_1.erase(bigrams_1.begin(),bigrams_1.begin() + (Dice_Terms - 1));
+        }
+
+        // create the line, then add to it.
+
+        for(int k = 0; k < bigrams_1.size(); ++k){
+            std::string cur = doc1[k];
+            if(Dice_Terms > 1) {
+                for(int l = 1; l < (Dice_Terms-1); ++l){
+                    cur += doc1[k+l];
+                }
+            }
+            bigrams_1[k] = cur;
+            dictionary1.insert(cur);
+        }
+    }
+
+    //std::vector<std::string> line2 = Lines2[0];
+    //allocate vector to hold bigrams
+    std::vector<std::string> bigrams_2 = doc2;
+    //take out the first element since we will have one less bigram than
+    //unigrams
+    if( bigrams_2.size() > (Dice_Terms - 1)) {
+        if(Dice_Terms > 1) {
+            bigrams_2.erase(bigrams_2.begin(),bigrams_2.begin() + (Dice_Terms - 1));
+        }
+        for(int k = 0; k < bigrams_2.size(); ++k){
+            std::string cur = doc2[k];
+            if(Dice_Terms > 1) {
+                for(int l = 1; l < (Dice_Terms-1); ++l){
+                    cur += doc2[k+l];
+                }
+            }
+            bigrams_2[k] = cur;
+            dictionary2.insert(cur);
+        }
+    }
+
+    //vectors to store matches (in sequence)
+    arma::vec which_a_in_b = arma::zeros(bigrams_1.size());
+    arma::vec which_b_in_a = arma::zeros(bigrams_2.size());
+
+    for(int k = 0; k < bigrams_1.size(); ++k){
+        std::unordered_set<std::string>::const_iterator got = dictionary2.find(bigrams_1[k]);
+        if (got != dictionary2.end()) {
+            which_a_in_b[k] = 1;
+        }
+    }
+
+    for(int k = 0; k < bigrams_2.size(); ++k){
+        std::unordered_set<std::string>::const_iterator got = dictionary1.find(bigrams_2[k]);
+        if (got != dictionary1.end()) {
+            which_b_in_a[k] = 1;
+        }
+    }
+
+    List to_return(4);
+    to_return[0] = which_a_in_b;
+    to_return[1] = which_b_in_a;
+    to_return[2] = bigrams_1;
+    to_return[3] = bigrams_2;
+    return to_return;
+}
+
+
+// [[Rcpp::export]]
+List Sequential_Token_Set_Hash_Comparison(
+        std::vector<std::string> doc1,
+        std::vector<std::string> doc2){
+
+    std::unordered_set<std::string> dictionary1;
+    std::unordered_set<std::string> dictionary2;
+
+    //generate bigrams only if the line has more than one term
+    for(int k = 0; k < doc1.size(); ++k){
+        std::string cur = doc1[k];
+        dictionary1.insert(cur);
+    }
+
+    for(int k = 0; k < doc2.size(); ++k){
+        std::string cur = doc2[k];
+        dictionary2.insert(cur);
+    }
+
+    //vectors to store matches (in sequence)
+    arma::vec which_a_in_b = arma::zeros(doc1.size());
+    arma::vec which_b_in_a = arma::zeros(doc2.size());
+
+    for(int k = 0; k < doc1.size(); ++k){
+        std::unordered_set<std::string>::const_iterator got = dictionary2.find(doc1[k]);
+        if (got != dictionary2.end()) {
+            which_a_in_b[k] = 1;
+        }
+    }
+
+    for(int k = 0; k < doc2.size(); ++k){
+        std::unordered_set<std::string>::const_iterator got = dictionary1.find(doc2[k]);
+        if (got != dictionary1.end()) {
+            which_b_in_a[k] = 1;
+        }
+    }
+
+    List to_return(2);
+    to_return[0] = which_a_in_b;
+    to_return[1] = which_b_in_a;
+    return to_return;
+}
+
 
 // [[Rcpp::export]]
 List Variable_Dice_Coefficients(
@@ -224,4 +350,7 @@ List Variable_Dice_Coefficients(
     to_return[5] = both;
     return to_return;
 }
+
+
+
 

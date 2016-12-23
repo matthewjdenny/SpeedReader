@@ -4,7 +4,8 @@
 \alias{ngram_sequence_matching}
 \title{N-Gram Sequence Matching}
 \usage{
-ngram_sequence_matching(document_1, document_2, ngram_size)
+ngram_sequence_matching(document_1, document_2, ngram_size,
+  use_hashmap = FALSE, tokenized_strings_provided = FALSE)
 }
 \arguments{
 \item{document_1}{A string (or a character vector) representing the earlier
@@ -14,6 +15,12 @@ document version.}
 document version.}
 
 \item{ngram_size}{The length of n-grams to be compared}
+
+\item{use_hashmap}{Defaults to FALSE. If TRUE, then a hashmap is used for
+faster lookup and comparisons.}
+
+\item{tokenized_strings_provided}{Defaults to FALSE. If TRUE, then
+pre-tokenized strings are expected as character vectors.}
 }
 \value{
 A List object.

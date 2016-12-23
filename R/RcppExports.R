@@ -73,6 +73,14 @@ Sequential_Raw_Term_Dice_Matches <- function(Lines, Lines2, Dice_Terms) {
     .Call('SpeedReader_Sequential_Raw_Term_Dice_Matches', PACKAGE = 'SpeedReader', Lines, Lines2, Dice_Terms)
 }
 
+Sequential_string_Set_Hash_Comparison <- function(doc1, doc2, Dice_Terms) {
+    .Call('SpeedReader_Sequential_string_Set_Hash_Comparison', PACKAGE = 'SpeedReader', doc1, doc2, Dice_Terms)
+}
+
+Sequential_Token_Set_Hash_Comparison <- function(doc1, doc2) {
+    .Call('SpeedReader_Sequential_Token_Set_Hash_Comparison', PACKAGE = 'SpeedReader', doc1, doc2)
+}
+
 Variable_Dice_Coefficients <- function(number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms, rem_duplicates) {
     .Call('SpeedReader_Variable_Dice_Coefficients', PACKAGE = 'SpeedReader', number_of_lines, Lines, number_of_lines2, Lines2, Dice_Terms, rem_duplicates)
 }
