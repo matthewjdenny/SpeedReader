@@ -269,15 +269,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // Sequential_Raw_Term_Dice_Matches
-List Sequential_Raw_Term_Dice_Matches(List Lines, List Lines2, int Dice_Terms);
-RcppExport SEXP SpeedReader_Sequential_Raw_Term_Dice_Matches(SEXP LinesSEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP) {
+List Sequential_Raw_Term_Dice_Matches(std::vector<std::string> line1, std::vector<std::string> line2, int Dice_Terms);
+RcppExport SEXP SpeedReader_Sequential_Raw_Term_Dice_Matches(SEXP line1SEXP, SEXP line2SEXP, SEXP Dice_TermsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type Lines(LinesSEXP);
-    Rcpp::traits::input_parameter< List >::type Lines2(Lines2SEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type line1(line1SEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type line2(line2SEXP);
     Rcpp::traits::input_parameter< int >::type Dice_Terms(Dice_TermsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Sequential_Raw_Term_Dice_Matches(Lines, Lines2, Dice_Terms));
+    rcpp_result_gen = Rcpp::wrap(Sequential_Raw_Term_Dice_Matches(line1, line2, Dice_Terms));
     return rcpp_result_gen;
 END_RCPP
 }

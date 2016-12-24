@@ -69,8 +69,8 @@ Sparse_PMI_Statistics <- function(length_sparse_counts, table_sum, colsums, rows
     .Call('SpeedReader_Sparse_PMI_Statistics', PACKAGE = 'SpeedReader', length_sparse_counts, table_sum, colsums, rowsums, sparse_col_indexes, sparse_row_indexes, sparse_counts, print_sequence, print_sequence_length)
 }
 
-Sequential_Raw_Term_Dice_Matches <- function(Lines, Lines2, Dice_Terms) {
-    .Call('SpeedReader_Sequential_Raw_Term_Dice_Matches', PACKAGE = 'SpeedReader', Lines, Lines2, Dice_Terms)
+Sequential_Raw_Term_Dice_Matches <- function(line1, line2, Dice_Terms) {
+    .Call('SpeedReader_Sequential_Raw_Term_Dice_Matches', PACKAGE = 'SpeedReader', line1, line2, Dice_Terms)
 }
 
 Sequential_string_Set_Hash_Comparison <- function(doc1, doc2, Dice_Terms) {

@@ -36,11 +36,10 @@ namespace mjd {
 
 // [[Rcpp::export]]
 List Sequential_Raw_Term_Dice_Matches(
-        List Lines,
-        List Lines2,
+        std::vector<std::string> line1,
+        std::vector<std::string> line2,
         int Dice_Terms){
 
-    std::vector<std::string> line1 = Lines[0];
     //allocate vector to hold bigrams
     std::vector<std::string> bigrams_1 = line1;
     //take out the first element since we will have one less bigram than
@@ -66,7 +65,6 @@ List Sequential_Raw_Term_Dice_Matches(
         }
     }
 
-    std::vector<std::string> line2 = Lines2[0];
     //allocate vector to hold bigrams
     std::vector<std::string> bigrams_2 = line2;
     //take out the first element since we will have one less bigram than

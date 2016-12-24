@@ -23,18 +23,28 @@ ngram_sequence_matching <- function(document_1,
 
     if (tokenized_strings_provided) {
         if (!use_hashmap) {
-            document_1 <- list(doc = document_1)
-            document_2 <- list(doc = document_2)
+            document_1 <- doc
+            document_2 <- doc
         }
     } else {
-        doc <- paste0(document_1,collapse = " ")
+        if (length(document_1) > 1) {
+            doc <- paste0(document_1,collapse = " ")
+        } else {
+            doc <- document_1
+        }
+
         doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
         doc <- stringr::str_split(doc, " ")[[1]]
-        document_1 <- list(doc = doc)
-        doc <- paste0(document_2,collapse = " ")
+        document_1 <- doc
+
+        if (length(document_2) > 1) {
+            doc <- paste0(document_2,collapse = " ")
+        } else {
+            doc <- document_2
+        }
         doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
         doc <- stringr::str_split(doc, " ")[[1]]
-        document_2 <- list(doc = doc)
+        document_2 <- doc
     }
 
 
