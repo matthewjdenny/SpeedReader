@@ -5,7 +5,8 @@ parallel_sequence_matching <- function(x,
                                        doc_pairs,
                                        ngram_size,
                                        output_directory,
-                                       documents) {
+                                       documents,
+                                       prehash) {
 
     document_vector <- FALSE
     if (!is.null(documents[1])) {
@@ -20,6 +21,10 @@ parallel_sequence_matching <- function(x,
     # get the number of comparisons
     num_comp <- nrow(doc_pairs)
 
+    if (prehash) {
+        temp_num_comp <- num_comp
+        num_comp <- 2
+    }
     # create a blank data.frame to store results
     ret <- data.frame(addition_granularity = rep(0,num_comp),
                       deletion_granularity = rep(0,num_comp),
@@ -59,42 +64,80 @@ parallel_sequence_matching <- function(x,
                       nonmatch_length_variance_v2 = rep(0,num_comp),
                       total_ngrams_v2 = rep(0,num_comp))
 
+    if (prehash) {
+        num_comp <- temp_num_comp
+    }
+
     # set working directory to
     if (!is.null(input_directory)) {
         setwd(input_directory)
     }
 
+    if (prehash) {
 
-    # now we loop through the pairings
-    for (j in 1:num_comp) {
+        docs <- vector(mode = "list", length = length(filenames))
+        for (l in 1:length(filenames)) {
+            if (document_vector) {
+                # read in the documents
+                temp <- documents[l]
+            } else {
+                # read in the documents
+                temp <- readLines(filenames[l])
+            }
+            if (length(temp) > 1) {
+                doc <- paste0(temp,collapse = " ")
+            } else {
+                doc <- temp
+            }
 
-        # progress
-        if (j %% 10000 == 0) {
-            cat("Comparison",j,"of",num_comp,"\n")
+            doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+            doc <- stringr::str_split(doc, " ")[[1]]
+            docs[[l]] <- doc
         }
 
-        if (document_vector) {
-            # read in the documents
-            document_1 <- documents[doc_pairs[j,1]]
-            document_2 <- documents[doc_pairs[j,2]]
-        } else {
-            # read in the documents
-            document_1 <- readLines(filenames[doc_pairs[j,1]])
-            document_2 <- readLines(filenames[doc_pairs[j,2]])
+        cnms <- colnames(ret)
+        ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
+            docs,
+            length(docs),
+            doc_pairs - 1,
+            ngram_size)
+        colnames(ret) <- cnms
+        ret <- as.data.frame(ret)
+
+    } else {
+        # now we loop through the pairings
+        for (j in 1:num_comp) {
+
+            # progress
+            if (j %% 10000 == 0) {
+                cat("Comparison",j,"of",num_comp,"\n")
+            }
+
+            if (document_vector) {
+                # read in the documents
+                document_1 <- documents[doc_pairs[j,1]]
+                document_2 <- documents[doc_pairs[j,2]]
+            } else {
+                # read in the documents
+                document_1 <- readLines(filenames[doc_pairs[j,1]])
+                document_2 <- readLines(filenames[doc_pairs[j,2]])
+            }
+
+            # do the matching
+            results <- ngram_sequence_matching(
+                document_1,
+                document_2,
+                ngram_size = ngram_size,
+                use_hashmap = TRUE,
+                tokenized_strings_provided = FALSE)
+
+            # store
+            ret[j,] <- results$match_sequence_statistics
+
         }
-
-        # do the matching
-        results <- ngram_sequence_matching(
-            document_1,
-            document_2,
-            ngram_size = ngram_size,
-            use_hashmap = TRUE,
-            tokenized_strings_provided = FALSE)
-
-        # store
-        ret[j,] <- results$match_sequence_statistics
-
     }
+
+
 
     # add in document indicies for later lookups
     ret$doc_1_ind <- doc_pairs[,1]
@@ -110,7 +153,7 @@ parallel_sequence_matching <- function(x,
     if (!is.null(output_directory)) {
         setwd(output_directory)
         save(ret, file = paste("Document_Similarity_Results_",x,".RData",sep = ""))
-        return(i)
+        return(x)
     } else {
         return(ret)
     }
