@@ -29,6 +29,10 @@ Count_Words <- function(number_of_documents, Document_Words, Document_Lengths, m
     .Call('SpeedReader_Count_Words', PACKAGE = 'SpeedReader', number_of_documents, Document_Words, Document_Lengths, max_vocab_size, add_to_vocabulary, existing_word_counts, existing_vocabulary, existing_vocabulary_size, using_wordcounts, Document_Word_Counts, print_counter)
 }
 
+Efficient_Block_Sequential_String_Set_Hash_Comparison <- function(documents, num_docs, comparison_inds, ngram_length) {
+    .Call('SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison', PACKAGE = 'SpeedReader', documents, num_docs, comparison_inds, ngram_length)
+}
+
 Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {
     .Call('SpeedReader_Fast_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist, non_zero_cols)
 }

@@ -110,6 +110,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Efficient_Block_Sequential_String_Set_Hash_Comparison
+arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(List documents, int num_docs, arma::mat comparison_inds, int ngram_length);
+RcppExport SEXP SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type documents(documentsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_docs(num_docsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type comparison_inds(comparison_indsSEXP);
+    Rcpp::traits::input_parameter< int >::type ngram_length(ngram_lengthSEXP);
+    rcpp_result_gen = Rcpp::wrap(Efficient_Block_Sequential_String_Set_Hash_Comparison(documents, num_docs, comparison_inds, ngram_length));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Fast_Mutual_Information
 double Fast_Mutual_Information(arma::mat joint_dist, arma::vec non_zero_cols);
 RcppExport SEXP SpeedReader_Fast_Mutual_Information(SEXP joint_distSEXP, SEXP non_zero_colsSEXP) {
