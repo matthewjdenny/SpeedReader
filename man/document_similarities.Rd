@@ -6,7 +6,8 @@
 \usage{
 document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
-  doc_pairs = NULL, parallel = TRUE, cores = 1, max_block_size = NULL)
+  doc_pairs = NULL, parallel = TRUE, cores = 1, max_block_size = NULL,
+  prehash = FALSE)
 }
 \arguments{
 \item{filenames}{An optional character vector of filenames (with .txt
@@ -41,6 +42,10 @@ available on your computer.}
 indicating the maximum number of pairs to be compared in each parallel
 process. Can be usefull to limit the intermediate data.frame sizes. A maximum
 of 10-50 million is suggested.}
+
+\item{prehash}{Logical which defaults to FALSE. If TRUE, then a prehashing
+scheme is used which may greatly speed up computation but dramatically
+increase memory usage as well.}
 }
 \value{
 A data.frame or NULL if output_directory is not NULL.

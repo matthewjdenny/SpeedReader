@@ -26,6 +26,9 @@
 #' indicating the maximum number of pairs to be compared in each parallel
 #' process. Can be usefull to limit the intermediate data.frame sizes. A maximum
 #' of 10-50 million is suggested.
+#' @param prehash Logical which defaults to FALSE. If TRUE, then a prehashing
+#' scheme is used which may greatly speed up computation but dramatically
+#' increase memory usage as well.
 #' @return A data.frame or NULL if output_directory is not NULL.
 #' @export
 document_similarities <- function(filenames = NULL,
@@ -36,7 +39,8 @@ document_similarities <- function(filenames = NULL,
                                   doc_pairs = NULL,
                                   parallel = TRUE,
                                   cores = 1,
-                                  max_block_size = NULL) {
+                                  max_block_size = NULL,
+                                  prehash = FALSE) {
 
     # start timing
     ptm <- proc.time()
@@ -117,7 +121,8 @@ document_similarities <- function(filenames = NULL,
                                             doc_pairs = doc_pairs,
                                             ngram_size = ngram_size,
                                             output_directory = output_directory,
-                                            documents = documents)
+                                            documents = documents,
+                                            prehash = prehash)
 
         # stop the cluster when we are done
         parallel::stopCluster(cl)
@@ -140,7 +145,8 @@ document_similarities <- function(filenames = NULL,
                                           doc_pairs,
                                           ngram_size,
                                           output_directory,
-                                          documents)
+                                          documents,
+                                          prehash)
     }
 
     t2 <- proc.time() - ptm
