@@ -7,7 +7,7 @@
 document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
   doc_pairs = NULL, parallel = TRUE, cores = 1, max_block_size = NULL,
-  prehash = FALSE)
+  prehash = FALSE, ngram_match_only = FALSE)
 }
 \arguments{
 \item{filenames}{An optional character vector of filenames (with .txt
@@ -46,6 +46,11 @@ of 10-50 million is suggested.}
 \item{prehash}{Logical which defaults to FALSE. If TRUE, then a prehashing
 scheme is used which may greatly speed up computation but dramatically
 increase memory usage as well.}
+
+\item{ngram_match_only}{Defaults to FALSE. If TRUE, then only the proportion
+of n-grams in version a that are also present in version b and vice-versa
+are calculated. Can be a useful first step when searching for near-exact
+matches.}
 }
 \value{
 A data.frame or NULL if output_directory is not NULL.

@@ -29,6 +29,10 @@
 #' @param prehash Logical which defaults to FALSE. If TRUE, then a prehashing
 #' scheme is used which may greatly speed up computation but dramatically
 #' increase memory usage as well.
+#' @param ngram_match_only Defaults to FALSE. If TRUE, then only the proportion
+#' of n-grams in version a that are also present in version b and vice-versa
+#' are calculated. Can be a useful first step when searching for near-exact
+#' matches.
 #' @return A data.frame or NULL if output_directory is not NULL.
 #' @export
 document_similarities <- function(filenames = NULL,
@@ -40,7 +44,8 @@ document_similarities <- function(filenames = NULL,
                                   parallel = TRUE,
                                   cores = 1,
                                   max_block_size = NULL,
-                                  prehash = FALSE) {
+                                  prehash = FALSE,
+                                  ngram_match_only = FALSE) {
 
     # start timing
     ptm <- proc.time()
@@ -122,7 +127,8 @@ document_similarities <- function(filenames = NULL,
                                             ngram_size = ngram_size,
                                             output_directory = output_directory,
                                             documents = documents,
-                                            prehash = prehash)
+                                            prehash = prehash,
+                                            ngram_match_only = ngram_match_only)
 
         # stop the cluster when we are done
         parallel::stopCluster(cl)
@@ -146,7 +152,8 @@ document_similarities <- function(filenames = NULL,
                                           ngram_size,
                                           output_directory,
                                           documents,
-                                          prehash)
+                                          prehash,
+                                          ngram_match_only)
     }
 
     t2 <- proc.time() - ptm

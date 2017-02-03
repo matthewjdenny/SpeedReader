@@ -33,6 +33,10 @@ Efficient_Block_Sequential_String_Set_Hash_Comparison <- function(documents, num
     .Call('SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison', PACKAGE = 'SpeedReader', documents, num_docs, comparison_inds, ngram_length)
 }
 
+Efficient_Block_Hash_Ngrams <- function(documents, num_docs, comparison_inds, ngram_length) {
+    .Call('SpeedReader_Efficient_Block_Hash_Ngrams', PACKAGE = 'SpeedReader', documents, num_docs, comparison_inds, ngram_length)
+}
+
 Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {
     .Call('SpeedReader_Fast_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist, non_zero_cols)
 }

@@ -6,7 +6,8 @@ parallel_sequence_matching <- function(x,
                                        ngram_size,
                                        output_directory,
                                        documents,
-                                       prehash) {
+                                       prehash,
+                                       ngram_match_only) {
 
     document_vector <- FALSE
     if (!is.null(documents[1])) {
@@ -25,44 +26,51 @@ parallel_sequence_matching <- function(x,
         temp_num_comp <- num_comp
         num_comp <- 2
     }
-    # create a blank data.frame to store results
-    ret <- data.frame(addition_granularity = rep(0,num_comp),
-                      deletion_granularity = rep(0,num_comp),
-                      addition_scope = rep(0,num_comp),
-                      deletion_scope = rep(0,num_comp),
-                      average_addition_size = rep(0,num_comp),
-                      average_deletion_size = rep(0,num_comp),
-                      scope = rep(0,num_comp),
-                      average_edit_size = rep(0,num_comp),
-                      prop_deletions = rep(0,num_comp),
-                      prop_additions  = rep(0,num_comp),
-                      prop_changes = rep(0,num_comp),
-                      num_match_blocks_v1 = rep(0,num_comp),
-                      max_match_length_v1 = rep(0,num_comp),
-                      min_match_length_v1 = rep(0,num_comp),
-                      mean_match_length_v1 = rep(0,num_comp),
-                      median_match_length_v1 = rep(0,num_comp),
-                      match_length_variance_v1 = rep(0,num_comp),
-                      num_nonmatch_blocks_v1 = rep(0,num_comp),
-                      max_nonmatch_length_v1 = rep(0,num_comp),
-                      min_nonmatch_length_v1 = rep(0,num_comp),
-                      mean_nonmatch_length_v1 = rep(0,num_comp),
-                      median_nonmatch_length_v1 = rep(0,num_comp),
-                      nonmatch_length_variance_v1 = rep(0,num_comp),
-                      total_ngrams_v1 = rep(0,num_comp),
-                      num_match_blocks_v2 = rep(0,num_comp),
-                      max_match_length_v2 = rep(0,num_comp),
-                      min_match_length_v2 = rep(0,num_comp),
-                      mean_match_length_v2 = rep(0,num_comp),
-                      median_match_length_v2 = rep(0,num_comp),
-                      match_length_variance_v2 = rep(0,num_comp),
-                      num_nonmatch_blocks_v2 = rep(0,num_comp),
-                      max_nonmatch_length_v2 = rep(0,num_comp),
-                      min_nonmatch_length_v2 = rep(0,num_comp),
-                      mean_nonmatch_length_v2 = rep(0,num_comp),
-                      median_nonmatch_length_v2 = rep(0,num_comp),
-                      nonmatch_length_variance_v2 = rep(0,num_comp),
-                      total_ngrams_v2 = rep(0,num_comp))
+
+    if (ngram_match_only) {
+        ret <- data.frame(prop_a_in_b = rep(0,num_comp),
+                          prop_b_in_a = rep(0,num_comp))
+    } else {
+        # create a blank data.frame to store results
+        ret <- data.frame(addition_granularity = rep(0,num_comp),
+                          deletion_granularity = rep(0,num_comp),
+                          addition_scope = rep(0,num_comp),
+                          deletion_scope = rep(0,num_comp),
+                          average_addition_size = rep(0,num_comp),
+                          average_deletion_size = rep(0,num_comp),
+                          scope = rep(0,num_comp),
+                          average_edit_size = rep(0,num_comp),
+                          prop_deletions = rep(0,num_comp),
+                          prop_additions  = rep(0,num_comp),
+                          prop_changes = rep(0,num_comp),
+                          num_match_blocks_v1 = rep(0,num_comp),
+                          max_match_length_v1 = rep(0,num_comp),
+                          min_match_length_v1 = rep(0,num_comp),
+                          mean_match_length_v1 = rep(0,num_comp),
+                          median_match_length_v1 = rep(0,num_comp),
+                          match_length_variance_v1 = rep(0,num_comp),
+                          num_nonmatch_blocks_v1 = rep(0,num_comp),
+                          max_nonmatch_length_v1 = rep(0,num_comp),
+                          min_nonmatch_length_v1 = rep(0,num_comp),
+                          mean_nonmatch_length_v1 = rep(0,num_comp),
+                          median_nonmatch_length_v1 = rep(0,num_comp),
+                          nonmatch_length_variance_v1 = rep(0,num_comp),
+                          total_ngrams_v1 = rep(0,num_comp),
+                          num_match_blocks_v2 = rep(0,num_comp),
+                          max_match_length_v2 = rep(0,num_comp),
+                          min_match_length_v2 = rep(0,num_comp),
+                          mean_match_length_v2 = rep(0,num_comp),
+                          median_match_length_v2 = rep(0,num_comp),
+                          match_length_variance_v2 = rep(0,num_comp),
+                          num_nonmatch_blocks_v2 = rep(0,num_comp),
+                          max_nonmatch_length_v2 = rep(0,num_comp),
+                          min_nonmatch_length_v2 = rep(0,num_comp),
+                          mean_nonmatch_length_v2 = rep(0,num_comp),
+                          median_nonmatch_length_v2 = rep(0,num_comp),
+                          nonmatch_length_variance_v2 = rep(0,num_comp),
+                          total_ngrams_v2 = rep(0,num_comp))
+    }
+
 
     if (prehash) {
         num_comp <- temp_num_comp
@@ -95,14 +103,25 @@ parallel_sequence_matching <- function(x,
             docs[[l]] <- doc
         }
 
-        cnms <- colnames(ret)
-        ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
-            docs,
-            length(docs),
-            doc_pairs - 1,
-            ngram_size)
-        colnames(ret) <- cnms
-        ret <- as.data.frame(ret)
+        if (ngram_match_only) {
+            cnms <- colnames(ret)
+            ret <- Efficient_Block_Hash_Ngrams(
+                docs,
+                length(docs),
+                doc_pairs - 1,
+                ngram_size)
+            colnames(ret) <- cnms
+            ret <- as.data.frame(ret)
+        } else {
+            cnms <- colnames(ret)
+            ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
+                docs,
+                length(docs),
+                doc_pairs - 1,
+                ngram_size)
+            colnames(ret) <- cnms
+            ret <- as.data.frame(ret)
+        }
 
     } else {
         # now we loop through the pairings
