@@ -302,8 +302,11 @@ arma::mat Efficient_Block_Hash_Ngrams(
     int num_comparisons = comparison_inds.n_rows;
     arma::mat comparison_metrics =  arma::zeros(num_comparisons,2);
 
+    Rcpp::Rcout << "Made it to start of hash loop" << std::endl;
+
     //loop through documents and form ngrams/hash them
     for(int i = 0; i < num_docs; ++i){
+        Rcpp::Rcout << i << std::endl;
 
         std::unordered_set<std::string> dictionary;
         std::vector<std::string> doc = documents[i];
