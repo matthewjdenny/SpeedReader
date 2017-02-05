@@ -96,7 +96,7 @@ document_similarities <- function(filenames = NULL,
         if (start > nrow(doc_pairs)) {
             break
         } else {
-            if (stop > nrow(doc_pairs)) {
+            if (stop >= nrow(doc_pairs)) {
                 stop <- nrow(doc_pairs)
                 done <- TRUE
             }

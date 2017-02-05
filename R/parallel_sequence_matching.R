@@ -84,6 +84,7 @@ parallel_sequence_matching <- function(x,
     if (prehash) {
 
         docs <- vector(mode = "list", length = length(filenames))
+        doc_lengths <- rep(0,length(filenames))
         for (l in 1:length(filenames)) {
             if (document_vector) {
                 # read in the documents
@@ -101,7 +102,11 @@ parallel_sequence_matching <- function(x,
             doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
             doc <- stringr::str_split(doc, " ")[[1]]
             docs[[l]] <- doc
+            doc_lengths[l] <- length(doc)
         }
+        cat("Summary of document lengths (unigrams):\n")
+        print(summary(doc_lengths))
+        Sys.sleep(1)
 
         if (ngram_match_only) {
             cnms <- colnames(ret)
@@ -113,12 +118,40 @@ parallel_sequence_matching <- function(x,
             colnames(ret) <- cnms
             ret <- as.data.frame(ret)
         } else {
+            # remove any documents that are shorter than the ngram length and
+            # let the user know
+            ignore_documents <- FALSE
+            to_ignore <- c(-1,-1)
+            check <- which(doc_lengths <= ngram_size)
+            if (length(check) > 0) {
+                print("The following documents were shorter that the n-gram length and are being removed:")
+                print(filenames[check])
+                print("Indices:")
+                print(check)
+                rem1 <- which(doc_pairs[,1] %in% check)
+                rem2 <- which(doc_pairs[,2] %in% check)
+                rem <- unique(c(rem1,rem2))
+                if (length(rem) > 0) {
+                    print("Document pairs removed:")
+                    print(doc_pairs[rem,])
+                    doc_pairs <- doc_pairs[-rem,]
+                }
+                # order things to make checking faster
+                check <- check[order(check,decreasing = FALSE)]
+                ignore_documents <- TRUE
+                to_ignore <- check
+                to_ignore <- c(to_ignore,-1,-1)
+            }
+
+
             cnms <- colnames(ret)
             ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
                 docs,
                 length(docs),
                 doc_pairs - 1,
-                ngram_size)
+                ngram_size,
+                ignore_documents,
+                to_ignore - 1)
             colnames(ret) <- cnms
             ret <- as.data.frame(ret)
         }

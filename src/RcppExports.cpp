@@ -111,8 +111,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // Efficient_Block_Sequential_String_Set_Hash_Comparison
-arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(List documents, int num_docs, arma::mat comparison_inds, int ngram_length);
-RcppExport SEXP SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP) {
+arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(List documents, int num_docs, arma::mat comparison_inds, int ngram_length, bool ignore_documents, arma::vec to_ignore);
+RcppExport SEXP SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -120,7 +120,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type num_docs(num_docsSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type comparison_inds(comparison_indsSEXP);
     Rcpp::traits::input_parameter< int >::type ngram_length(ngram_lengthSEXP);
-    rcpp_result_gen = Rcpp::wrap(Efficient_Block_Sequential_String_Set_Hash_Comparison(documents, num_docs, comparison_inds, ngram_length));
+    Rcpp::traits::input_parameter< bool >::type ignore_documents(ignore_documentsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type to_ignore(to_ignoreSEXP);
+    rcpp_result_gen = Rcpp::wrap(Efficient_Block_Sequential_String_Set_Hash_Comparison(documents, num_docs, comparison_inds, ngram_length, ignore_documents, to_ignore));
     return rcpp_result_gen;
 END_RCPP
 }
