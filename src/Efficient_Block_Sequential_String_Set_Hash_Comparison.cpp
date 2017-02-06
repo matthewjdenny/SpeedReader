@@ -296,8 +296,6 @@ arma::mat Efficient_Block_Hash_Ngrams(
         arma::mat comparison_inds,
         int ngram_length){
 
-    Rcpp::Rcout << "Made it to start of hash loop" << std::endl;
-    sleep(5);
     // allocate a vector to hold n-grams
     std::vector<std::vector<std::string>> ngrams(num_docs);
     std::vector<std::unordered_set<std::string>> dictionaries(num_docs);
