@@ -291,7 +291,7 @@ arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(
 
 // [[Rcpp::export]]
 arma::mat Efficient_Block_Hash_Ngrams(
-        List documents,
+        std::vector<std::string> documents,
         int num_docs,
         arma::mat comparison_inds,
         int ngram_length){
@@ -311,7 +311,10 @@ arma::mat Efficient_Block_Hash_Ngrams(
         Rcpp::Rcout << i << std::endl;
 
         std::unordered_set<std::string> dictionary;
-        std::vector<std::string> doc = documents[i];
+        std::string temp = documents[i];
+
+        std::vector<std::string> doc;
+        boost::algorithm::split(doc, temp, boost::algorithm::is_any_of(" "));
         //allocate vector to hold bigrams
         std::vector<std::string> cur_ngrams = doc;
 

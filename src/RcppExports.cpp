@@ -127,12 +127,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // Efficient_Block_Hash_Ngrams
-arma::mat Efficient_Block_Hash_Ngrams(List documents, int num_docs, arma::mat comparison_inds, int ngram_length);
+arma::mat Efficient_Block_Hash_Ngrams(std::vector<std::string> documents, int num_docs, arma::mat comparison_inds, int ngram_length);
 RcppExport SEXP SpeedReader_Efficient_Block_Hash_Ngrams(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type documents(documentsSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type documents(documentsSEXP);
     Rcpp::traits::input_parameter< int >::type num_docs(num_docsSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type comparison_inds(comparison_indsSEXP);
     Rcpp::traits::input_parameter< int >::type ngram_length(ngram_lengthSEXP);

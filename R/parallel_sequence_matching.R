@@ -113,7 +113,7 @@ parallel_sequence_matching <- function(x,
         if (ngram_match_only) {
             cnms <- colnames(ret)
             ret <- Efficient_Block_Hash_Ngrams(
-                docs,
+                docs2,
                 length(docs),
                 doc_pairs - 1,
                 ngram_size)
