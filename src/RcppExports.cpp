@@ -140,6 +140,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// String_Input_Sequential_String_Set_Hash_Comparison
+arma::mat String_Input_Sequential_String_Set_Hash_Comparison(std::vector<std::string> documents, int num_docs, arma::mat comparison_inds, int ngram_length, bool ignore_documents, arma::vec to_ignore);
+RcppExport SEXP SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type documents(documentsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_docs(num_docsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type comparison_inds(comparison_indsSEXP);
+    Rcpp::traits::input_parameter< int >::type ngram_length(ngram_lengthSEXP);
+    Rcpp::traits::input_parameter< bool >::type ignore_documents(ignore_documentsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type to_ignore(to_ignoreSEXP);
+    rcpp_result_gen = Rcpp::wrap(String_Input_Sequential_String_Set_Hash_Comparison(documents, num_docs, comparison_inds, ngram_length, ignore_documents, to_ignore));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Fast_Mutual_Information
 double Fast_Mutual_Information(arma::mat joint_dist, arma::vec non_zero_cols);
 RcppExport SEXP SpeedReader_Fast_Mutual_Information(SEXP joint_distSEXP, SEXP non_zero_colsSEXP) {

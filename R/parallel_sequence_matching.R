@@ -84,6 +84,7 @@ parallel_sequence_matching <- function(x,
     if (prehash) {
 
         docs <- vector(mode = "list", length = length(filenames))
+        docs2 <- rep("",length(filenames))
         doc_lengths <- rep(0,length(filenames))
         for (l in 1:length(filenames)) {
             if (document_vector) {
@@ -100,6 +101,7 @@ parallel_sequence_matching <- function(x,
             }
 
             doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+            docs2[l] <- doc
             doc <- stringr::str_split(doc, " ")[[1]]
             docs[[l]] <- doc
             doc_lengths[l] <- length(doc)
@@ -145,8 +147,16 @@ parallel_sequence_matching <- function(x,
 
 
             cnms <- colnames(ret)
-            ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
-                docs,
+            # ret <- Efficient_Block_Sequential_String_Set_Hash_Comparison(
+            #     docs,
+            #     length(docs),
+            #     doc_pairs - 1,
+            #     ngram_size,
+            #     ignore_documents,
+            #     to_ignore - 1)
+
+            ret <- String_Input_Sequential_String_Set_Hash_Comparison(
+                docs2,
                 length(docs),
                 doc_pairs - 1,
                 ngram_size,

@@ -37,6 +37,10 @@ Efficient_Block_Hash_Ngrams <- function(documents, num_docs, comparison_inds, ng
     .Call('SpeedReader_Efficient_Block_Hash_Ngrams', PACKAGE = 'SpeedReader', documents, num_docs, comparison_inds, ngram_length)
 }
 
+String_Input_Sequential_String_Set_Hash_Comparison <- function(documents, num_docs, comparison_inds, ngram_length, ignore_documents, to_ignore) {
+    .Call('SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison', PACKAGE = 'SpeedReader', documents, num_docs, comparison_inds, ngram_length, ignore_documents, to_ignore)
+}
+
 Fast_Mutual_Information <- function(joint_dist, non_zero_cols) {
     .Call('SpeedReader_Fast_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist, non_zero_cols)
 }
