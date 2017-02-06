@@ -19,6 +19,9 @@ parallel_sequence_matching <- function(x,
     stop <- start_stop_lookup[x,2]
     doc_pairs <- doc_pairs[start:stop,]
 
+    # determine which files should be loaded in
+    load_inds <- unique(c(doc_pairs[,1],doc_pairs[,2]))
+
     # get the number of comparisons
     num_comp <- nrow(doc_pairs)
 
@@ -87,24 +90,28 @@ parallel_sequence_matching <- function(x,
         docs2 <- rep("",length(filenames))
         doc_lengths <- rep(0,length(filenames))
         for (l in 1:length(filenames)) {
-            if (document_vector) {
-                # read in the documents
-                temp <- documents[l]
-            } else {
-                # read in the documents
-                temp <- readLines(filenames[l])
-            }
-            if (length(temp) > 1) {
-                doc <- paste0(temp,collapse = " ")
-            } else {
-                doc <- temp
-            }
+            if (l %in% load_inds) {
+                if (document_vector) {
+                    # read in the documents
+                    temp <- documents[l]
+                } else {
+                    # read in the documents
+                    temp <- readLines(filenames[l])
+                }
+                if (length(temp) > 1) {
+                    doc <- paste0(temp,collapse = " ")
+                } else {
+                    doc <- temp
+                }
 
-            doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
-            docs2[l] <- doc
-            doc <- stringr::str_split(doc, " ")[[1]]
-            # docs[[l]] <- doc
-            doc_lengths[l] <- length(doc)
+                doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+                docs2[l] <- doc
+                doc <- stringr::str_split(doc, " ")[[1]]
+                # docs[[l]] <- doc
+                doc_lengths[l] <- length(doc)
+            } else {
+                doc_lengths[l] <- 0
+            }
         }
         cat("Summary of document lengths (unigrams):\n")
         print(summary(doc_lengths))
@@ -114,7 +121,7 @@ parallel_sequence_matching <- function(x,
             cnms <- colnames(ret)
             ret <- Efficient_Block_Hash_Ngrams(
                 docs2,
-                length(docs),
+                length(docs2),
                 doc_pairs - 1,
                 ngram_size)
             colnames(ret) <- cnms
