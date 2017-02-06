@@ -133,16 +133,12 @@ parallel_sequence_matching <- function(x,
             to_ignore <- c(-1,-1)
             check <- which(doc_lengths <= ngram_size)
             if (length(check) > 0) {
-                print("The following documents were shorter that the n-gram length and are being removed:")
-                print(filenames[check])
-                print("Indices:")
-                print(check)
+                print("The following number documents were removed:")
+                print(length(check))
                 rem1 <- which(doc_pairs[,1] %in% check)
                 rem2 <- which(doc_pairs[,2] %in% check)
                 rem <- unique(c(rem1,rem2))
                 if (length(rem) > 0) {
-                    print("Document pairs removed:")
-                    print(doc_pairs[rem,])
                     doc_pairs <- doc_pairs[-rem,]
                 }
                 # order things to make checking faster
