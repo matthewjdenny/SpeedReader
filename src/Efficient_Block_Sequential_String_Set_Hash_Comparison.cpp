@@ -429,6 +429,7 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
             if (cur_check == i) {
                 hash = false;
                 ignore_counter += 1;
+                cur_check = to_ignore[ignore_counter];
             }
         }
 
@@ -449,10 +450,11 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
             }
 
             //populate ngrams and hashmap
-            int cur_length = (ngram_length-1);
+            int cur_length = ngram_length;
             if ((ngram_length-1) > cur_ngrams.size()) {
                 cur_length = cur_ngrams.size();
             }
+            //Rcpp::Rcout << "Document " << i << std::endl;
             for(int k = 0; k < cur_ngrams.size(); ++k){
                 std::string cur = doc[k];
                 if(ngram_length > 1) {
