@@ -143,17 +143,23 @@ document_similarities <- function(filenames = NULL,
         }
 
     } else {
-        start_stop_lookup <- matrix(c(1,nrow(doc_pairs)),ncol = 2)
-        ret <- parallel_sequence_matching(1,
-                                          start_stop_lookup,
-                                          input_directory,
-                                          filenames,
-                                          doc_pairs,
-                                          ngram_size,
-                                          output_directory,
-                                          documents,
-                                          prehash,
-                                          ngram_match_only)
+        ret <- vector(mode = "list", length = nrow(start_stop_lookup))
+        #start_stop_lookup <- matrix(c(1,nrow(doc_pairs)),ncol = 2)
+        for (i in 1:nrow(start_stop_lookup)) {
+            cat("Currently working on block:",i,"of",nrow(start_stop_lookup),"\n")
+            temp <- parallel_sequence_matching(i,
+                                              start_stop_lookup,
+                                              input_directory,
+                                              filenames,
+                                              doc_pairs,
+                                              ngram_size,
+                                              output_directory,
+                                              documents,
+                                              prehash,
+                                              ngram_match_only)
+            ret[[i]] <- temp
+        }
+
     }
 
     t2 <- proc.time() - ptm
