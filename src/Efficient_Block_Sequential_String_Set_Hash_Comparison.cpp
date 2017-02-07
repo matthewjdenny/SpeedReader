@@ -341,11 +341,8 @@ arma::mat Efficient_Block_Hash_Ngrams(
                 }
             }
             cur_ngrams[k] = cur;
-            try {
-                dictionary.insert(cur);
-            } catch (int e) {
-                Rcpp::Rcout << "Bad Insertion: " << cur << " -- Index " << i << std::endl;
-            }
+            dictionary.insert(cur);
+
         }
 
         ngrams[i] = cur_ngrams;
