@@ -312,7 +312,6 @@ arma::mat Efficient_Block_Hash_Ngrams(
 
     //loop through documents and form ngrams/hash them
     for(int i = 0; i < num_docs; ++i){
-        Rcpp::Rcout << i << std::endl;
 
         std::unordered_set<std::string> dictionary;
         std::string temp = documents[i];
@@ -359,7 +358,7 @@ arma::mat Efficient_Block_Hash_Ngrams(
     // LOOP OVER ALL COMPARISONS
     for(int i = 0; i < num_comparisons; ++i){
 
-        if (i % 1000 == 0) {
+        if (i % 10000 == 0) {
             Rcpp::Rcout << "Current Comparison: " << i << " of " << num_comparisons << std::endl;
         }
 
