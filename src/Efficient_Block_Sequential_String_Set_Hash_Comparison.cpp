@@ -329,7 +329,7 @@ arma::mat Efficient_Block_Hash_Ngrams(
         }
 
         //populate ngrams and hashmap
-        int cur_length = (ngram_length-1);
+        int cur_length = ngram_length;
         if ((ngram_length-1) > cur_ngrams.size()) {
             cur_length = cur_ngrams.size();
         }
