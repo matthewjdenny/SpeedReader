@@ -143,7 +143,7 @@ document_similarities <- function(filenames = NULL,
         }
 
     } else {
-        ret <- vector(mode = "list", length = nrow(start_stop_lookup))
+        ret <- NULL
         #start_stop_lookup <- matrix(c(1,nrow(doc_pairs)),ncol = 2)
         for (i in 1:nrow(start_stop_lookup)) {
             cat("Currently working on block:",i,"of",nrow(start_stop_lookup),"\n")
@@ -157,7 +157,7 @@ document_similarities <- function(filenames = NULL,
                                               documents,
                                               prehash,
                                               ngram_match_only)
-            ret[[i]] <- temp
+            ret <- rbind(ret,temp)
         }
 
     }
