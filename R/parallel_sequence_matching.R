@@ -21,6 +21,7 @@ parallel_sequence_matching <- function(x,
 
     # determine which files should be loaded in
     load_inds <- unique(c(doc_pairs[,1],doc_pairs[,2]))
+    cat("Reading in",length(load_inds),"documents...\n")
 
     # get the number of comparisons
     num_comp <- nrow(doc_pairs)
