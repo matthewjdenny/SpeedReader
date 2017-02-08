@@ -119,12 +119,33 @@ parallel_sequence_matching <- function(x,
         Sys.sleep(1)
 
         if (ngram_match_only) {
+            ignore_documents <- FALSE
+            to_ignore <- c(-1,-1)
+            check <- which(doc_lengths == 0)
+            if (length(check) > 0) {
+                print("The following number documents were removed:")
+                print(length(check))
+                rem1 <- which(doc_pairs[,1] %in% check)
+                rem2 <- which(doc_pairs[,2] %in% check)
+                rem <- unique(c(rem1,rem2))
+                if (length(rem) > 0) {
+                    doc_pairs <- doc_pairs[-rem,]
+                }
+                # order things to make checking faster
+                check <- check[order(check,decreasing = FALSE)]
+                ignore_documents <- TRUE
+                to_ignore <- check
+                to_ignore <- c(to_ignore,-1,-1)
+            }
+
             cnms <- colnames(ret)
             ret <- Efficient_Block_Hash_Ngrams(
                 docs2,
                 length(docs2),
                 doc_pairs - 1,
-                ngram_size)
+                ngram_size,
+                ignore_documents,
+                to_ignore - 1)
             colnames(ret) <- cnms
             ret <- as.data.frame(ret)
         } else {

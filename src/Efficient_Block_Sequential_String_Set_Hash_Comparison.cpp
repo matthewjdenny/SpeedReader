@@ -298,7 +298,9 @@ arma::mat Efficient_Block_Hash_Ngrams(
         std::vector<std::string> documents,
         int num_docs,
         arma::mat comparison_inds,
-        int ngram_length){
+        int ngram_length,
+        bool ignore_documents,
+        arma::vec to_ignore){
 
     // allocate a vector to hold n-grams
     std::vector<std::vector<std::string>> ngrams(num_docs);
@@ -308,46 +310,59 @@ arma::mat Efficient_Block_Hash_Ngrams(
     int num_comparisons = comparison_inds.n_rows;
     arma::mat comparison_metrics =  arma::zeros(num_comparisons,2);
 
-
+    int ignore_counter = 0;
+    int cur_check = to_ignore[0];
 
     //loop through documents and form ngrams/hash them
     for(int i = 0; i < num_docs; ++i){
-
-        std::unordered_set<std::string> dictionary;
-        std::string temp = documents[i];
-
-        std::vector<std::string> doc;
-        boost::algorithm::split(doc, temp, boost::algorithm::is_any_of(" "));
-        //allocate vector to hold bigrams
-        std::vector<std::string> cur_ngrams = doc;
-
-        if(cur_ngrams.size() > (ngram_length - 1)) {
-            // only erase terms if ngram length is atleast 1
-            if(ngram_length > 1) {
-                cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (ngram_length - 1));
+        Rcpp::Rcout << i << std::endl;
+        bool hash = true;
+        if (ignore_documents) {
+            // if we are on a document we are skipping
+            if (cur_check == i) {
+                hash = false;
+                ignore_counter += 1;
+                cur_check = to_ignore[ignore_counter];
             }
         }
 
-        //populate ngrams and hashmap
-        int cur_length = ngram_length;
-        if ((ngram_length-1) > cur_ngrams.size()) {
-            cur_length = cur_ngrams.size();
-        }
-        for(int k = 0; k < cur_ngrams.size(); ++k){
-            std::string cur = doc[k];
-            if(ngram_length > 1) {
-                for(int l = 1; l < cur_length; ++l){
-                    cur += doc[k+l];
+        if (hash) {
+            std::unordered_set<std::string> dictionary;
+            std::string temp = documents[i];
+
+            std::vector<std::string> doc;
+            boost::algorithm::split(doc, temp, boost::algorithm::is_any_of(" "));
+            //allocate vector to hold bigrams
+            std::vector<std::string> cur_ngrams = doc;
+
+            if(cur_ngrams.size() > (ngram_length - 1)) {
+                // only erase terms if ngram length is atleast 1
+                if(ngram_length > 1) {
+                    cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (ngram_length - 1));
                 }
             }
-            cur_ngrams[k] = cur;
-            dictionary.insert(cur);
 
+            //populate ngrams and hashmap
+            int cur_length = ngram_length;
+            if ((ngram_length-1) > cur_ngrams.size()) {
+                cur_length = cur_ngrams.size();
+            }
+            for(int k = 0; k < cur_ngrams.size(); ++k){
+                std::string cur = doc[k];
+                if(ngram_length > 1) {
+                    for(int l = 1; l < cur_length; ++l){
+                        cur += doc[k+l];
+                    }
+                }
+                Rcpp::Rcout << cur << std::endl;
+                cur_ngrams[k] = cur;
+                dictionary.insert(cur);
+
+            }
+
+            ngrams[i] = cur_ngrams;
+            dictionaries[i] = dictionary;
         }
-
-        ngrams[i] = cur_ngrams;
-        dictionaries[i] = dictionary;
-
     }
 
     Rcpp::Rcout << "Hashing Complete..." << std::endl;
