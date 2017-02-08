@@ -136,7 +136,7 @@ document_similarities <- function(filenames = NULL,
         cat ("Calculting similarities complete at:",proc.time(),"\n")
 
         ret <- NULL
-        if (!is.null(output_directory)){
+        if (is.null(output_directory)){
             for (i in 1:length(results)) {
                 ret <- rbind(ret,results[[i]])
             }
