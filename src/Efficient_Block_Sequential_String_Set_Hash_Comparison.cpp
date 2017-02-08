@@ -236,11 +236,8 @@ arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(
                     }
                 }
                 cur_ngrams[k] = cur;
-                try {
-                    dictionary.insert(cur);
-                } catch (int e) {
-                    Rcpp::Rcout << "Bad Insertion: " << cur << " -- Index " << i << std::endl;
-                }
+                dictionary.insert(cur);
+
             }
 
             ngrams[i] = cur_ngrams;
@@ -315,7 +312,6 @@ arma::mat Efficient_Block_Hash_Ngrams(
 
     //loop through documents and form ngrams/hash them
     for(int i = 0; i < num_docs; ++i){
-        Rcpp::Rcout << i << std::endl;
         bool hash = true;
         if (ignore_documents) {
             // if we are on a document we are skipping
@@ -354,7 +350,6 @@ arma::mat Efficient_Block_Hash_Ngrams(
                         cur += doc[k+l];
                     }
                 }
-                Rcpp::Rcout << cur << std::endl;
                 cur_ngrams[k] = cur;
                 dictionary.insert(cur);
 
@@ -422,7 +417,6 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
     // allocate a vector to hold n-grams
     std::vector<std::vector<std::string>> ngrams(num_docs);
     std::vector<std::unordered_set<std::string>> dictionaries(num_docs);
-    arma::vec use_while_lookup = arma::zeros(num_docs);
 
     // store output 37 is the current number of metrics we compute
     int num_comparisons = comparison_inds.n_rows;
@@ -474,12 +468,8 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
                     }
                 }
                 cur_ngrams[k] = cur;
-                try {
-                    dictionary.insert(cur);
-                } catch (std::bad_alloc&) {
-                    Rcpp::Rcout << "Bad Insertion: " << cur << " -- Document " << i << std::endl;
-                    use_while_lookup[i] = 1;
-                }
+                dictionary.insert(cur);
+
             }
 
             ngrams[i] = cur_ngrams;
@@ -505,46 +495,19 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
         arma::vec which_a_in_b = arma::zeros(ngrams_1.size());
         arma::vec which_b_in_a = arma::zeros(ngrams_2.size());
 
-        // use while loops if an insertion got corrupted due to a malloc error
-        if (use_while_lookup[comparison_inds(i,1)] == 0) {
-            for(int k = 0; k < ngrams_1.size(); ++k){
-                std::unordered_set<std::string>::const_iterator got = dictionary2.find(ngrams_1[k]);
-                if (got != dictionary2.end()) {
-                    which_a_in_b[k] = 1;
-                }
-            }
-        } else {
-            for(int k = 0; k < ngrams_1.size(); ++k){
-                for(int l = 0; l < ngrams_2.size(); ++l){
-                    if(ngrams_1[k] == ngrams_2[l]) {
-                        which_a_in_b[k] = 1;
-                        break;
-                    }
-                }
+        for(int k = 0; k < ngrams_1.size(); ++k){
+            std::unordered_set<std::string>::const_iterator got = dictionary2.find(ngrams_1[k]);
+            if (got != dictionary2.end()) {
+                which_a_in_b[k] = 1;
             }
         }
 
-
-        if (use_while_lookup[comparison_inds(i,0)] == 0) {
-            for(int k = 0; k < ngrams_2.size(); ++k){
-                std::unordered_set<std::string>::const_iterator got = dictionary1.find(ngrams_2[k]);
-                if (got != dictionary1.end()) {
-                    which_b_in_a[k] = 1;
-                }
-            }
-        } else {
-            for(int k = 0; k < ngrams_2.size(); ++k){
-                for(int l = 0; l < ngrams_1.size(); ++l){
-                    if(ngrams_2[k] == ngrams_1[l]) {
-                        which_b_in_a[k] = 1;
-                        break;
-                    }
-                }
+        for(int k = 0; k < ngrams_2.size(); ++k){
+            std::unordered_set<std::string>::const_iterator got = dictionary1.find(ngrams_2[k]);
+            if (got != dictionary1.end()) {
+                which_b_in_a[k] = 1;
             }
         }
-
-
-
 
         // now calculate comparison metrics
         arma::vec temp1 = mjd::calculate_metrics(
