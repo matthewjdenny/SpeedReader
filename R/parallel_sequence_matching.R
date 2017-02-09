@@ -12,6 +12,7 @@ parallel_sequence_matching <- function(x,
     document_vector <- FALSE
     if (!is.null(documents[1])) {
         document_vector <- TRUE
+        filenames <- rep("",length(documents))
     }
 
     # subset the lookup based on the index
@@ -106,17 +107,17 @@ parallel_sequence_matching <- function(x,
                 }
 
                 doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
-                docs2[l] <- doc
                 doc <- stringr::str_split(doc, " ")[[1]]
                 # docs[[l]] <- doc
                 doc_lengths[l] <- length(doc)
+                doc <- paste0(doc,collapse = " ")
+                docs2[l] <- doc
             } else {
                 doc_lengths[l] <- 0
             }
         }
         cat("Summary of document lengths (unigrams):\n")
         print(summary(doc_lengths))
-        Sys.sleep(1)
 
         if (ngram_match_only) {
             ignore_documents <- FALSE
@@ -153,7 +154,7 @@ parallel_sequence_matching <- function(x,
             # let the user know
             ignore_documents <- FALSE
             to_ignore <- c(-1,-1)
-            check <- which(doc_lengths <= ngram_size)
+            check <- which(doc_lengths == 0)
             if (length(check) > 0) {
                 print("The following number documents were removed:")
                 print(length(check))
