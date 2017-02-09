@@ -331,28 +331,34 @@ arma::mat Efficient_Block_Hash_Ngrams(
             //allocate vector to hold bigrams
             std::vector<std::string> cur_ngrams = doc;
 
-            if(cur_ngrams.size() > (ngram_length - 1)) {
+            if(cur_ngrams.size() >= ngram_length ) {
                 // only erase terms if ngram length is atleast 1
-                if(ngram_length > 1) {
+                if (ngram_length > 1) {
                     cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (ngram_length - 1));
                 }
+            } else {
+                // if the document is not atleast as big as the ngram length,
+                // then set the ngram vector to be a length of one vector.
+                cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (cur_ngrams.size() - 1));
             }
 
             //populate ngrams and hashmap
             int cur_length = ngram_length;
-            if ((ngram_length-1) > cur_ngrams.size()) {
-                cur_length = cur_ngrams.size();
+            if (ngram_length > doc.size()) {
+                cur_length = doc.size();
             }
-            for(int k = 0; k < cur_ngrams.size(); ++k){
+
+            for (int k = 0; k < cur_ngrams.size(); ++k) {
                 std::string cur = doc[k];
-                if(ngram_length > 1) {
-                    for(int l = 1; l < cur_length; ++l){
+                if (ngram_length > 1) {
+                    for (int l = 1; l < cur_length; ++l) {
                         cur += doc[k+l];
                     }
                 }
+
+                //Rcpp::Rcout << cur << std::endl;
                 cur_ngrams[k] = cur;
                 dictionary.insert(cur);
-
             }
 
             ngrams[i] = cur_ngrams;
@@ -447,29 +453,34 @@ arma::mat String_Input_Sequential_String_Set_Hash_Comparison(
             //allocate vector to hold bigrams
             std::vector<std::string> cur_ngrams = doc;
 
-            if(cur_ngrams.size() > (ngram_length - 1)) {
+            if(cur_ngrams.size() >= ngram_length ) {
                 // only erase terms if ngram length is atleast 1
-                if(ngram_length > 1) {
+                if (ngram_length > 1) {
                     cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (ngram_length - 1));
                 }
+            } else {
+                // if the document is not atleast as big as the ngram length,
+                // then set the ngram vector to be a length of one vector.
+                cur_ngrams.erase(cur_ngrams.begin(),cur_ngrams.begin() + (cur_ngrams.size() - 1));
             }
 
             //populate ngrams and hashmap
             int cur_length = ngram_length;
-            if ((ngram_length-1) > cur_ngrams.size()) {
-                cur_length = cur_ngrams.size();
+            if (ngram_length > doc.size()) {
+                cur_length = doc.size();
             }
-            //Rcpp::Rcout << "Document " << i << std::endl;
-            for(int k = 0; k < cur_ngrams.size(); ++k){
+
+            for (int k = 0; k < cur_ngrams.size(); ++k) {
                 std::string cur = doc[k];
-                if(ngram_length > 1) {
-                    for(int l = 1; l < cur_length; ++l){
+                if (ngram_length > 1) {
+                    for (int l = 1; l < cur_length; ++l) {
                         cur += doc[k+l];
                     }
                 }
+
+                //Rcpp::Rcout << cur << std::endl;
                 cur_ngrams[k] = cur;
                 dictionary.insert(cur);
-
             }
 
             ngrams[i] = cur_ngrams;
