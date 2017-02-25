@@ -28,6 +28,8 @@
 #' @param ngram_subsumption_correlation_threshold Defualts to 0.9, can be set
 #' higher or lower depending on the correlation threshold at which the user
 #' would like to subsume n-grams.
+#' @param rank_by_log_odds Only applicable for the "informed_Dirichlet" method.
+#' Defaults to FALSE. If TRUE, then terms are ranked by log odds instead of z-score.
 #' @return A list object containing two dataframes (one for each comparison
 #' category) with ranked top words. All words included in each dataset obtain
 #' a z-score greater in magnitude than 1.96.
@@ -42,7 +44,8 @@ feature_selection <- function(contingency_table,
                               maximum_top_words = 5000,
                               document_term_matrix = NULL,
                               subsume_ngrams = FALSE,
-                              ngram_subsumption_correlation_threshold = 0.9){
+                              ngram_subsumption_correlation_threshold = 0.9,
+                              rank_by_log_odds = FALSE){
 
     if (is.null(rows_to_compare)) {
         rows_to_compare <- 1:nrow(contingency_table)
@@ -118,7 +121,8 @@ feature_selection <- function(contingency_table,
             # subset of documents where some words do not appear at all in any of them)
             vocab <- vocabulary
             column_indicies <- 1:length(vocabulary)
-            remove <- which(is.nan(log_odds_ratio))
+            remove <- unique(c(which(is.nan(log_odds_ratio)),
+                               which(is.na(log_odds_ratio))))
             if (length(remove) > 0) {
                 log_odds_ratio <- log_odds_ratio[-remove]
                 variance <- variance[-remove]
@@ -135,12 +139,25 @@ feature_selection <- function(contingency_table,
 
             # generate the overal rankings for use in fightin words plots
             if (i == 1) {
-                ordering <- order(z_scores, decreasing = TRUE)
-                ordered_data <- data.frame(scores = z_scores[ordering],
-                                           total_count = all_c[ordering],
-                                           terms = vocab[ordering],
-                                           term_indicies = column_indicies[ordering],
-                                           stringsAsFactors = FALSE)
+                if (rank_by_log_odds) {
+                    ordering <- order(log_odds_ratio, decreasing = TRUE)
+                    ordered_data <- data.frame(scores = log_odds_ratio[ordering],
+                                               log_odds_ratio= log_odds_ratio[ordering],
+                                               z_scores = z_scores[ordering],
+                                               total_count = all_c[ordering],
+                                               terms = vocab[ordering],
+                                               term_indicies = column_indicies[ordering],
+                                               stringsAsFactors = FALSE)
+                } else {
+                    ordering <- order(z_scores, decreasing = TRUE)
+                    ordered_data <- data.frame(scores = z_scores[ordering],
+                                               log_odds_ratio = log_odds_ratio[ordering],
+                                               z_scores = z_scores[ordering],
+                                               total_count = all_c[ordering],
+                                               terms = vocab[ordering],
+                                               term_indicies = column_indicies[ordering],
+                                               stringsAsFactors = FALSE)
+                }
             }
 
             #now get the significant words and rank them.
@@ -155,8 +172,15 @@ feature_selection <- function(contingency_table,
                 other_count = cat2[inds],
                 term_indicies = column_indicies[inds],
                 stringsAsFactors = FALSE)
-            ordering <- order(category_1_significant_words$z_scores,
-                              decreasing = T)
+
+            if (rank_by_log_odds) {
+                ordering <- order(category_1_significant_words$log_odds_ratio,
+                                  decreasing = T)
+            } else {
+                ordering <- order(category_1_significant_words$z_scores,
+                                  decreasing = T)
+            }
+
             category_1_significant_words <- category_1_significant_words[ordering,]
             rownames(category_1_significant_words) <- category_1_significant_words$term
 
