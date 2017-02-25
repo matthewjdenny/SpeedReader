@@ -108,6 +108,16 @@ fightin_words_plot <- function(feature_selection_object,
       max.zeta.two <- rev(max.zeta.two)
   }
 
+  # make sure that we put our top terms in the right places
+  if (use_subsumed_ngrams) {
+      words[max.zeta.one] <- top_words_cat1[1:display_top_words]
+      words[max.zeta.two] <- top_words_cat2[1:display_top_words]
+  }
+
+  if (rank_by_log_odds) {
+      words[max.zeta.one] <- top_words_cat1[1:display_top_words]
+      words[max.zeta.two] <- top_words_cat2[1:display_top_words]
+  }
 
   # determine if the user has specified limits and if so sets them manually
   if (!is.null(limits)) {
