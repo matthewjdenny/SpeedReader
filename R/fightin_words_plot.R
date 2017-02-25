@@ -32,7 +32,9 @@
 #' case the optimal values are automatically determined. Can be useful for
 #' comparison between plots.
 #' @param clean_publication_plots Logical to remove labels inside of plot and
-#' color all dots uniformly. Defaults to FALSE
+#' color all dots uniformly. Defaults to FALSE.
+#' @param rank_by_log_odds Only applicable for the "informed_Dirichlet" method.
+#' Defaults to FALSE. If TRUE, then terms are ranked by log odds instead of z-score.
 #' @return A Fightin' Words plot
 #' @export
 fightin_words_plot <- function(feature_selection_object,
@@ -47,17 +49,20 @@ fightin_words_plot <- function(feature_selection_object,
                                max_terms_to_display = 100000,
                                use_subsumed_ngrams = FALSE,
                                limits = NULL,
-                               clean_publication_plots = FALSE) {
+                               clean_publication_plots = FALSE,
+                               rank_by_log_odds = FALSE) {
   options(scipen = 999)
   par(mar = c(5.1, 4.1, 4.1, right_margin))
   UMASS_BLUE <- rgb(51, 51, 153, 255, maxColorValue = 255)
   UMASS_RED <- rgb(153, 0, 51, 255, maxColorValue = 255)
 
   if (class(feature_selection_object) == "list") {
+    z_scores <- feature_selection_object[[3]]$z_scores
     zeta <- feature_selection_object[[3]]$scores
     y.tot <- feature_selection_object[[3]]$total_count
     words <- feature_selection_object[[3]]$terms
   } else if (class(feature_selection_object) == "data.frame") {
+     z_scores <- feature_selection_object$z_scores
     zeta <- feature_selection_object$scores
     y.tot <- feature_selection_object$total_count
     words <- feature_selection_object$terms
@@ -70,6 +75,17 @@ fightin_words_plot <- function(feature_selection_object,
       top_words_cat2 <- feature_selection_object$Subsumed_NGrams[[2]]$ranked_term_clusters[,1]
       words[1:length(top_words_cat1)] <- top_words_cat1
       words[(length(words) - length(top_words_cat2) + 1):length(words)] <- rev(top_words_cat2)
+  } else if (rank_by_log_odds) {
+      # get teh top ranked terms with a z-score over 1.96 and use them
+      z1 <- which(z_scores > 1.96)
+      z2 <- which(z_scores < -1.96)
+      i1 <- order(zeta[z1],decreasing = TRUE)
+      i2 <- order(abs(zeta[z2]),decreasing = TRUE)
+
+      top_words_cat1 <- words[z1[i1]]
+      top_words_cat2 <- words[z2[i2]]
+      words[1:length(top_words_cat1)] <- top_words_cat1
+      words[(length(words) - length(top_words_cat2) + 1):length(words)] <-top_words_cat2
   }
 
   if (length(zeta) > max_terms_to_display) {
@@ -83,13 +99,13 @@ fightin_words_plot <- function(feature_selection_object,
   max_y.tot <- max(y.tot)
 
   if (clean_publication_plots) {
-      max.zeta.one <- 1:length(which(zeta > 1.96))
-      max.zeta.two <- length(zeta):(length(zeta) - length(which(zeta < -1.96)) +
-                                        1)
+      max.zeta.one <- which(z_scores > 1.96)
+      max.zeta.two <- which(z_scores < -1.96)
   } else {
-      max.zeta.one <- 1:display_top_words
-      max.zeta.two <- length(zeta):(length(zeta) - display_top_words +
-                                        1)
+      max.zeta.one <- which(z_scores > 1.96)[1:display_top_words]
+      max.zeta.two <- which(z_scores < -1.96)
+      max.zeta.two <- max.zeta.two[(length(max.zeta.two)-display_top_words+1):length(max.zeta.two)]
+      max.zeta.two <- rev(max.zeta.two)
   }
 
 
@@ -104,11 +120,18 @@ fightin_words_plot <- function(feature_selection_object,
       xlims <- c(1, 2 * max_y.tot)
   }
 
-  sig.z <- abs(zeta) > 1.96
+  sig.z <- abs(z_scores) > 1.96
   psize <- 2 * abs(zeta)/max(abs(zeta))
-  plot(xlims, ylims,
-    type = "n", log = "x", pch = 19, col = "black", cex = psize,
-    main = title, ylab = expression(italic(z)-score), xlab = xlab)
+  if (rank_by_log_odds) {
+      plot(xlims, ylims,
+           type = "n", log = "x", pch = 19, col = "black", cex = psize,
+           main = title, ylab = "log-odds ratio", xlab = xlab)
+  } else {
+      plot(xlims, ylims,
+           type = "n", log = "x", pch = 19, col = "black", cex = psize,
+           main = title, ylab = expression(italic(z)-score), xlab = xlab)
+  }
+
   points(y.tot, zeta, pch = 19, col = "gray", cex = psize)
   points(y.tot[sig.z], zeta[sig.z], pch = 19, col = "black",
     cex = psize[sig.z])
