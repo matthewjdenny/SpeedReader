@@ -61,6 +61,7 @@ The SpeedReader package currently provides the following functions to aid in the
 * `fightin_words_plot()` -- Makes really nice looking funnel plots similar to those in the Monroe et al. "Fightin' Words" paper from the output of the `feature_selection()` function.
 * `calculate_document_pair_distances()` calculates cosine distances between pairs of documents for a given document-term matrix.
 * `dice_coefficient_line_matching()` -- Uses Dice coefficents calculated on token Bigrams to determine the number of lines/sentences in document 1 that are also in document 2 (based on some Dice coefficient threshold) and vice versa.
+* `document_similarities()` -- Calculates sequence based document similarity metrics (more details forthcoming). The implementation is extremely efficient and parallelizable, and can perform billions of document comparisons per day on a moderately sized HPC allocation (~40 cores).
 
 The SpeedReader package also provides the following utility functions:
 
