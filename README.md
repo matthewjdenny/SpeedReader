@@ -2,14 +2,16 @@
 An R package that provides functions to facilitate high performance text processing in R.
 
 ## Overview
-This package will eventually provide a number of functions to:
+This package provides a number of functions to:
 
   * Read in and clean text data.
   * Preprocess it using R functions to remove stopwords and other undesireable text.
   * Run your text through Stanford's CoreNLP libraries to POS tag it and find named entities.
   * Count terms.
-  * Generate document term matrices
+  * Generate sparse document term matrices at scale, particularly in a memory constrained environment.
   * Perform analyses including PMI, TF-IDF and topic modeling using MALLET. 
+  * Efficiently compare doucments using sequence-based metrics.
+  * Implements the informed Dirichlet model from Monroe et al. (2008), along with publication quality funnel plots.
 
 The unifying theme of these functions is that they are designed to be easy
 to use, and to operate on up to tens of billions of tokens over hundreds of millions of 
