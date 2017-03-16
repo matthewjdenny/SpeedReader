@@ -162,12 +162,14 @@ mallet_lda <- function(documents = NULL,
                     printseq_counter <- printseq_counter +1
                 }
                 str <- NULL
-                colindexes <- which(documents$i == i)
-                if(length(colindexes) > 0){
+                indexes <- which(documents$i == i)
+                if(length(indexes) > 0){
+                    colindexes <- documents$j[indexes]
+                    repeats <- documents$v[indexes]
                     for(k in 1:length(colindexes)){
                         str <- c(str,
                                  rep(vocabulary[colindexes[k]],
-                                     documents$v[colindexes[k]]))
+                                     repeats[k]))
                     }
                     temp  <- paste0(str,collapse = " ")
                 }else{
