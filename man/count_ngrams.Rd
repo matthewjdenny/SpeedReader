@@ -39,4 +39,3 @@ from output produced by the ngrams() function. Cores > 1 will only work for
 users with GNU coreutils > 8.13 as the sort --parallel option is used. If you
 have an older version use cores = 1.
 }
-

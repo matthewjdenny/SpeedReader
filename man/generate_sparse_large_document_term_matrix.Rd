@@ -39,4 +39,3 @@ A sparse document term matrix object. This will likely still be a large file.
 \description{
 A function to generate a sparse large document term matrix in blocks from a list document term vector lists stored as .Rdata object on disk. This function is designed to work on very large corpora (up to 10's of billions of words) that would otherwise be computationally intractable to generate a document term matrix for using standard methods. However, this function, and R itself, is limited to a vocaublary size of roughly 2.1 billion unique words.
 }
-

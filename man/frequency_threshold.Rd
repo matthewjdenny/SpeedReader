@@ -17,4 +17,3 @@ A word vector with all words appearing 'threshold' or less times removed.
 \description{
 A function to frequency threshold a vector of strings.
 }
-

@@ -22,4 +22,3 @@ A dense document term matrix object with the vocabulary as column names.
 \description{
 A function to generate a document term matrix from a list of document term vectors.
 }
-

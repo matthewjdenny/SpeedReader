@@ -20,4 +20,3 @@ An aggregate document term matrix with columns named for each word in the vocabu
 \description{
 A function to combine multiple document term matrices into a single aggregate document term matrix.
 }
-

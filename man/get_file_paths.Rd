@@ -15,4 +15,3 @@ A vector of file paths
 \description{
 A function the returns the file paths to two example raw datasets for testing
 }
-

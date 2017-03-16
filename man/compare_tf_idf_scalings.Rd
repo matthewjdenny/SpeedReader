@@ -23,4 +23,3 @@ description of the method applied as the first entry.
 A function that performs a bunch of different forms of TF-IDF scaling to a
 document-term matrix.
 }
-

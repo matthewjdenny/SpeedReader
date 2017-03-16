@@ -14,4 +14,3 @@ and tokenized by the corenlp() function. For use in testing the ngrams()
 function.
 }
 \keyword{datasets}
-

@@ -17,4 +17,3 @@ A document-term vector with ordering preserved.
 \description{
 A function which cleans the raw text of a document provided either as a single string, a vector of strings, or a column of a data.frame.
 }
-

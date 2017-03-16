@@ -48,4 +48,3 @@ Saves blocks of text to file.
 \description{
 A function to generate and save blocks of document term vectors to coherently named files from a variety of inputs.
 }
-

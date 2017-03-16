@@ -19,4 +19,3 @@ A list of vectors of unique variable values that occur more than "threshold" tim
 \description{
 Find unique values and the counts of those variables for a set of variables in a data.frame. Useful in PMI analysis and for exploring document metadata.
 }
-

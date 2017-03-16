@@ -14,4 +14,3 @@ in congress in the 1980's. These represent the ounts of unique terms in the
 document_term_vector_list object.
 }
 \keyword{datasets}
-

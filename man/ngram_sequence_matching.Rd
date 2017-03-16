@@ -29,4 +29,3 @@ A List object.
 Calculates the positions of n-grams in two document versions
 which match an ngram in the other version.
 }
-

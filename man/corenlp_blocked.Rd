@@ -43,4 +43,3 @@ Does not return anything, saves all output to disk.
 \description{
 Runs Stanford CoreNLP on a collection of .txt files and processes them in blocks of a specified size, saving intermediate results to disk. Designed to function on very large corpora.
 }
-

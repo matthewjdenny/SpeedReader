@@ -25,4 +25,3 @@ A vector of document pair distances
 \description{
 Calculate distances between pairs of documents.
 }
-

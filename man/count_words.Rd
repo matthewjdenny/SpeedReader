@@ -25,4 +25,3 @@ A list object with a unique_words field containing a vector of all unique word t
 \description{
 A function to efficiently form aggregate word counts and a common vocabulary vector from an unordered list of document term vectors.
 }
-

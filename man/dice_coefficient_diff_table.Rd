@@ -30,4 +30,3 @@ A character vector (optionally).
 Calculate termwise Deice coefficeints for pairs of lines and
 determine which lines are in both documents
 }
-

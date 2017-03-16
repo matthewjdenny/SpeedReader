@@ -19,4 +19,3 @@ A vocabulary list object.
 \description{
 A function the reorgaizes vocabulary to speed up document term matrix formation using a string stem dictionary.
 }
-

@@ -12,4 +12,3 @@ Does not return anything.
 \description{
 Checks the java version on your computer and downloads MALLET jar files for use with this package.
 }
-

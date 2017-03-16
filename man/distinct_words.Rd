@@ -17,4 +17,3 @@ A list of distinct word vectors.
 \description{
 A function to find (semi)-distinct words in a list of term vectors.
 }
-

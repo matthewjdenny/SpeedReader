@@ -59,4 +59,3 @@ A data.frame or NULL if output_directory is not NULL.
 Calculates a number of similarity and difference statistics
 between two document versions based on n-gram sequence matching
 }
-

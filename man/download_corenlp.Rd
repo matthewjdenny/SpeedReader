@@ -15,4 +15,3 @@ Does not return anything.
 \description{
 Checks the java version on your computer and downloads Stanford CoreNLP jar files for use with this package.
 }
-

@@ -22,4 +22,3 @@ A list object containing lots of different information theoretic measures calcul
 \description{
 A function to calculate a number of information-theoretic measures on terms in a contingency table, including point-wise mutual information.
 }
-

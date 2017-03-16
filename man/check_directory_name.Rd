@@ -15,4 +15,3 @@ A string object that is a directory name with a trailing slash, which is what wi
 \description{
 A function to ensure that a directory name is in the proper format to be pasted together with a file name. It adds a trailling / if necessary.
 }
-

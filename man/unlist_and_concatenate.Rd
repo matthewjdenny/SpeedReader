@@ -15,4 +15,3 @@ A vector of words
 \description{
 A function to unlist and concatenate a subset of a matrix/data.frame
 }
-

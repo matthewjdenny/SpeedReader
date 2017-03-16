@@ -59,4 +59,3 @@ a z-score greater in magnitude than 1.96.
 A function that implements a number of feature selection methods for finding top
 words which distinguish between two classes.
 }
-

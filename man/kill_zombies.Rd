@@ -9,4 +9,3 @@ kill_zombies()
 \description{
 A function which takes no arguments and kills zombie R processes if the user is using a UNIX based machine
 }
-

@@ -26,4 +26,3 @@ A contingency table.
 \description{
 Generates a contingency table from user-specified document covariates and a document term matrix.
 }
-

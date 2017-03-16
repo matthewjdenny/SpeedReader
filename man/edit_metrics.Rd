@@ -21,4 +21,3 @@ A data.frame with Dice coefficients based on different N-Gram lengths.
 \description{
 Calculate Scope and Granularity of Document Edits.
 }
-

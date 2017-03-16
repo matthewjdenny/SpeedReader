@@ -26,4 +26,3 @@ A data.frame with Dice coefficients based on different N-Gram lengths.
 Calculate N-Gram wise Dice coefficients for different N-Gram
 Lengths.
 }
-

@@ -53,4 +53,3 @@ A document term vector list.
 \description{
 A function to generate document term vectors from a variety of inputs.
 }
-

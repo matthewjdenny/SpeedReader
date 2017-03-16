@@ -28,4 +28,3 @@ A list object.
 \description{
 A function to calculate TF-IDF and other related statistics on a set of documents.
 }
-

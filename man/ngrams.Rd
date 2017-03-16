@@ -95,4 +95,3 @@ NGrams <- ngrams(tokenized_documents = Processed_Text,
                  cores = 1)
 }
 }
-

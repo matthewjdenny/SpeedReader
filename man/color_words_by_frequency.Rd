@@ -22,4 +22,3 @@ Concatenates output to the console, no output is returned at present.
 \description{
 A function to generate LaTeX output from a dataframe containing words and their frequencies.
 }
-

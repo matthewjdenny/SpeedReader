@@ -15,4 +15,3 @@ A dense matrix
 \description{
 A function to convert a slam::simple_triplet_matrix sparse matrix object to a dense matrix object.
 }
-

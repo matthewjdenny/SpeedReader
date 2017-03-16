@@ -17,4 +17,3 @@ A data.frame with 'word' and a 'count' fields, with rows ordered by word frequen
 \description{
 A function to generate an ordered word count dataframe from a raw vector of words.
 }
-

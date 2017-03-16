@@ -21,4 +21,3 @@ estimate_plots(model1, model2 = NULL, type = c("glm/lm", "zero-inflated",
 \description{
 A function to parameter estimate plots with 95 percent confidence bounds for up to two models we wish to compare.
 }
-

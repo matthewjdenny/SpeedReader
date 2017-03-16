@@ -42,4 +42,3 @@ A plot.
 \description{
 An implementation of matplot with nice coloring and automatic legend generation
 }
-

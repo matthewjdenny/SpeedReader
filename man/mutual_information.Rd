@@ -26,4 +26,3 @@ The mutual information of the joint distribution.
 \description{
 Calculate Mutual Information
 }
-

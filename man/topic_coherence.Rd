@@ -24,4 +24,3 @@ The coherence score for the given topic.
 \description{
 A function to calculate topic coherence for a given topic using the formulation in "Optimizing Semantic Coherence in Topic Models" available here: <http://dirichlet.net/pdf/mimno11optimizing.pdf>
 }
-

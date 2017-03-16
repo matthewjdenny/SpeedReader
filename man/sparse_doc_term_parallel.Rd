@@ -17,4 +17,3 @@ A sparse document term matrix object.
 \description{
 Only to be used internally. A function to generate a sparse large document term matrix in parallel.
 }
-

@@ -65,4 +65,3 @@ test <- mallet_lda(documents = sdtm,
                   cores = 1)
 }
 }
-

@@ -45,4 +45,3 @@ Tokenized <- corenlp(
      coreference_resolution =FALSE)
 }
 }
-
