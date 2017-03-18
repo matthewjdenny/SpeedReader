@@ -12,6 +12,8 @@
 #' @param num_top_words The number of topic top-words returned in the model output. Defaults to 20.
 #' @param optional_arguments Allows the user to specify a string with additional arguments for MALLET.
 #' @param tokenization_regex Regular expression used for tokenization by MALLET. Defaults to '[\\p{L}\\p{N}\\p{P}]+' meaning that all letters, numbers and punctuation will be counted as tokens. May be adapted by the user, but double escaping (\\) must be used by the user due to the way that escaping is removed by R when piping to the console. Another perfectly reasonable choice is '[\\p{L}]+', which only counts letters in tokens.
+#' @param remove_stopwords Defaults to FALSE. If TRUE, then MALETT will remove
+#' a list of common stopwords from the input text.
 #' @param cores Number of cores to be used to train the topic model. Defualts to 1.
 #' @param delete_intermediate_files Defaults to TRUE. If FALSE, then all raw ouput from MALLET will be left in a "./mallet_intermediate_files" subdirectory of the current working directory.
 #' @return Returns a list object with the following fields: lda_trace_stats is a data frame reporting the beta hyperparameter value and model log likelihood per token every ten iterations, can be useful for assesing convergence; document_topic_proportions reports the document topic proportions for all topics; topic_metadata reports the alpha x basemeasure values for all topics, along with the total number of tokens assigned to each topic; topic_top_words reports the 'num_top_words' top words for each topic (in descending order); topic_top_word_counts reports the count of each top word in their respective topics; topic_top_phrases reports top phrases (as found post-hoc by MALLET) asscoiated with each topic; topic_top_phrase_counts reports the counts of these phrases in each topic.
@@ -46,6 +48,7 @@ mallet_lda <- function(documents = NULL,
                        num_top_words = 20,
                        optional_arguments = "",
                        tokenization_regex = '[\\p{L}\\p{N}\\p{P}]+',
+                       remove_stopwords = FALSE,
                        cores = 1,
                        delete_intermediate_files = TRUE){
 
@@ -251,7 +254,12 @@ mallet_lda <- function(documents = NULL,
 
     cat("Converting input to MALLET format...\n")
     # prepare the data for use with Mallet's LDA routine
-    prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
+    if (remove_stopwords) {
+        prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --remove-stopwords --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
+    } else {
+        prepare_data <- paste("java -server -Xmx3g -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
+    }
+
     #2>&1
     #print(prepare_data)
     p <- pipe(prepare_data,"r")
