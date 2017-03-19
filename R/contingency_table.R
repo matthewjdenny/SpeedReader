@@ -149,9 +149,16 @@ contingency_table  <- function(metadata,
             cat("Currently compiling contingency table row for:",unique_values[i],"\n")
             indexes <- which(metadata[,variables_to_use] == unique_values[i])
             cur <- document_term_matrix[indexes,]
-            if(is_sparse_matrix){
-                contingency_table[i,] <- slam::col_sums(cur)
-            }else{
+            if (is_sparse_matrix) {
+                temp <- slam::col_sums(cur)
+                temp <- as.numeric(temp)
+                jinds <- as.integer( which(temp > 0))
+                v <- as.numeric(temp[jinds])
+                inds <- rep(i,length(jinds))
+                contingency_table$i <-  c(contingency_table$i,inds)
+                contingency_table$j <-  c(contingency_table$j,jinds)
+                contingency_table$v <-  c(contingency_table$v,v)
+            } else {
                 contingency_table[i,] <- colSums(cur)
             }
             document_index_list[[i]] <- rownames(cur)

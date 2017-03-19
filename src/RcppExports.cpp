@@ -282,6 +282,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// reference_dist_distance
+arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents);
+RcppExport SEXP SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_i(ref_dist_iSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_j(ref_dist_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_v(ref_dist_vSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_i(target_dist_iSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_j(target_dist_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_v(target_dist_vSEXP);
+    Rcpp::traits::input_parameter< int >::type num_ref_dists(num_ref_distsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_documents(num_documentsSEXP);
+    rcpp_result_gen = Rcpp::wrap(reference_dist_distance(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Sparse_Document_Frequencies
 arma::vec Sparse_Document_Frequencies(int length_sparse_counts, arma::vec sparse_counts, arma::vec document_frequencies, arma::vec print_sequence, int print_sequence_length);
 RcppExport SEXP SpeedReader_Sparse_Document_Frequencies(SEXP length_sparse_countsSEXP, SEXP sparse_countsSEXP, SEXP document_frequenciesSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
