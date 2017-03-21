@@ -107,8 +107,8 @@ namespace mjd {
             dg = 0;
         }
 
-        double as = 1 - (arma::sum(n_seq_2)/double(which_b_in_a.size()));
-        double ds = 1 - (arma::sum(n_seq_1)/double(which_a_in_b.size()));
+        double as = (arma::sum(n_seq_2)/double(which_b_in_a.size()));
+        double ds = (arma::sum(n_seq_1)/double(which_a_in_b.size()));
 
         double prop_deletions = (ngram_size + 1 )*n_seq_1.size()/double(which_a_in_b.size());
         double prop_additions = (ngram_size + 1 )*n_seq_2.size()/double(which_b_in_a.size());
