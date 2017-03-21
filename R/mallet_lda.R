@@ -286,12 +286,13 @@ mallet_lda <- function(documents = NULL,
     #### Step 2: Preprocess data for MALLET ####
     ############################################
 
+    # ," --print-output > stdout_intake.txt" should add this as an option in the future
     cat("Converting input to MALLET format...\n")
     # prepare the data for use with Mallet's LDA routine
     if (USING_CSV) {
-        prepare_data <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input ",document_csv," --print-output > stdout_intake.txt", sep = "")
+        prepare_data <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input ",document_csv, sep = "")
     } else {
-        prepare_data <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv --print-output > stdout_intake.txt", sep = "")
+        prepare_data <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv", sep = "")
     }
 
 
@@ -307,10 +308,10 @@ mallet_lda <- function(documents = NULL,
     cat("Fitting topic model. This may take anywhere from seconds to days depending on the size of your corpus. Check: ",getwd(),"/stdout.txt for estimation progress...\n", sep = "")
     # Now run LDA
     if(hyperparameter_optimization_interval != 0){
-        run_mallet <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+        run_mallet <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words, " --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
         # 2>&1&
     }else{
-        run_mallet <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+        run_mallet <- paste("java -server ",memory," -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words," --output-state-interval ",floor(iterations/5)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
         #  2>&1&
     }
     #print(run_mallet)
