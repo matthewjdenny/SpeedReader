@@ -124,7 +124,7 @@ calculate_mutual_info_contributions <- function(
     for (i in 1:length(unique_contributions)) {
         nz_inds <- which(nz_column_contributions == unique_contributions[i])
         inds <- non_zero_inds[nz_inds]
-        inds_list[[i]] <- i
+        inds_list[[i]] <- inds
         first_col_index[i] <- inds[1]
         unique_contribution_column_inds[inds] <- i
         unique_contribution_column_counts[i] <- length(inds)
