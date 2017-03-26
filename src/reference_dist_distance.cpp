@@ -16,7 +16,8 @@ arma::mat reference_dist_distance(
         arma::vec target_dist_j,
         arma::vec target_dist_v,
         int num_ref_dists,
-        int num_documents){
+        int num_documents,
+        arma::vec term_weights){
 
     arma::mat distances = arma::zeros(num_documents,num_ref_dists);
 
@@ -26,6 +27,17 @@ arma::mat reference_dist_distance(
 
     // allocate a vector to hold n-grams
     std::vector<std::unordered_map<int,double>> lookups(num_ref_dists);
+
+    // hash term weights
+    Rcpp::Rcout << "Hashing Term Weights: " << std::endl;
+    std::unordered_map<int,double> term_weight_map;
+    int twlen = term_weights.n_elem;
+    for (int i = 0; i < twlen; ++i) {
+        int temp1 = i;
+        double temp2 = term_weights[i];
+        std::pair<int,double> to_insert(temp1,temp2);
+        term_weight_map.insert(to_insert);
+    }
 
 
     //loop through documents and form ngrams/hash them
@@ -58,11 +70,16 @@ arma::mat reference_dist_distance(
             if (cur_i == target_dist_i[i]) {
                 // see if we can find hte current row index in the current hashmap
                 std::unordered_map<int,double>::const_iterator got = current_lookup.find(target_dist_j[i]);
+                std::unordered_map<int,double>::const_iterator term_weight = term_weight_map.find(target_dist_j[i]);
+                double weight = term_weight->second;
                 if (got == current_lookup.end()) {
-                    current_distance += std::pow(target_dist_v[i],2);
+                    current_distance += weight * std::pow(target_dist_v[i],2);
                 } else {
                     double temp = got->second;
-                    current_distance += std::pow((target_dist_v[i] - temp),2);
+                    if (i < 4) {
+                        Rcpp::Rcout << "Value: " << temp << " weight " << weight << std::endl;
+                    }
+                    current_distance += weight * std::pow((target_dist_v[i] - temp),2);
                 }
             } else {
                 //insert into the
@@ -72,11 +89,13 @@ arma::mat reference_dist_distance(
                 cur_i += 1;
                 // see if we can find hte current row index in the current hashmap
                 std::unordered_map<int,double>::const_iterator got = current_lookup.find(target_dist_j[i]);
+                std::unordered_map<int,double>::const_iterator term_weight = term_weight_map.find(target_dist_j[i]);
+                double weight = term_weight->second;
                 if (got == current_lookup.end()) {
-                    current_distance += std::pow(target_dist_v[i],2);
+                    current_distance += weight * std::pow(target_dist_v[i],2);
                 } else {
                     double temp = got->second;
-                    current_distance += std::pow((target_dist_v[i] - temp),2);
+                    current_distance += weight * std::pow((target_dist_v[i] - temp),2);
                 }
             }
         }

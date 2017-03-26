@@ -283,8 +283,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // reference_dist_distance
-arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents);
-RcppExport SEXP SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP) {
+arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents, arma::vec term_weights);
+RcppExport SEXP SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP, SEXP term_weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -296,7 +296,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type target_dist_v(target_dist_vSEXP);
     Rcpp::traits::input_parameter< int >::type num_ref_dists(num_ref_distsSEXP);
     Rcpp::traits::input_parameter< int >::type num_documents(num_documentsSEXP);
-    rcpp_result_gen = Rcpp::wrap(reference_dist_distance(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents));
+    Rcpp::traits::input_parameter< arma::vec >::type term_weights(term_weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(reference_dist_distance(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents, term_weights));
     return rcpp_result_gen;
 END_RCPP
 }

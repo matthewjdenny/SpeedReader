@@ -8,15 +8,33 @@
 #' @param document_term_matrix A simple_triplet_matrix where each row represents
 #' a document and each column, a term in the vocabulary. The columns in both
 #' matrices should match up.
+#' @param inverse_frequency_weighting If TRUE, then distances are weighted by
+#' the inverse of the term's aggregate count in the document term
+#' matrix. This means that differences in more frequently occuring terms will
+#' have less weight than those for less frequently appearing terms. Defaults to
+#' TRUE.
 #' @return A dataframe with distances of each document to each reference
 #' distribution. The last column indicates the closest reference distribtuion
 #' for each document.
 #' @export
 reference_distribution_distance <- function(category_reference_distribution,
-                                           document_term_matrix) {
+                                           document_term_matrix,
+                                           inverse_frequency_weighting = TRUE) {
 
     if (ncol(category_reference_distribution) != ncol(document_term_matrix)) {
         stop("category_reference_distribution and document_term_matrix must have the same vocabulary.")
+    }
+
+    # generate term weights (which are 1 if no weighting)
+    term_weights <- rep(1,ncol(document_term_matrix))
+    if (inverse_frequency_weighting) {
+        cs <- slam::col_sums(document_term_matrix)
+        # replace any zero column sums with 1's so we don't get weird errors
+        zeros <- which(cs == 0)
+        if (length(zeros) > 0) {
+            cs[zeros] <- 1
+        }
+        term_weights <- 1/cs
     }
 
     # normalize the rows of each
@@ -56,7 +74,8 @@ reference_distribution_distance <- function(category_reference_distribution,
         document_term_matrix$j - 1,
         document_term_matrix$v,
         nrow(category_reference_distribution),
-        nrow(document_term_matrix)
+        nrow(document_term_matrix),
+        term_weights
     )
 
     cat("Finding minimum distance categories for each document...\n")

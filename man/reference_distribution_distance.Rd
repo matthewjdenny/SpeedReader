@@ -5,7 +5,7 @@
 \title{Reference distribtuion distances}
 \usage{
 reference_distribution_distance(category_reference_distribution,
-  document_term_matrix)
+  document_term_matrix, inverse_frequency_weighting = TRUE)
 }
 \arguments{
 \item{category_reference_distribution}{A simple_triplet_matrix where each row
@@ -15,6 +15,12 @@ be normalized or raw counts.}
 \item{document_term_matrix}{A simple_triplet_matrix where each row represents
 a document and each column, a term in the vocabulary. The columns in both
 matrices should match up.}
+
+\item{inverse_frequency_weighting}{If TRUE, then distances are weighted by
+the inverse of the term's aggregate count in the document term
+matrix. This means that differences in more frequently occuring terms will
+have less weight than those for less frequently appearing terms. Defaults to
+TRUE.}
 }
 \value{
 A dataframe with distances of each document to each reference

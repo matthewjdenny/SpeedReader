@@ -73,8 +73,8 @@ Mutual_Information <- function(joint_dist) {
     .Call('SpeedReader_Mutual_Information', PACKAGE = 'SpeedReader', joint_dist)
 }
 
-reference_dist_distance <- function(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents) {
-    .Call('SpeedReader_reference_dist_distance', PACKAGE = 'SpeedReader', ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents)
+reference_dist_distance <- function(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents, term_weights) {
+    .Call('SpeedReader_reference_dist_distance', PACKAGE = 'SpeedReader', ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents, term_weights)
 }
 
 Sparse_Document_Frequencies <- function(length_sparse_counts, sparse_counts, document_frequencies, print_sequence, print_sequence_length) {
