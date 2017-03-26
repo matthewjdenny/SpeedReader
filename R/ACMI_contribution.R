@@ -29,6 +29,7 @@ ACMI_contribution <- function(joint_dist){
     # store all contributions for each pair
     # storage_list <- vector(mode = "list", length = num_row_pairs)
     all_negative_vocab <- NULL
+    all_negative_vocab_inds <- NULL
 
     # loop over row pairs and calculate ACMI contribution
     for (l in 1:num_row_pairs) {
@@ -87,6 +88,7 @@ ACMI_contribution <- function(joint_dist){
                 if (length(temp) > 0) {
                     # storage_list[[l]] <- cur$dimnames[[2]][temp]
                     all_negative_vocab <- c(all_negative_vocab,temp)
+                    all_negative_vocab_inds <- c(all_negative_vocab_inds,rep(l,length(temp)))
                 }
             }
         } else {
@@ -101,7 +103,8 @@ ACMI_contribution <- function(joint_dist){
 
     ret <- list(average_contribution = average_contribution,
                 negative_vocab = negative_vocab,
-                all_negative_vocab = all_negative_vocab)
+                all_negative_vocab = all_negative_vocab,
+                all_negative_vocab_inds = all_negative_vocab_inds)
 
     t2 <- proc.time() - ptm
     cat("Full calculation complete in:",t2[[3]],"seconds...\n")
