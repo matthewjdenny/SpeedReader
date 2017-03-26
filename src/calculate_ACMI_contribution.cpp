@@ -20,7 +20,7 @@ arma::vec calculate_ACMI_contribution(
     for(int i = 0; i < num_cols; ++i){
         // only do calculation with non-zero col sum
         if (colsums[i] > 0) {
-            double D = dist_sum /(dist_sum - colsums[i]);
+            double D = dist_sum /double(dist_sum - colsums[i]);
 
             int cur_non_zeros = 0;
 
