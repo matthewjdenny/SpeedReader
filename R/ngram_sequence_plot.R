@@ -55,10 +55,12 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
     dat <- data.frame(match = matches,
                       col_number = cn,
                       row_number = rn)
+    orange <- rgb(red = 253, green = 174, blue = 97, alpha = 200, maxColorValue = 255)
+    blue <- rgb(red = 43, green = 131, blue = 186, alpha = 200, maxColorValue = 255)
 
     p <- ggplot2::ggplot(dat, ggplot2::aes(col_number, row_number)) +
         ggplot2::geom_tile(ggplot2::aes(fill = match), colour = "white") +
-        ggplot2::scale_fill_manual(values = c("lightblue","magenta"))
+        ggplot2::scale_fill_manual(values = c(blue,orange))
     if (include_title_legend) {
         p <- p + ggplot2::theme(legend.position = "bottom",
                                 axis.ticks.y = ggplot2::element_blank(),
