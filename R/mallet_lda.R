@@ -181,7 +181,7 @@ mallet_lda <- function(documents = NULL,
             #populate a string vector of documents from dtm
             cat("Populating document vector from document term matrix...\n")
             printseq_counter <- 1
-            if(nrow(documents) > 9999){
+            if (nrow(documents) > 9999){
                 printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
             }else if(nrow(documents) > 199){
                 printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
@@ -189,22 +189,54 @@ mallet_lda <- function(documents = NULL,
                 printseq <- 1:nrow(documents)
             }
             temp_docs <- rep("",nrow(documents))
+
+            # we are going to loop through the document indices which we expect
+            # go up one at a time
+            start <- 1
+            stop <- 1
             for(i in 1:length(temp_docs)){
                 if(printseq[printseq_counter] == i){
-                    cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                    cat(i,"/",length(temp_docs)," complete...\n",sep = "")
                     printseq_counter <- printseq_counter +1
                 }
-                str <- NULL
-                indexes <- which(documents$i == i)
-                if(length(indexes) > 0){
+                # if we are at less than the last document, do this
+                #
+                if (documents$i[stop] > i) {
+                    indexes <- NULL
+                } else {
+                    if (i < length(temp_docs)) {
+                        # precheck to deal with documents of length zero
+                        while (documents$i[stop] == i) {
+                            stop <- stop + 1
+                        }
+                        indexes <- start:(stop - 1)
+                        start <- stop
+                    } else {
+                        indexes <- start:length(documents$i)
+                    }
+                }
+                if (length(indexes) > 0) {
                     colindexes <- documents$j[indexes]
                     repeats <- documents$v[indexes]
-                    for(k in 1:length(colindexes)){
-                        str <- c(str,
-                                 rep(vocabulary[colindexes[k]],
-                                     repeats[k]))
+                    cur_vocab <- vocabulary[colindexes]
+                    # now allocate a vector to fill so we do not need to keep
+                    # concatenating
+                    this_doc <- rep("", sum(repeats))
+                    cur_counter <- 1
+                    for (k in 1:length(colindexes)) {
+                        # number of times to repeat the word
+                        for (l in 1:repeats[k]) {
+                            this_doc[cur_counter] <- cur_vocab[k]
+                            cur_counter <- cur_counter + 1
+                        }
                     }
-                    temp  <- paste0(str,collapse = " ")
+
+                    # for(k in 1:length(colindexes)){
+                    #     str <- c(str,
+                    #              rep(vocabulary[colindexes[k]],
+                    #                  repeats[k]))
+                    # }
+                    temp  <- paste0(this_doc,collapse = " ")
                 }else{
                     temp <- ""
                 }
