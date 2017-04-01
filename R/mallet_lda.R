@@ -178,6 +178,12 @@ mallet_lda <- function(documents = NULL,
                 }
             }
 
+            cat("Making sure rows are properly ordered...\n")
+            ord <- order(documents$i,decreasing = FALSE)
+            documents$i <- documents$i[ord]
+            documents$j <- documents$j[ord]
+            documents$v <- documents$v[ord]
+
             #populate a string vector of documents from dtm
             cat("Populating document vector from document term matrix...\n")
             printseq_counter <- 1
