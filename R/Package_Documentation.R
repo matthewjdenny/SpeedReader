@@ -29,7 +29,7 @@ NULL
 #' @importFrom stats cor qnorm median var
 NULL
 
-#' @importFrom utils download.file head read.delim read.table str write.table capture.output
+#' @importFrom utils download.file head read.delim read.table str write.table capture.output combn
 NULL
 
 #' @useDynLib SpeedReader
