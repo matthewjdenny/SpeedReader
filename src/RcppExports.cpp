@@ -389,3 +389,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"SpeedReader_calculate_ACMI_contribution", (DL_FUNC) &SpeedReader_calculate_ACMI_contribution, 9},
+    {"SpeedReader_calculate_unique_MI_contribution", (DL_FUNC) &SpeedReader_calculate_unique_MI_contribution, 7},
+    {"SpeedReader_calculate_document_frequency", (DL_FUNC) &SpeedReader_calculate_document_frequency, 1},
+    {"SpeedReader_Calculate_TFIDF", (DL_FUNC) &SpeedReader_Calculate_TFIDF, 1},
+    {"SpeedReader_Col_and_Row_Sums", (DL_FUNC) &SpeedReader_Col_and_Row_Sums, 1},
+    {"SpeedReader_Combine_Document_Term_Matrices", (DL_FUNC) &SpeedReader_Combine_Document_Term_Matrices, 4},
+    {"SpeedReader_Count_Words", (DL_FUNC) &SpeedReader_Count_Words, 11},
+    {"SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison, 6},
+    {"SpeedReader_Efficient_Block_Hash_Ngrams", (DL_FUNC) &SpeedReader_Efficient_Block_Hash_Ngrams, 6},
+    {"SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison, 6},
+    {"SpeedReader_Fast_Mutual_Information", (DL_FUNC) &SpeedReader_Fast_Mutual_Information, 2},
+    {"SpeedReader_Fast_Sparse_Mutual_Information", (DL_FUNC) &SpeedReader_Fast_Sparse_Mutual_Information, 6},
+    {"SpeedReader_Fast_Sparse_Mutual_Information_Full", (DL_FUNC) &SpeedReader_Fast_Sparse_Mutual_Information_Full, 6},
+    {"SpeedReader_Generate_Document_Term_Matrix", (DL_FUNC) &SpeedReader_Generate_Document_Term_Matrix, 7},
+    {"SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary", (DL_FUNC) &SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary, 11},
+    {"SpeedReader_Generate_Sparse_Document_Term_Matrix", (DL_FUNC) &SpeedReader_Generate_Sparse_Document_Term_Matrix, 7},
+    {"SpeedReader_LineWise_Dice_Coefficients", (DL_FUNC) &SpeedReader_LineWise_Dice_Coefficients, 4},
+    {"SpeedReader_Mutual_Information", (DL_FUNC) &SpeedReader_Mutual_Information, 1},
+    {"SpeedReader_reference_dist_distance", (DL_FUNC) &SpeedReader_reference_dist_distance, 9},
+    {"SpeedReader_Sparse_Document_Frequencies", (DL_FUNC) &SpeedReader_Sparse_Document_Frequencies, 5},
+    {"SpeedReader_Sparse_PMI_Statistics", (DL_FUNC) &SpeedReader_Sparse_PMI_Statistics, 9},
+    {"SpeedReader_Sequential_Raw_Term_Dice_Matches", (DL_FUNC) &SpeedReader_Sequential_Raw_Term_Dice_Matches, 3},
+    {"SpeedReader_Sequential_string_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Sequential_string_Set_Hash_Comparison, 3},
+    {"SpeedReader_Sequential_Token_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Sequential_Token_Set_Hash_Comparison, 2},
+    {"SpeedReader_Variable_Dice_Coefficients", (DL_FUNC) &SpeedReader_Variable_Dice_Coefficients, 6},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_SpeedReader(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

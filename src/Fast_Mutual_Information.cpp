@@ -12,7 +12,6 @@ double Fast_Mutual_Information(
     //takes an already-normalized matrix
     double mutual_information = 0;
     int num_rows = joint_dist.n_rows;
-    int num_cols = joint_dist.n_cols;
     arma::mat colsums = sum(joint_dist,0);
     arma::mat rowsums = sum(joint_dist,1);
     for(int i = 0; i < num_rows; ++i){
