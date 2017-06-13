@@ -77,6 +77,13 @@ ACMI_contribution <- function(joint_dist){
             } else {
                 contributions <- MI - contributions
 
+                # make sure to zero out contributions for terms that did not appear
+                # at all
+                zero_out <- which(normalized_column_sums == 0)
+                cat("Terms to zero out:",length(zero_out),"\n")
+                cat("Sum of terms to zero out:",sum(contributions[zero_out]),"\n")
+                contributions[zero_out] <- 0
+
                 average_contribution <- average_contribution + (cur_weight/total_weight) * contributions
 
                 #store the current entries
