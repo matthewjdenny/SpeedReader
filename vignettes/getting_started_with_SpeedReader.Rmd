@@ -160,6 +160,9 @@ In addition to the basic functionality shown above, there are a couple of other 
 
 With all this said, we still need to go over what all of the column names mean in the data.frame that gets returned from this function. For illustration purposes, we are going to use two other functions included in the package that allow us to plot where in these two document versions there are matches and mismatches. In this example, the `ngram_sequnce_plot()` function shows us which overlapping 5-grams in 103-HR-5-EH have a match in 103-HR-5-IH. All of the blocks shaded blue (blocks each represent a 5-gram in this example, and go from left to right and then down by row) had a match in the earlier version (IH), while all of the blocks shaded in orange did not have a match.
 ```{r eval=TRUE, fig.width=7, fig.height=4, fig.align ='center'}
+# Load the package:
+library(SpeedReader)
+
 # Load in the Congressional Bills:
 data("congress_bills")
 
