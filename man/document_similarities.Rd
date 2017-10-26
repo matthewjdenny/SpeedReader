@@ -29,7 +29,9 @@ data.frame is returned from the function}
 \item{doc_pairs}{An optional two column matrix indicating the document
 indicies in filenames or documents to be compared in each comparison. This
 will be automatically generated to include all pairs but, can be user
-specified if only a subset of pairs are desired.}
+specified if only a subset of pairs are desired. If providing filenames, it
+is also possible to use the filenames to generate this matrix, but this will
+provide slower performance.}
 
 \item{parallel}{Logical indicating whether parallelization should be used.
 Defaults to FALSE.}

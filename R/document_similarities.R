@@ -16,7 +16,9 @@
 #' @param doc_pairs An optional two column matrix indicating the document
 #' indicies in filenames or documents to be compared in each comparison. This
 #' will be automatically generated to include all pairs but, can be user
-#' specified if only a subset of pairs are desired.
+#' specified if only a subset of pairs are desired. If providing filenames, it
+#' is also possible to use the filenames to generate this matrix, but this will
+#' provide slower performance.
 #' @param parallel Logical indicating whether parallelization should be used.
 #' Defaults to FALSE.
 #' @param cores The number of cores to be used for parallelization. Defaults to
@@ -72,9 +74,45 @@ document_similarities <- function(filenames = NULL,
         num_docs <- length(filenames)
     }
 
+
     # create document pairs matrix
     if (is.null(doc_pairs)) {
         doc_pairs <- t(combn(1:num_docs,2))
+    } else {
+        if (ncol(doc_pairs) < 2) {
+            stop("doc_pairs must have two columns (one for the index or file name of each document), and one row for each pair to be compared.")
+        }
+        if (ncol(doc_pairs) > 2) {
+            cat("Only using the first two columns of doc_pairs...\n")
+            doc_pairs <- doc_pairs[,c(1,2)]
+        }
+
+        # now make sure that doc_pairs is a matrix.
+        doc_pairs <- as.matrix(doc_pairs)
+
+        # if we are using file names, then convert the filename pairs
+        # to numeric indices. Only do this if we detect that the first column
+        # of the matrix is of class character.
+        if (using_files) {
+            if (class(doc_pairs[1,1]) == "character") {
+                cat("Converting document name pairs to numeric indices. This",
+                    "may take a while... It is more efficient to provide a",
+                    "matrix with document index pairs.\n")
+                temp <- matrix(0,
+                               nrow = nrow(doc_pairs),
+                               ncol = ncol(doc_pairs))
+
+                # loop through and repopulate:
+                for (i in 1:nrow(doc_pairs)) {
+                    for (j in 1:ncol(doc_pairs)) {
+                        temp[i,j] <- which(filenames == doc_pairs[i,j])
+                    }
+                }
+
+                # replace with the index version.
+                doc_pairs <- temp
+            }
+        }
     }
 
 
