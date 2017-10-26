@@ -37,3 +37,19 @@ NULL
 #' @format A list object containing 20 data.frames.
 NULL
 
+#' All versions of the first 20 bills introduced in the House and Senate in the 103rd Congress.
+#'
+#' A character vector containing 79 entries, one per document, for all versions
+#' for the first 20 bills introduced in the U.S. House of Representatives, and
+#' all versions of the first 21 bills introduced in the U.S. Senate in the 103rd
+#' session of Congress (1993-1994).
+#'
+#' @docType data
+#' @keywords datasets
+#' @name congress_bills
+#' @usage data(congress_bills)
+#' @format A character vector of length 79.
+NULL
+
+
+
