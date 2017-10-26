@@ -3,17 +3,7 @@
 .RData
 
 *.o
-
 *.so
-
-*.so
-
-*.so
-
 *.jar
-
-*.so
-
 src/SpeedReader.so
-
-src/SpeedReader.so
+inst/doc

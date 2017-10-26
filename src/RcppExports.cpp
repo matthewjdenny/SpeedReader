@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // calculate_ACMI_contribution
 arma::vec calculate_ACMI_contribution(double dist_sum, arma::vec colsums, arma::vec rowsums, int num_cols, arma::vec column_contributions, arma::vec row_index_counts, arma::mat joint, int total_non_zeros, double full_MI);
-RcppExport SEXP SpeedReader_calculate_ACMI_contribution(SEXP dist_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP column_contributionsSEXP, SEXP row_index_countsSEXP, SEXP jointSEXP, SEXP total_non_zerosSEXP, SEXP full_MISEXP) {
+RcppExport SEXP _SpeedReader_calculate_ACMI_contribution(SEXP dist_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP column_contributionsSEXP, SEXP row_index_countsSEXP, SEXP jointSEXP, SEXP total_non_zerosSEXP, SEXP full_MISEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -27,7 +27,7 @@ END_RCPP
 }
 // calculate_unique_MI_contribution
 arma::vec calculate_unique_MI_contribution(arma::vec colsums, arma::vec rowsums, int num_cols, int num_rows, arma::mat joint, arma::vec column_type_counts, double dist_sum);
-RcppExport SEXP SpeedReader_calculate_unique_MI_contribution(SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP num_rowsSEXP, SEXP jointSEXP, SEXP column_type_countsSEXP, SEXP dist_sumSEXP) {
+RcppExport SEXP _SpeedReader_calculate_unique_MI_contribution(SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP num_rowsSEXP, SEXP jointSEXP, SEXP column_type_countsSEXP, SEXP dist_sumSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,7 +44,7 @@ END_RCPP
 }
 // calculate_document_frequency
 arma::vec calculate_document_frequency(arma::mat document_word_matrix);
-RcppExport SEXP SpeedReader_calculate_document_frequency(SEXP document_word_matrixSEXP) {
+RcppExport SEXP _SpeedReader_calculate_document_frequency(SEXP document_word_matrixSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // Calculate_TFIDF
 List Calculate_TFIDF(arma::mat document_word_matrix);
-RcppExport SEXP SpeedReader_Calculate_TFIDF(SEXP document_word_matrixSEXP) {
+RcppExport SEXP _SpeedReader_Calculate_TFIDF(SEXP document_word_matrixSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -66,7 +66,7 @@ END_RCPP
 }
 // Col_and_Row_Sums
 List Col_and_Row_Sums(arma::mat joint_dist);
-RcppExport SEXP SpeedReader_Col_and_Row_Sums(SEXP joint_distSEXP) {
+RcppExport SEXP _SpeedReader_Col_and_Row_Sums(SEXP joint_distSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -77,7 +77,7 @@ END_RCPP
 }
 // Combine_Document_Term_Matrices
 List Combine_Document_Term_Matrices(List document_word_matrix_list, List vocabularies, std::vector<std::string> unique_words, int number_of_corpora);
-RcppExport SEXP SpeedReader_Combine_Document_Term_Matrices(SEXP document_word_matrix_listSEXP, SEXP vocabulariesSEXP, SEXP unique_wordsSEXP, SEXP number_of_corporaSEXP) {
+RcppExport SEXP _SpeedReader_Combine_Document_Term_Matrices(SEXP document_word_matrix_listSEXP, SEXP vocabulariesSEXP, SEXP unique_wordsSEXP, SEXP number_of_corporaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -91,7 +91,7 @@ END_RCPP
 }
 // Count_Words
 List Count_Words(int number_of_documents, List Document_Words, arma::vec Document_Lengths, int max_vocab_size, int add_to_vocabulary, arma::vec existing_word_counts, std::vector<std::string> existing_vocabulary, int existing_vocabulary_size, int using_wordcounts, List Document_Word_Counts, int print_counter);
-RcppExport SEXP SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP max_vocab_sizeSEXP, SEXP add_to_vocabularySEXP, SEXP existing_word_countsSEXP, SEXP existing_vocabularySEXP, SEXP existing_vocabulary_sizeSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP, SEXP print_counterSEXP) {
+RcppExport SEXP _SpeedReader_Count_Words(SEXP number_of_documentsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP max_vocab_sizeSEXP, SEXP add_to_vocabularySEXP, SEXP existing_word_countsSEXP, SEXP existing_vocabularySEXP, SEXP existing_vocabulary_sizeSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP, SEXP print_counterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -112,7 +112,7 @@ END_RCPP
 }
 // Efficient_Block_Sequential_String_Set_Hash_Comparison
 arma::mat Efficient_Block_Sequential_String_Set_Hash_Comparison(List documents, int num_docs, arma::mat comparison_inds, int ngram_length, bool ignore_documents, arma::vec to_ignore);
-RcppExport SEXP SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
+RcppExport SEXP _SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -128,7 +128,7 @@ END_RCPP
 }
 // Efficient_Block_Hash_Ngrams
 arma::mat Efficient_Block_Hash_Ngrams(std::vector<std::string> documents, int num_docs, arma::mat comparison_inds, int ngram_length, bool ignore_documents, arma::vec to_ignore);
-RcppExport SEXP SpeedReader_Efficient_Block_Hash_Ngrams(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
+RcppExport SEXP _SpeedReader_Efficient_Block_Hash_Ngrams(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -144,7 +144,7 @@ END_RCPP
 }
 // String_Input_Sequential_String_Set_Hash_Comparison
 arma::mat String_Input_Sequential_String_Set_Hash_Comparison(std::vector<std::string> documents, int num_docs, arma::mat comparison_inds, int ngram_length, bool ignore_documents, arma::vec to_ignore);
-RcppExport SEXP SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
+RcppExport SEXP _SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison(SEXP documentsSEXP, SEXP num_docsSEXP, SEXP comparison_indsSEXP, SEXP ngram_lengthSEXP, SEXP ignore_documentsSEXP, SEXP to_ignoreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -160,7 +160,7 @@ END_RCPP
 }
 // Fast_Mutual_Information
 double Fast_Mutual_Information(arma::mat joint_dist, arma::vec non_zero_cols);
-RcppExport SEXP SpeedReader_Fast_Mutual_Information(SEXP joint_distSEXP, SEXP non_zero_colsSEXP) {
+RcppExport SEXP _SpeedReader_Fast_Mutual_Information(SEXP joint_distSEXP, SEXP non_zero_colsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -172,7 +172,7 @@ END_RCPP
 }
 // Fast_Sparse_Mutual_Information
 double Fast_Sparse_Mutual_Information(arma::vec rows, arma::vec cols, arma::vec vals, arma::vec colsums, arma::vec rowsums, int num_entries);
-RcppExport SEXP SpeedReader_Fast_Sparse_Mutual_Information(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
+RcppExport SEXP _SpeedReader_Fast_Sparse_Mutual_Information(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -188,7 +188,7 @@ END_RCPP
 }
 // Fast_Sparse_Mutual_Information_Full
 List Fast_Sparse_Mutual_Information_Full(arma::vec rows, arma::vec cols, arma::vec vals, arma::vec colsums, arma::vec rowsums, int num_entries);
-RcppExport SEXP SpeedReader_Fast_Sparse_Mutual_Information_Full(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
+RcppExport SEXP _SpeedReader_Fast_Sparse_Mutual_Information_Full(SEXP rowsSEXP, SEXP colsSEXP, SEXP valsSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_entriesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -204,7 +204,7 @@ END_RCPP
 }
 // Generate_Document_Term_Matrix
 arma::mat Generate_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, int using_wordcounts, List Document_Word_Counts);
-RcppExport SEXP SpeedReader_Generate_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP) {
+RcppExport SEXP _SpeedReader_Generate_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP using_wordcountsSEXP, SEXP Document_Word_CountsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -221,7 +221,7 @@ END_RCPP
 }
 // Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary
 List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms, std::vector<std::string> stem_lookup, arma::vec starts, arma::vec ends, int lookup_size);
-RcppExport SEXP SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP, SEXP stem_lookupSEXP, SEXP startsSEXP, SEXP endsSEXP, SEXP lookup_sizeSEXP) {
+RcppExport SEXP _SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP, SEXP stem_lookupSEXP, SEXP startsSEXP, SEXP endsSEXP, SEXP lookup_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -242,7 +242,7 @@ END_RCPP
 }
 // Generate_Sparse_Document_Term_Matrix
 List Generate_Sparse_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms);
-RcppExport SEXP SpeedReader_Generate_Sparse_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP) {
+RcppExport SEXP _SpeedReader_Generate_Sparse_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -259,7 +259,7 @@ END_RCPP
 }
 // LineWise_Dice_Coefficients
 arma::mat LineWise_Dice_Coefficients(int number_of_lines, List Lines, int number_of_lines2, List Lines2);
-RcppExport SEXP SpeedReader_LineWise_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP) {
+RcppExport SEXP _SpeedReader_LineWise_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -273,7 +273,7 @@ END_RCPP
 }
 // Mutual_Information
 double Mutual_Information(arma::mat joint_dist);
-RcppExport SEXP SpeedReader_Mutual_Information(SEXP joint_distSEXP) {
+RcppExport SEXP _SpeedReader_Mutual_Information(SEXP joint_distSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -284,7 +284,7 @@ END_RCPP
 }
 // reference_dist_distance
 arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents, arma::vec term_weights);
-RcppExport SEXP SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP, SEXP term_weightsSEXP) {
+RcppExport SEXP _SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP, SEXP term_weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -303,7 +303,7 @@ END_RCPP
 }
 // Sparse_Document_Frequencies
 arma::vec Sparse_Document_Frequencies(int length_sparse_counts, arma::vec sparse_counts, arma::vec document_frequencies, arma::vec print_sequence, int print_sequence_length);
-RcppExport SEXP SpeedReader_Sparse_Document_Frequencies(SEXP length_sparse_countsSEXP, SEXP sparse_countsSEXP, SEXP document_frequenciesSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
+RcppExport SEXP _SpeedReader_Sparse_Document_Frequencies(SEXP length_sparse_countsSEXP, SEXP sparse_countsSEXP, SEXP document_frequenciesSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -318,7 +318,7 @@ END_RCPP
 }
 // Sparse_PMI_Statistics
 List Sparse_PMI_Statistics(int length_sparse_counts, int table_sum, arma::vec colsums, arma::vec rowsums, arma::vec sparse_col_indexes, arma::vec sparse_row_indexes, arma::vec sparse_counts, arma::vec print_sequence, int print_sequence_length);
-RcppExport SEXP SpeedReader_Sparse_PMI_Statistics(SEXP length_sparse_countsSEXP, SEXP table_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP sparse_col_indexesSEXP, SEXP sparse_row_indexesSEXP, SEXP sparse_countsSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
+RcppExport SEXP _SpeedReader_Sparse_PMI_Statistics(SEXP length_sparse_countsSEXP, SEXP table_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP sparse_col_indexesSEXP, SEXP sparse_row_indexesSEXP, SEXP sparse_countsSEXP, SEXP print_sequenceSEXP, SEXP print_sequence_lengthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -337,7 +337,7 @@ END_RCPP
 }
 // Sequential_Raw_Term_Dice_Matches
 List Sequential_Raw_Term_Dice_Matches(std::vector<std::string> line1, std::vector<std::string> line2, int Dice_Terms);
-RcppExport SEXP SpeedReader_Sequential_Raw_Term_Dice_Matches(SEXP line1SEXP, SEXP line2SEXP, SEXP Dice_TermsSEXP) {
+RcppExport SEXP _SpeedReader_Sequential_Raw_Term_Dice_Matches(SEXP line1SEXP, SEXP line2SEXP, SEXP Dice_TermsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -350,7 +350,7 @@ END_RCPP
 }
 // Sequential_string_Set_Hash_Comparison
 List Sequential_string_Set_Hash_Comparison(std::vector<std::string> doc1, std::vector<std::string> doc2, int Dice_Terms);
-RcppExport SEXP SpeedReader_Sequential_string_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP, SEXP Dice_TermsSEXP) {
+RcppExport SEXP _SpeedReader_Sequential_string_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP, SEXP Dice_TermsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -363,7 +363,7 @@ END_RCPP
 }
 // Sequential_Token_Set_Hash_Comparison
 List Sequential_Token_Set_Hash_Comparison(std::vector<std::string> doc1, std::vector<std::string> doc2);
-RcppExport SEXP SpeedReader_Sequential_Token_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP) {
+RcppExport SEXP _SpeedReader_Sequential_Token_Set_Hash_Comparison(SEXP doc1SEXP, SEXP doc2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -375,7 +375,7 @@ END_RCPP
 }
 // Variable_Dice_Coefficients
 List Variable_Dice_Coefficients(int number_of_lines, List Lines, int number_of_lines2, List Lines2, int Dice_Terms, bool rem_duplicates);
-RcppExport SEXP SpeedReader_Variable_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP, SEXP rem_duplicatesSEXP) {
+RcppExport SEXP _SpeedReader_Variable_Dice_Coefficients(SEXP number_of_linesSEXP, SEXP LinesSEXP, SEXP number_of_lines2SEXP, SEXP Lines2SEXP, SEXP Dice_TermsSEXP, SEXP rem_duplicatesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -391,31 +391,31 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"SpeedReader_calculate_ACMI_contribution", (DL_FUNC) &SpeedReader_calculate_ACMI_contribution, 9},
-    {"SpeedReader_calculate_unique_MI_contribution", (DL_FUNC) &SpeedReader_calculate_unique_MI_contribution, 7},
-    {"SpeedReader_calculate_document_frequency", (DL_FUNC) &SpeedReader_calculate_document_frequency, 1},
-    {"SpeedReader_Calculate_TFIDF", (DL_FUNC) &SpeedReader_Calculate_TFIDF, 1},
-    {"SpeedReader_Col_and_Row_Sums", (DL_FUNC) &SpeedReader_Col_and_Row_Sums, 1},
-    {"SpeedReader_Combine_Document_Term_Matrices", (DL_FUNC) &SpeedReader_Combine_Document_Term_Matrices, 4},
-    {"SpeedReader_Count_Words", (DL_FUNC) &SpeedReader_Count_Words, 11},
-    {"SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison, 6},
-    {"SpeedReader_Efficient_Block_Hash_Ngrams", (DL_FUNC) &SpeedReader_Efficient_Block_Hash_Ngrams, 6},
-    {"SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison, 6},
-    {"SpeedReader_Fast_Mutual_Information", (DL_FUNC) &SpeedReader_Fast_Mutual_Information, 2},
-    {"SpeedReader_Fast_Sparse_Mutual_Information", (DL_FUNC) &SpeedReader_Fast_Sparse_Mutual_Information, 6},
-    {"SpeedReader_Fast_Sparse_Mutual_Information_Full", (DL_FUNC) &SpeedReader_Fast_Sparse_Mutual_Information_Full, 6},
-    {"SpeedReader_Generate_Document_Term_Matrix", (DL_FUNC) &SpeedReader_Generate_Document_Term_Matrix, 7},
-    {"SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary", (DL_FUNC) &SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary, 11},
-    {"SpeedReader_Generate_Sparse_Document_Term_Matrix", (DL_FUNC) &SpeedReader_Generate_Sparse_Document_Term_Matrix, 7},
-    {"SpeedReader_LineWise_Dice_Coefficients", (DL_FUNC) &SpeedReader_LineWise_Dice_Coefficients, 4},
-    {"SpeedReader_Mutual_Information", (DL_FUNC) &SpeedReader_Mutual_Information, 1},
-    {"SpeedReader_reference_dist_distance", (DL_FUNC) &SpeedReader_reference_dist_distance, 9},
-    {"SpeedReader_Sparse_Document_Frequencies", (DL_FUNC) &SpeedReader_Sparse_Document_Frequencies, 5},
-    {"SpeedReader_Sparse_PMI_Statistics", (DL_FUNC) &SpeedReader_Sparse_PMI_Statistics, 9},
-    {"SpeedReader_Sequential_Raw_Term_Dice_Matches", (DL_FUNC) &SpeedReader_Sequential_Raw_Term_Dice_Matches, 3},
-    {"SpeedReader_Sequential_string_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Sequential_string_Set_Hash_Comparison, 3},
-    {"SpeedReader_Sequential_Token_Set_Hash_Comparison", (DL_FUNC) &SpeedReader_Sequential_Token_Set_Hash_Comparison, 2},
-    {"SpeedReader_Variable_Dice_Coefficients", (DL_FUNC) &SpeedReader_Variable_Dice_Coefficients, 6},
+    {"_SpeedReader_calculate_ACMI_contribution", (DL_FUNC) &_SpeedReader_calculate_ACMI_contribution, 9},
+    {"_SpeedReader_calculate_unique_MI_contribution", (DL_FUNC) &_SpeedReader_calculate_unique_MI_contribution, 7},
+    {"_SpeedReader_calculate_document_frequency", (DL_FUNC) &_SpeedReader_calculate_document_frequency, 1},
+    {"_SpeedReader_Calculate_TFIDF", (DL_FUNC) &_SpeedReader_Calculate_TFIDF, 1},
+    {"_SpeedReader_Col_and_Row_Sums", (DL_FUNC) &_SpeedReader_Col_and_Row_Sums, 1},
+    {"_SpeedReader_Combine_Document_Term_Matrices", (DL_FUNC) &_SpeedReader_Combine_Document_Term_Matrices, 4},
+    {"_SpeedReader_Count_Words", (DL_FUNC) &_SpeedReader_Count_Words, 11},
+    {"_SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_Efficient_Block_Sequential_String_Set_Hash_Comparison, 6},
+    {"_SpeedReader_Efficient_Block_Hash_Ngrams", (DL_FUNC) &_SpeedReader_Efficient_Block_Hash_Ngrams, 6},
+    {"_SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_String_Input_Sequential_String_Set_Hash_Comparison, 6},
+    {"_SpeedReader_Fast_Mutual_Information", (DL_FUNC) &_SpeedReader_Fast_Mutual_Information, 2},
+    {"_SpeedReader_Fast_Sparse_Mutual_Information", (DL_FUNC) &_SpeedReader_Fast_Sparse_Mutual_Information, 6},
+    {"_SpeedReader_Fast_Sparse_Mutual_Information_Full", (DL_FUNC) &_SpeedReader_Fast_Sparse_Mutual_Information_Full, 6},
+    {"_SpeedReader_Generate_Document_Term_Matrix", (DL_FUNC) &_SpeedReader_Generate_Document_Term_Matrix, 7},
+    {"_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary", (DL_FUNC) &_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary, 11},
+    {"_SpeedReader_Generate_Sparse_Document_Term_Matrix", (DL_FUNC) &_SpeedReader_Generate_Sparse_Document_Term_Matrix, 7},
+    {"_SpeedReader_LineWise_Dice_Coefficients", (DL_FUNC) &_SpeedReader_LineWise_Dice_Coefficients, 4},
+    {"_SpeedReader_Mutual_Information", (DL_FUNC) &_SpeedReader_Mutual_Information, 1},
+    {"_SpeedReader_reference_dist_distance", (DL_FUNC) &_SpeedReader_reference_dist_distance, 9},
+    {"_SpeedReader_Sparse_Document_Frequencies", (DL_FUNC) &_SpeedReader_Sparse_Document_Frequencies, 5},
+    {"_SpeedReader_Sparse_PMI_Statistics", (DL_FUNC) &_SpeedReader_Sparse_PMI_Statistics, 9},
+    {"_SpeedReader_Sequential_Raw_Term_Dice_Matches", (DL_FUNC) &_SpeedReader_Sequential_Raw_Term_Dice_Matches, 3},
+    {"_SpeedReader_Sequential_string_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_Sequential_string_Set_Hash_Comparison, 3},
+    {"_SpeedReader_Sequential_Token_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_Sequential_Token_Set_Hash_Comparison, 2},
+    {"_SpeedReader_Variable_Dice_Coefficients", (DL_FUNC) &_SpeedReader_Variable_Dice_Coefficients, 6},
     {NULL, NULL, 0}
 };
 

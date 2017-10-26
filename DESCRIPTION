@@ -1,8 +1,8 @@
 Package: SpeedReader
 Type: Package
 Title: High Performance Text Processing Libraries
-Version: 0.7.0
-Date: 2017-06-13
+Version: 0.8.0
+Date: 2017-10-25
 Author: Matthew J. Denny <mdenny@psu.edu>
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
 Description: A suite of functions for processing large scale text corpora into
@@ -30,5 +30,8 @@ LinkingTo: BH,
     RcppArmadillo
 LazyData: TRUE
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
