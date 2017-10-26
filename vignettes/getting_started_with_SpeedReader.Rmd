@@ -1,0 +1,177 @@
+---
+title: "Getting Started With SpeedReader"
+author: "Matthew J. Denny"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting_started_with_SpeedReader}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+SpeedReader is designed for high performance text processing and analysis in R. This vignette will go over much of the functonality  available in the package, and how to get the most out of SpeedReader. You can get the latest development version of SpeedReader on github [here](https://github.com/matthewjdenny/SpeedReader). 
+
+## Package Overview
+SpeedReader is designed to compliment what I see as the mainstream packages for 
+text analysis in R. While I included functionality to preprocess data into a 
+document-term matrix in SpeedReader, I have shifted to primarily relying on 
+quanteda to do all of my preprocessing, and then taking the resulting sparse 
+document-term matrix as input for many of the methods in this package. Quanteda 
+is simply the fastest, most fully featured, and best maintained package for text 
+preprocessing these days, and I say that having implemented much of the same 
+functionality myself. Similarly, for many topic modelling applications, the 
+topicmodels or LDA packages will work just fine. And for many POS tagging tasks, 
+openNLP or SpacyR are totally great. 
+
+Where SpeedReader shines is when you need access to some of the functionality 
+that is only provided in this package, or when you need really high performance
+or are working with extremely large datasets. At a high level, SpeedReader 
+provides the following functionality:
+
+  * A front end for Stanford's CoreNLP libraries for POS tagging and finding named entities.
+  * Term-category association analyses including PMI and TF-IDF, with various forms of weighting.
+  * A front end for topic modeling using MALLET, that also reads the results back into R and presents them in a series of data.frames. 
+  * A set of methods to compare documents and document versions using sequences of n-grams, and ensembles of Dice coefficients.
+  * An implementation of the informed Dirichlet model from Monroe et al. (2008), along with publication quality funnel plots.
+  * Functions for forming complex contingency tables.
+  * Functions of displaying text in LaTeX tables.
+  * Functionality to read in a preprocess text data into a document-term matrix. 
+  
+In the rest of this vignette, I will spend time discussing this functionality
+in greater detai, but we will begin with a simple example preprocessing data
+in quanteda to make it ready for use with SpeedReader.
+
+## From quanteda to SpeedReader
+
+
+
+
+
+
+
+
+
+
+
+
+## Assessing Document Editing
+
+In this section, we are going to cover a method for assessing the similarity between pairs of documents, which is implemented in SpeedReader. The idea is that we give the `document_similarities()` function a character vector of documents (one document per entry), or point it to a folder containing .txt files, and then it will automatically produce a bunch of similarity statistics between all possible document pairs. We can also give the function an additional argument asking it only to compare certain pairs of documents. For now, it is mostly important to know that we will provide this function with input, and that it will produce a data.frame as output (or save the results to disk), with a bunch of metrics for each pairwise comparison. After we see how the code works, I will talk about what these comparison metrics mean.
+
+To start out, you will want to download osme exaxple data, which can be [found here](http://www.mjdenny.com/SpeedReader/Bill_Data.zip). This zip archive contains 79 text files covering all versions for the first 20 bills introduced in the U.S House of Representatives, and all versions for the first 21 bills introduced in the U.S Senate during the 103 session of Congress (1993-1994). This totals 79 documents ( with multiple versions for many of these documents). You should download the zip archive, save it somewhere you can find it and then extract it to a folder so you can take a look and use it in this example.Before we do anything else though, we need to load the SpeedReader package:
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Start by loading the package:
+library(SpeedReader)
+```
+I am going to start out by providing an input directory containing the 79 documents, and making comparisons between all of them:
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# First, we will want to set our working directory to folder where all of the 
+# bill text is located. For me, this looks like:
+directory <- "~/Desktop/Bill_Data"
+# but it will likely be different for you. It is a good idea to save this path
+# as a separate string, as we will need to provide it to the 
+# document_similarities() function later. Now we can go ahead and set out 
+# directory:
+setwd(directory)
+
+# Once we have done that, we will want to get a list of all files contained in
+# this directory. Alternatively you can create this character vector of file
+# names manually, or read it in. The point is that we should be left with a
+# character vector containing all of the names of the .txt files associated
+# with all of the documents we want to compare, and no other file names. You
+# will want to double check this vector is correct.
+files <- list.files()
+```
+Now that we have our list of files, and the directory where they live, we can give this information to the `document_similarities()` function so that it can calculate similarities for us. We will need to specify the `filenames` and `input_directory` fields, and then we can set the ngram size on which we want to compare the documents. for text without stopwords removed, I like to use a number between 5 and 10, but you will have to play around with this and look at the output to find a number that works best for your corpus. I am also setting parallel to FALSE, and selecting `prehash = TRUE`. In general, it is preferable to set `prehash = TRUE`, as this will dramatically speed up computation, but this will also use more RAM, so in cases where you are dealing with a very large number of documents, you may want to set it to FALSE if you are running out of RAM (however, this will make the comparisons take much longer). Using the arguments shown below, we will make all pairwise comparisons between att 79 documents (3,081). On my Mac laptop, this takes about 30 seconds on 1 core:
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+results <- document_similarities(filenames = files,
+                                 input_directory = directory,
+                                 ngram_size = 5,
+                                 parallel = FALSE,
+                                 prehash = T)
+```
+What gets returned to us is a data.frame with with 3,081 rows, and 41 columns. Looking all the way to the last four columns, we see `doc_1_ind` and `doc_2_ind` columns, and `doc_1_file` and `doc_2_file` columns. The "ind" columns tell us which two input files were being compared by referencing their positions in the `files` character vector. The "file" columns give us the actual file names, which can be quite useful for linking back up to other metadata. You will see that there are a number of other columns that reference "v1" and "v2", and these refer to `doc_1` and `doc_2` respectively. Furthermore, whenever "addition" is referenced, this has to do with text that is in the "v2" or `doc_2` document that was not found in the "v1" (`doc_1`) document. Similarly whenever "deletion" is referenced, this has to do with text that is in the "v1" or `doc_1` document that was not found in the "v2" (`doc_2`) document. Alternatively, if we had the documents already read into R as a character vector (one entry per document), then we could have just used the `documents` argument. There is an example of this method below (using a builtin version of the same data). Note that this is often more unwieldy, unless you were provided with the data as a document vector.
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Load in the Congressional Bills:
+data("congress_bills")
+
+# Generate similarity metrics:
+results <- document_similarities(documents = congress_bills,
+                                 ngram_size = 5,
+                                 parallel = FALSE,
+                                 prehash = T)
+```
+Note that if we run this version of the code, we will get back a data.frame with two fewer columns, as the last two columns (containing the file names) are no longer necessary.
+
+Finally, we may want to only run our code for a subset of document comparisons. In our example data, we may only want to compare versions of the same document. To do so, we will need to make use of the `doc_pairs` argument. 
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Get the filenames:
+directory <- "~/Desktop/Bill_Data"
+setwd(directory)
+files <- list.files()
+
+# Break them apart into their constituent parts and form a data.frame:
+metadata <- data.frame(chamber = rep("",length(files)),
+                       bill = rep("",length(files)),
+                       version = rep("",length(files)),
+                       stringsAsFactors = FALSE)
+# Generate the metadata:
+for (i in 1:length(files)) {
+    # split up the file names:
+    temp <- stringr::str_split(files[i],"(-|\\.)")[[1]]
+    # save the relevant parts:
+    metadata[i,] <- temp[2:4]
+}
+
+# Now find all document pairs:
+doc_pairs <- NULL
+# Start with the 20 HR bills:
+for (i in 1:20) {
+    cur <- which(metadata$chamber == "HR" & metadata$bill == i)
+    
+    if (length(cur) > 1) {
+        temp <- t(combn(cur,2))
+        doc_pairs <- rbind(doc_pairs,temp)
+    } 
+}
+
+# Move on to the 21 S bills:
+for (i in 1:21) {
+    cur <- which(metadata$chamber == "S" & metadata$bill == i)
+    if (length(cur) > 1) {
+        temp <- t(combn(cur,2))
+        doc_pairs <- rbind(doc_pairs,temp)
+    } 
+}
+
+
+# Generate similarity metrics:
+results <- document_similarities(filenames = files,
+                                 input_directory = directory,
+                                 doc_pairs = doc_pairs,
+                                 ngram_size = 5,
+                                 parallel = FALSE,
+                                 prehash = T)
+```
+As you will see, this only generates 77 comparisons, corresponding only to comparisons between two versions of the same bill. A similar approach to the code shown in this exmple can be applied to other corpora, with the appropriate modifications to the code.
+
+In addition to the basic functionality shown above, there are a couple of other options to keep in mind with the `document_similarities()` function. The first of these are the `parallel` and `cores` arguments. When ``parallel = TRUE`, the `cores` argument can be used to specify the number of concurrent processes running to compare documents. This will produce a near linear speedup in the number of cores used (10 times as many cores means it will run in 1/10th the time). However, it is important to note that RAM use will also increase with the number of cores used (using 10 cores can use up to 10 times the RAM). However, this can be a great way to speed things up. One way to control the amount of RAM needed is to specify the `max_block_size` argument, which only lets each parallel process work on up to `max_block_size` number of comparisons at a time. If the `output_directory` argument is specified (highly recommended for large jobs), then when each parallel process is done with its current block of comparisons, it will save those results to disk in the specified directory. This can be a great way to save your work as you go, and use less RAM overall for large numbers of comparisons (especially more than 50 million or so).
+
+With all this said, we still need to go over what all of the column names mean in the data.frame that gets returned from this function. For illustration purposes, we are going to use two other functions included in the package that allow us to plot where in these two document versions there are matches and mismatches. In this example, the `ngram_sequnce_plot()` function shows us which overlapping 5-grams in 103-HR-5-EH have a match in 103-HR-5-IH. All of the blocks shaded blue (blocks each represent a 5-gram in this example, and go from left to right and then down by row) had a match in the earlier version (IH), while all of the blocks shaded in orange did not have a match.
+```{r eval=TRUE, fig.width=7, fig.height=4, fig.align ='center'}
+# Load in the Congressional Bills:
+data("congress_bills")
+
+# Find the locations of overlapping n-gram matches and mismatches in the 
+# document pair.
+matches <- ngram_sequence_matching(congress_bills[29],
+                                   congress_bills[30],
+                                   ngram_size = 5)
+
+# Generate a plot of these matches and mismatches:
+ngram_sequnce_plot(matches,
+                   custom_title = "Example Comparison of 103-HR-5-IH and 103-HR-5-EH.")
+```
+
+
+
