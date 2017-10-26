@@ -9,6 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## VIGNETTE IS STILL UNDER CONSTRUCTION (10-25-17)
 SpeedReader is designed for high performance text processing and analysis in R. This vignette will go over much of the functionality  available in the package, and how to get the most out of SpeedReader. You can get the latest development version of SpeedReader on GitHub [here](https://github.com/matthewjdenny/SpeedReader). 
 
 ## Package Overview
