@@ -98,14 +98,14 @@ namespace mjd {
 
 
         double ag = 1 - (arma::mean(n_seq_2)/double(which_b_in_a.size()));
-        if (ag == 1) {
-            ag = 0;
-        }
+        // if (ag == 1) {
+        //     ag = 0;
+        // }
 
         double dg = 1 - (arma::mean(n_seq_1)/double(which_a_in_b.size()));
-        if (dg == 1) {
-            dg = 0;
-        }
+        // if (dg == 1) {
+        //     dg = 0;
+        // }
 
         double as = (arma::sum(n_seq_2)/double(which_b_in_a.size()));
         double ds = (arma::sum(n_seq_1)/double(which_a_in_b.size()));
