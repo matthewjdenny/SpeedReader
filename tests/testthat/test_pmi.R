@@ -47,9 +47,10 @@ test_that("That calculating pmi works", {
 
 
     test4 <- sparse_to_dense_matrix(test3$pmi_table)
-    test4[which(test4 == 0)] <- -Inf
+    temp <- sparse_to_dense_matrix(test2$pmi_table)
+    #test4[which(test4 == 0)] <- -Inf
     test4 <- round(test4,3)
-    test5 <- round(test2$pmi_table,3)
+    test5 <- round(temp,3)
     expect_equal(as.numeric(test4),as.numeric(test5))
 
 })
