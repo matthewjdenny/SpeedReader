@@ -131,6 +131,8 @@ feature_selection <- function(contingency_table,
                 cat2 <- cat2[-remove]
                 all_c <- all_classes[-remove]
                 column_indicies <- column_indicies[-remove]
+            } else {
+                all_c <- all_classes
             }
 
 
