@@ -44,9 +44,21 @@ in quanteda to make it ready for use with SpeedReader.
 
 ## From quanteda to SpeedReader
 
+For many of the analyses we may wish to conduct with SpeedReader, you will need to start with a document-term matrix (DTM). 
 
 
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Load in example data:
+data("congress_bills")
 
+# Use the quanteda::dfm function to generate a document-term matrix: 
+quanteda_dtm <- quanteda::dfm(congress_bills)
+
+# Convert to a slam::simple_triplet_matrix object:
+dtm <- convert_quanteda_to_slam(quanteda_dtm)
+
+
+```
 
 
 
