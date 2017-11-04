@@ -22,7 +22,8 @@ Imports:
     XML,
     coda,
     snowfall,
-	proxy
+	proxy,
+	quanteda
 Depends:
     R (>= 3.2.1)
 LinkingTo: BH,

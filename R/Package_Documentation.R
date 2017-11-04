@@ -32,6 +32,9 @@ NULL
 #' @importFrom utils download.file head read.delim read.table str write.table capture.output combn
 NULL
 
+#' @importFrom quanteda dfm
+NULL
+
 #' @useDynLib SpeedReader
 #' @importFrom Rcpp sourceCpp
 NULL
