@@ -53,7 +53,7 @@ contingency_table  <- function(metadata,
         if(length(variables_to_use) > ncol(metadata)){
             stop("You have specified more covariates than columns in metadata.")
         }
-        if(class(variables_to_use) == "numeric"){
+        if(class(variables_to_use) == "numeric" | class(variables_to_use) == "integer"){
             # we do not need to do anything
         }else if(class(variables_to_use) == "character"){
             # turn into indexes
@@ -94,19 +94,27 @@ contingency_table  <- function(metadata,
         Num_Categories = Num_Categories*length(unique_value_list[[i]])
     }
 
-    if(Vocab_Size*Num_Categories > 100000 & !force_dense){
+    if (Vocab_Size*Num_Categories > 100000 & !force_dense) {
         cat("Due to the large size of the contingency table, generating a sparse matrix...\n")
         contingency_table <- slam::simple_triplet_zero_matrix(
             ncol = Vocab_Size,
             nrow = Num_Categories)
-    }else{
-        contingency_table <- matrix(0,ncol = Vocab_Size,nrow = Num_Categories)
+    } else {
+        if (is_sparse_matrix) {
+            contingency_table <- slam::simple_triplet_zero_matrix(
+                ncol = Vocab_Size,
+                nrow = Num_Categories)
+        } else {
+            contingency_table <- matrix(0,
+                                        ncol = Vocab_Size,
+                                        nrow = Num_Categories)
+        }
     }
 
     cat("The contingency table has",Num_Categories,"rows and",Vocab_Size,"columns. \n")
 
     # if we have a multivariate contingency table
-    if(NUM_VARS > 1){
+    if (NUM_VARS > 1) {
         #now generate facotrial category names and lookup talbe
         times_repeat <- rep(1,NUM_VARS)
         for(i in 1:(NUM_VARS-1)){
@@ -135,14 +143,13 @@ contingency_table  <- function(metadata,
         for(i in 1:Num_Categories){
             Cateogry_Names[i] <- paste0(Category_Combination_Lookup[i,],collapse = "_")
         }
-    }#end_multivariate
-
+    }
 
     cat("Compiling Contingency Table...\n")
     document_index_list <- vector(mode = "list",length = Num_Categories)
 
     #populate contingency tables
-    if(NUM_VARS == 1){
+    if (NUM_VARS == 1) {
         unique_values <- unique_value_list[[1]]
         Cateogry_Names <- unique_values
         for(i in 1:Num_Categories){
