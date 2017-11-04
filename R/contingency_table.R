@@ -100,7 +100,7 @@ contingency_table  <- function(metadata,
             ncol = Vocab_Size,
             nrow = Num_Categories)
     } else {
-        if (is_sparse_matrix) {
+        if (is_sparse_matrix & !force_dense) {
             contingency_table <- slam::simple_triplet_zero_matrix(
                 ncol = Vocab_Size,
                 nrow = Num_Categories)
@@ -157,14 +157,19 @@ contingency_table  <- function(metadata,
             indexes <- which(metadata[,variables_to_use] == unique_values[i])
             cur <- document_term_matrix[indexes,]
             if (is_sparse_matrix) {
-                temp <- slam::col_sums(cur)
-                temp <- as.numeric(temp)
-                jinds <- as.integer( which(temp > 0))
-                v <- as.numeric(temp[jinds])
-                inds <- rep(i,length(jinds))
-                contingency_table$i <-  c(contingency_table$i,inds)
-                contingency_table$j <-  c(contingency_table$j,jinds)
-                contingency_table$v <-  c(contingency_table$v,v)
+                if (force_dense) {
+                    temp <- slam::col_sums(cur)
+                    contingency_table[i,] <- as.numeric(temp)
+                } else {
+                    temp <- slam::col_sums(cur)
+                    temp <- as.numeric(temp)
+                    jinds <- as.integer( which(temp > 0))
+                    v <- as.numeric(temp[jinds])
+                    inds <- rep(i,length(jinds))
+                    contingency_table$i <-  c(contingency_table$i,inds)
+                    contingency_table$j <-  c(contingency_table$j,jinds)
+                    contingency_table$v <-  c(contingency_table$v,v)
+                }
             } else {
                 contingency_table[i,] <- colSums(cur)
             }
