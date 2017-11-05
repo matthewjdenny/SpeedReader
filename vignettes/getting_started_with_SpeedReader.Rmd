@@ -167,7 +167,18 @@ As you will see, this only generates 77 comparisons, corresponding only to compa
 
 In addition to the basic functionality shown above, there are a couple of other options to keep in mind with the `document_similarities()` function. The first of these is the `cores` argument. When the `cores` argument is set to greater than 1, the document comparisons will be parallelized. This will produce a near linear speedup in the number of cores used (10 times as many cores means it will run in roughly 1/10th the time). However, it is important to note that RAM use will also increase with the number of cores used (using 10 cores can use up to 10 times the RAM). However, this can be a great way to speed things up. One way to control the amount of RAM needed is to specify the `max_block_size` argument, which only lets each parallel process work on up to `max_block_size` number of comparisons at a time. If the `output_directory` argument is specified (highly recommended for large jobs), then when each parallel process is done with its current block of comparisons, it will save those results to disk in the specified directory. This can be a great way to save your work as you go, and use less RAM overall for large numbers of comparisons (especially more than 50 million or so).
 
-Another option is to have SpeedReader automatically chunk up your document comparisons so that you can run pairwise comparisons between a very large number of documents. Note that the options described below are only applicable if you want to compare each document to all other documents, otherwise, see the approach above. Immagine that you have a directory full of documents as in the first example in this section (the same logic applies to a large cahracter vector full of documents). The bit of code illustrated below will perform all pairwise comparisons among these documents in chunks of 10,000 at a time, in parallel on 40 cores. The way we do this is to use the `document_block_size` argument. Comparing about 10,000 documents at a time is about the largest number of comparisons you will want to do, as this will result in chunks of 50-100 million comparisons at a time. With documents containing a few thousand words on average, this code should use about 200GB of RAM running on 40 cores. This is a lot of memory, but in my testing on a twin 10-core Xeon E5-2690v2 Ivy Bridge (3.00 GHz) workstation, this setup will do about 10 billion pairwise comparisons a day, which allows one to work with hundreds of thousands of documents. This can be accomplished with the following snippet of code:
+Another option for reducing the size of the output data is to impose a unigram similarity threshold on the document similarity statistics that get returned by `document_similarities()`. By specifying the `unigram_similarity_threshold` argument (to a number between 0 and 1), the user can only perform the full similarity calculations for document pairs where more than the specified proportion of the n-grams in at least one of them have a match in the other. Selecting a threshold of 0.8, for example, will often reduce the number of comparisons returned by over 99 percent. See the code below:
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Load in the Congressional Bills:
+data("congress_bills")
+
+# Generate similarity metrics:
+results <- document_similarities(documents = congress_bills,
+                                 ngram_size = 5,
+                                 prehash = T,
+                                 unigram_similarity_threshold = 0.8)
+```
+A further option is to have SpeedReader automatically chunk up your document comparisons so that you can run pairwise comparisons between a very large number of documents. Note that the options described below are only applicable if you want to compare each document to all other documents, otherwise, see the approach above. Immagine that you have a directory full of documents as in the first example in this section (the same logic applies to a large cahracter vector full of documents). The bit of code illustrated below will perform all pairwise comparisons among these documents in chunks of 10,000 at a time, in parallel on 40 cores. The way we do this is to use the `document_block_size` argument. Comparing about 10,000 documents at a time is about the largest number of comparisons you will want to do, as this will result in chunks of 50-100 million comparisons at a time. With documents containing a few thousand words on average, this code should use about 200GB of RAM running on 40 cores. This is a lot of memory, but in my testing on a twin 10-core Xeon E5-2690v2 Ivy Bridge (3.00 GHz) workstation, this setup will do about 10 billion pairwise comparisons a day, which allows one to work with hundreds of thousands of documents. This can be accomplished with the following snippet of code:
 
 ```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
 # Give the file path to a folder full of .txt files to be compared:
@@ -182,13 +193,11 @@ results <- document_similarities(
     cores = 40,
     prehash = TRUE,
     document_block_size = 10000,
-    add_ngram_comparisons = NULL)
+    unigram_similarity_threshold = 0.8)
 ```
-The nice thing about this chunking approach is that it allows one to work with a huge number of comparisons efficiently. With access to enough cores and RAM, this method could theoretically be applied to all pairwise comparisons between several million documents. The results are then saved in many separate .RData files (each containing a ~100 million by ~40 data frame). This can make loading in the results on your laptop more feasible, and get around the 2.2 billion row limit on data.frames in R.
+The nice thing about this chunking approach is that it allows one to work with a huge number of comparisons efficiently. With access to enough cores and RAM, this method could theoretically be applied to all pairwise comparisons between several million documents. The results are then saved in many separate .RData files (each containing some fraction of the ~100 million observations that met the 80 percent unigram similarity threshold). This can make loading in the results on your laptop more feasible, and get around the 2.2 billion row limit on data.frames in R. 
 
-
-
-
+The final useful argument to the `document_similarities()` function is the `add_ngram_comparisons` argument. This argument allows the user to append additional n-gram comparison statistics to the data.frame returned by the function.  
 
 ```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
 # Load in the Congressional Bills:
@@ -200,7 +209,6 @@ results <- document_similarities(documents = congress_bills,
                                  prehash = T,
                                  add_ngram_comparisons = c(1,2,3,10,20))
 ```
-
 
 With all this said, we still need to go over what all of the column names mean in the data.frame that gets returned from this function. For illustration purposes, we are going to use two other functions included in the package that allow us to plot where in these two document versions there are matches and mismatches. In this example, the `ngram_sequnce_plot()` function shows us which overlapping 5-grams in 103-HR-5-EH have a match in 103-HR-5-IH. All of the blocks shaded blue (blocks each represent a 5-gram in this example, and go from left to right and then down by row) had a match in the earlier version (IH), while all of the blocks shaded in orange did not have a match.
 ```{r eval=TRUE, fig.width=7, fig.height=4, fig.align ='center'}
