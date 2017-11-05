@@ -6,8 +6,8 @@
 \usage{
 document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
-  doc_pairs = NULL, parallel = TRUE, cores = 1, max_block_size = NULL,
-  prehash = FALSE, ngram_match_only = FALSE, document_block_size = NULL,
+  doc_pairs = NULL, cores = 1, max_block_size = NULL, prehash = FALSE,
+  ngram_match_only = FALSE, document_block_size = NULL,
   add_ngram_comparisons = NULL)
 }
 \arguments{
@@ -33,9 +33,6 @@ will be automatically generated to include all pairs but, can be user
 specified if only a subset of pairs are desired. If providing filenames, it
 is also possible to use the filenames to generate this matrix, but this will
 provide slower performance.}
-
-\item{parallel}{Logical indicating whether parallelization should be used.
-Defaults to FALSE.}
 
 \item{cores}{The number of cores to be used for parallelization. Defaults to
 1 but can be any number less than or equal to the number of logical cores

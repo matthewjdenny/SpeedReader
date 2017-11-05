@@ -19,8 +19,6 @@
 #' specified if only a subset of pairs are desired. If providing filenames, it
 #' is also possible to use the filenames to generate this matrix, but this will
 #' provide slower performance.
-#' @param parallel Logical indicating whether parallelization should be used.
-#' Defaults to FALSE.
 #' @param cores The number of cores to be used for parallelization. Defaults to
 #' 1 but can be any number less than or equal to the number of logical cores
 #' available on your computer.
@@ -55,7 +53,6 @@ document_similarities <- function(filenames = NULL,
                                   ngram_size = 10,
                                   output_directory = NULL,
                                   doc_pairs = NULL,
-                                  parallel = TRUE,
                                   cores = 1,
                                   max_block_size = NULL,
                                   prehash = FALSE,
@@ -65,6 +62,11 @@ document_similarities <- function(filenames = NULL,
 
     # start timing
     ptm <- proc.time()
+
+    parallel <- FALSE
+    if (cores > 1) {
+        parallel <- TRUE
+    }
 
     # check the input parameters
     if (is.null(filenames) & is.null(documents)) {
@@ -144,9 +146,14 @@ document_similarities <- function(filenames = NULL,
                     strt <- ((l - 1) * document_block_size) + 1
                     nd <- min(l * document_block_size, num_docs)
                     second_chunk <- strt:nd
-                    comps <- data.frame(expand.grid(list(first = first_chunk,
-                                                         second = second_chunk)))
-                    comps <- as.matrix(comps)
+                    comps2 <- data.frame(expand.grid(list(first = first_chunk,
+                                                          second = second_chunk)))
+                    comps2 <- as.matrix(comps2)
+                    # need to do a column switch so the right document is first
+                    comps <- comps2
+                    comps[,1] <- comps2[,2]
+                    comps[,2] <- comps2[,1]
+
                 }
 
                 # now run the comparison:
@@ -157,7 +164,6 @@ document_similarities <- function(filenames = NULL,
                     ngram_size = ngram_size,
                     output_directory = NULL, #set to null as we want to return to this process.
                     doc_pairs = comps, # use the current doc pairs
-                    parallel = parallel,
                     cores = cores,
                     max_block_size = max_block_size,
                     prehash = prehash,
