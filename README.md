@@ -1,23 +1,23 @@
 # SpeedReader [![Travis-CI Build Status](https://travis-ci.org/matthewjdenny/SpeedReader.svg?branch=master)](https://travis-ci.org/matthewjdenny/SpeedReader)
-An R package that provides functions to facilitate high performance text processing in R.
+An R package that provides functions to facilitate high performance text analysis in R.
 
 ## Overview
 This package provides a number of functions to:
 
-  * Read in and clean text data.
-  * Preprocess it using R functions to remove stopwords and other undesireable text.
-  * Run your text through Stanford's CoreNLP libraries to POS tag it and find named entities.
-  * Count terms.
-  * Generate sparse document term matrices at scale, particularly in a memory constrained environment.
-  * Perform analyses including PMI, TF-IDF and topic modeling using MALLET. 
-  * Efficiently compare doucments using sequence-based metrics.
-  * Implements the informed Dirichlet model from Monroe et al. (2008), along with publication quality funnel plots.
+  * A front end for Stanford's CoreNLP libraries for POS tagging and finding named entities.
+  * Term-category association analyses including PMI and TF-IDF, with various forms of weighting.
+  * A front end for topic modeling using MALLET, that also reads the results back into R and presents them in a series of data.frames. 
+  * A set of methods to compare documents and document versions using sequences of n-grams, and ensembles of Dice coefficients.
+  * An implementation of the informed Dirichlet model from Monroe et al. (2008), along with publication quality funnel plots.
+  * Functions for forming complex contingency tables.
+  * Functions of displaying text in LaTeX tables.
+  * Functionality to read in a preprocess text data into a document-term matrix.
 
 The unifying theme of these functions is that they are designed to be easy
 to use, and to operate on up to tens of billions of tokens over hundreds of millions of 
 documents without requiring a massive map-reduce cluster with terabytes of RAM. I have decided
 to produce an R package since these are functions I use quite frequently andthey have been replicated
-in several projects.
+in several projects. **Check out the early version of the package vignette, [avialable here!](http://www.mjdenny.com/getting_started_with_SpeedReader.html)**
 
 ## Installation
 
