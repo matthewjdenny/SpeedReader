@@ -1,13 +1,12 @@
 Package: SpeedReader
 Type: Package
-Title: High Performance Text Processing Libraries
-Version: 0.8.0
-Date: 2017-10-25
+Title: High Performance Text Analysis
+Version: 0.8.1
+Date: 2017-11-04
 Author: Matthew J. Denny <mdenny@psu.edu>
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
-Description: A suite of functions for processing large scale text corpora into
-    formats that are useful for analysis, and for performing some analyses at scale
-    via efficient implementations.
+Description: A suite of functions for performing text analysis at scale. 
+	Wraps CoreNLP and Mallet libraries (unix/linux only).
 URL: https://github.com/matthewjdenny/SpeedReader
 License: GPL-3
 Imports:
