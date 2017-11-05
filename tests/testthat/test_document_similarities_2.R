@@ -40,3 +40,20 @@ test_that("That adding n-grams works", {
 
 })
 
+test_that("That unigram similarity threshold works", {
+    skip("this is just to check")
+
+    data("congress_bills")
+
+    # Generate similarity metrics:
+    results <- document_similarities(documents = congress_bills,
+                                     ngram_size = 1,
+                                     prehash = T,
+                                     unigram_similarity_threshold = 0.9,
+                                     add_ngram_comparisons = c(1))
+
+
+})
+
+
+
