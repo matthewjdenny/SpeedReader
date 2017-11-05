@@ -45,6 +45,14 @@
 #' numeric vector containing n-gram sizes on which to compare documents. If this
 #' argument is provided, then a_in_b and b_in_a comparisons will be appended to
 #' the output for each n-gram size.
+#' @param unigram_similarity_threshold Defaults to NULL. If not NULL, can be any
+#' number greater than 0 and less than 1. This argument allows the user to first
+#' filter potential document comparisons to those where atleast one of the
+#' documents contains more than unigram_similarity_threshold proportion of the
+#' unigrams in the other version. So for example if this argument were set to
+#' 0.8, then only those documents with a unigram similarity of 0.8 would be
+#' given a full comparison. This approach is particularly useful if one is
+#' looking for very similar documents, such as hitchhiker bills.
 #' @return A data.frame or NULL if output_directory is not NULL.
 #' @export
 document_similarities <- function(filenames = NULL,
@@ -58,7 +66,8 @@ document_similarities <- function(filenames = NULL,
                                   prehash = FALSE,
                                   ngram_match_only = FALSE,
                                   document_block_size = NULL,
-                                  add_ngram_comparisons = NULL) {
+                                  add_ngram_comparisons = NULL,
+                                  unigram_similarity_threshold = NULL) {
 
     # start timing
     ptm <- proc.time()
@@ -79,6 +88,19 @@ document_similarities <- function(filenames = NULL,
 
     if (!is.null(filenames) & is.null(input_directory)) {
         stop("If filenames is non-null, input_directory must be non-null ...")
+    }
+
+    if (!is.null(unigram_similarity_threshold)) {
+        if (!is.numeric(unigram_similarity_threshold)) {
+            stop("unigram_similarity_threshold must be a number between 0 and 1!" )
+        }
+        if (unigram_similarity_threshold >= 1 | unigram_similarity_threshold <= 0 ) {
+            stop("unigram_similarity_threshold must be a number between 0 and 1!" )
+        }
+        if (!prehash) {
+            prehash <- TRUE
+            cat("Because unigram_similarity_threshold was set, setting prehash = TRUE.\n")
+        }
     }
 
     # make sure that these are numeric and rounded:
@@ -169,7 +191,8 @@ document_similarities <- function(filenames = NULL,
                     prehash = prehash,
                     ngram_match_only = ngram_match_only,
                     document_block_size = NULL,
-                    add_ngram_comparisons = add_ngram_comparisons)
+                    add_ngram_comparisons = add_ngram_comparisons,
+                    unigram_similarity_threshold = unigram_similarity_threshold)
 
                 # now either rbind the results or
                 if (is.null(output_directory)) {
@@ -265,19 +288,21 @@ document_similarities <- function(filenames = NULL,
             # initializes snowfall session
             cl <- parallel::makeCluster(getOption("cl.cores", cores))
 
-            results <- parallel::clusterApplyLB(cl = cl,
-                                                x = vec,
-                                                fun = parallel_sequence_matching,
-                                                start_stop_lookup = start_stop_lookup,
-                                                input_directory = input_directory,
-                                                filenames = filenames,
-                                                doc_pairs = doc_pairs,
-                                                ngram_size = ngram_size,
-                                                output_directory = output_directory,
-                                                documents = documents,
-                                                prehash = prehash,
-                                                ngram_match_only = ngram_match_only,
-                                                add_ngram_comparisons = add_ngram_comparisons)
+            results <- parallel::clusterApplyLB(
+                cl = cl,
+                x = vec,
+                fun = parallel_sequence_matching,
+                start_stop_lookup = start_stop_lookup,
+                input_directory = input_directory,
+                filenames = filenames,
+                doc_pairs = doc_pairs,
+                ngram_size = ngram_size,
+                output_directory = output_directory,
+                documents = documents,
+                prehash = prehash,
+                ngram_match_only = ngram_match_only,
+                add_ngram_comparisons = add_ngram_comparisons,
+                unigram_similarity_threshold = unigram_similarity_threshold)
 
             # stop the cluster when we are done
             parallel::stopCluster(cl)
@@ -306,7 +331,8 @@ document_similarities <- function(filenames = NULL,
                                                    documents,
                                                    prehash,
                                                    ngram_match_only,
-                                                   add_ngram_comparisons)
+                                                   add_ngram_comparisons,
+                                                   unigram_similarity_threshold)
                 ret <- rbind(ret,temp)
             }
 

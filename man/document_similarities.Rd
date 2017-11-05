@@ -8,7 +8,7 @@ document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
   doc_pairs = NULL, cores = 1, max_block_size = NULL, prehash = FALSE,
   ngram_match_only = FALSE, document_block_size = NULL,
-  add_ngram_comparisons = NULL)
+  add_ngram_comparisons = NULL, unigram_similarity_threshold = NULL)
 }
 \arguments{
 \item{filenames}{An optional character vector of filenames (with .txt
@@ -65,6 +65,15 @@ too large to hold in memory). Defaults to NULL.}
 numeric vector containing n-gram sizes on which to compare documents. If this
 argument is provided, then a_in_b and b_in_a comparisons will be appended to
 the output for each n-gram size.}
+
+\item{unigram_similarity_threshold}{Defaults to NULL. If not NULL, can be any
+number greater than 0 and less than 1. This argument allows the user to first
+filter potential document comparisons to those where atleast one of the
+documents contains more than unigram_similarity_threshold proportion of the
+unigrams in the other version. So for example if this argument were set to
+0.8, then only those documents with a unigram similarity of 0.8 would be
+given a full comparison. This approach is particularly useful if one is
+looking for very similar documents, such as hitchhiker bills.}
 }
 \value{
 A data.frame or NULL if output_directory is not NULL.
