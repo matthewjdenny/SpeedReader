@@ -100,7 +100,6 @@ Now that we have our list of files, and the directory where they live, we can gi
 results <- document_similarities(filenames = files,
                                  input_directory = directory,
                                  ngram_size = 5,
-                                 parallel = FALSE,
                                  prehash = T)
 ```
 What gets returned to us is a data.frame with with 3,081 rows, and 41 columns. Looking all the way to the last four columns, we see `doc_1_ind` and `doc_2_ind` columns, and `doc_1_file` and `doc_2_file` columns. The "ind" columns tell us which two input files were being compared by referencing their positions in the `files` character vector. The "file" columns give us the actual file names, which can be quite useful for linking back up to other metadata. You will see that there are a number of other columns that reference "v1" and "v2", and these refer to `doc_1` and `doc_2` respectively. Furthermore, whenever "addition" is referenced, this has to do with text that is in the "v2" or `doc_2` document that was not found in the "v1" (`doc_1`) document. Similarly whenever "deletion" is referenced, this has to do with text that is in the "v1" or `doc_1` document that was not found in the "v2" (`doc_2`) document. Alternatively, if we had the documents already read into R as a character vector (one entry per document), then we could have just used the `documents` argument. There is an example of this method below (using a builtin version of the same data). Note that this is often more unwieldy, unless you were provided with the data as a document vector.
@@ -111,12 +110,11 @@ data("congress_bills")
 # Generate similarity metrics:
 results <- document_similarities(documents = congress_bills,
                                  ngram_size = 5,
-                                 parallel = FALSE,
                                  prehash = T)
 ```
 Note that if we run this version of the code, we will get back a data.frame with two fewer columns, as the last two columns (containing the file names) are no longer necessary.
 
-Finally, we may want to only run our code for a subset of document comparisons. In our example data, we may only want to compare versions of the same document. To do so, we will need to make use of the `doc_pairs` argument. 
+Additionally, we may want to only run our code for a subset of document comparisons. In our example data, we may only want to compare versions of the same document. To do so, we will need to make use of the `doc_pairs` argument. 
 ```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
 # Get the filenames:
 directory <- "~/Desktop/Bill_Data"
@@ -163,12 +161,46 @@ results <- document_similarities(filenames = files,
                                  input_directory = directory,
                                  doc_pairs = doc_pairs,
                                  ngram_size = 5,
-                                 parallel = FALSE,
                                  prehash = T)
 ```
 As you will see, this only generates 77 comparisons, corresponding only to comparisons between two versions of the same bill. A similar approach to the code shown in this example can be applied to other corpora, with the appropriate modifications to the code.
 
-In addition to the basic functionality shown above, there are a couple of other options to keep in mind with the `document_similarities()` function. The first of these are the `parallel` and `cores` arguments. When ``parallel = TRUE`, the `cores` argument can be used to specify the number of concurrent processes running to compare documents. This will produce a near linear speedup in the number of cores used (10 times as many cores means it will run in 1/10th the time). However, it is important to note that RAM use will also increase with the number of cores used (using 10 cores can use up to 10 times the RAM). However, this can be a great way to speed things up. One way to control the amount of RAM needed is to specify the `max_block_size` argument, which only lets each parallel process work on up to `max_block_size` number of comparisons at a time. If the `output_directory` argument is specified (highly recommended for large jobs), then when each parallel process is done with its current block of comparisons, it will save those results to disk in the specified directory. This can be a great way to save your work as you go, and use less RAM overall for large numbers of comparisons (especially more than 50 million or so).
+In addition to the basic functionality shown above, there are a couple of other options to keep in mind with the `document_similarities()` function. The first of these is the `cores` argument. When the `cores` argument is set to greater than 1, the document comparisons will be parallelized. This will produce a near linear speedup in the number of cores used (10 times as many cores means it will run in roughly 1/10th the time). However, it is important to note that RAM use will also increase with the number of cores used (using 10 cores can use up to 10 times the RAM). However, this can be a great way to speed things up. One way to control the amount of RAM needed is to specify the `max_block_size` argument, which only lets each parallel process work on up to `max_block_size` number of comparisons at a time. If the `output_directory` argument is specified (highly recommended for large jobs), then when each parallel process is done with its current block of comparisons, it will save those results to disk in the specified directory. This can be a great way to save your work as you go, and use less RAM overall for large numbers of comparisons (especially more than 50 million or so).
+
+Another option is to have SpeedReader automatically chunk up your document comparisons so that you can run pairwise comparisons between a very large number of documents. Note that the options described below are only applicable if you want to compare each document to all other documents, otherwise, see the approach above. Immagine that you have a directory full of documents as in the first example in this section (the same logic applies to a large cahracter vector full of documents). The bit of code illustrated below will perform all pairwise comparisons among these documents in chunks of 10,000 at a time, in parallel on 40 cores. The way we do this is to use the `document_block_size` argument. Comparing about 10,000 documents at a time is about the largest number of comparisons you will want to do, as this will result in chunks of 50-100 million comparisons at a time. With documents containing a few thousand words on average, this code should use about 200GB of RAM running on 40 cores. This is a lot of memory, but in my testing on a twin 10-core Xeon E5-2690v2 Ivy Bridge (3.00 GHz) workstation, this setup will do about 10 billion pairwise comparisons a day, which allows one to work with hundreds of thousands of documents. This can be accomplished with the following snippet of code:
+
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Give the file path to a folder full of .txt files to be compared:
+
+# Now generate comparison metrics, which will be stored in output_directory in
+# .RData files.
+results <- document_similarities(
+    filenames = lots_of_files,
+    input_directory = path_to_files,
+    ngram_size = 5,
+    output_directory = place_to_store_intermediate_results,
+    cores = 40,
+    prehash = TRUE,
+    document_block_size = 10000,
+    add_ngram_comparisons = NULL)
+```
+The nice thing about this chunking approach is that it allows one to work with a huge number of comparisons efficiently. With access to enough cores and RAM, this method could theoretically be applied to all pairwise comparisons between several million documents. The results are then saved in many separate .RData files (each containing a ~100 million by ~40 data frame). This can make loading in the results on your laptop more feasible, and get around the 2.2 billion row limit on data.frames in R.
+
+
+
+
+
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# Load in the Congressional Bills:
+data("congress_bills")
+
+# Generate similarity metrics:
+results <- document_similarities(documents = congress_bills,
+                                 ngram_size = 5,
+                                 prehash = T,
+                                 add_ngram_comparisons = c(1,2,3,10,20))
+```
+
 
 With all this said, we still need to go over what all of the column names mean in the data.frame that gets returned from this function. For illustration purposes, we are going to use two other functions included in the package that allow us to plot where in these two document versions there are matches and mismatches. In this example, the `ngram_sequnce_plot()` function shows us which overlapping 5-grams in 103-HR-5-EH have a match in 103-HR-5-IH. All of the blocks shaded blue (blocks each represent a 5-gram in this example, and go from left to right and then down by row) had a match in the earlier version (IH), while all of the blocks shaded in orange did not have a match.
 ```{r eval=TRUE, fig.width=7, fig.height=4, fig.align ='center'}
