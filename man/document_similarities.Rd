@@ -7,7 +7,8 @@
 document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
   doc_pairs = NULL, parallel = TRUE, cores = 1, max_block_size = NULL,
-  prehash = FALSE, ngram_match_only = FALSE)
+  prehash = FALSE, ngram_match_only = FALSE, document_block_size = NULL,
+  add_ngram_comparisons = NULL)
 }
 \arguments{
 \item{filenames}{An optional character vector of filenames (with .txt
@@ -42,10 +43,10 @@ available on your computer.}
 
 \item{max_block_size}{Defaults to NULL, but can be set to an integer value
 indicating the maximum number of pairs to be compared in each parallel
-process. Can be usefull to limit the intermediate data.frame sizes. A maximum
+process. Can be useful to limit the intermediate data.frame sizes. A maximum
 of 10-50 million is suggested.}
 
-\item{prehash}{Logical which defaults to FALSE. If TRUE, then a prehashing
+\item{prehash}{Logical which defaults to FALSE. If TRUE, then a pre-hashing
 scheme is used which may greatly speed up computation but dramatically
 increase memory usage as well.}
 
@@ -53,6 +54,20 @@ increase memory usage as well.}
 of n-grams in version a that are also present in version b and vice-versa
 are calculated. Can be a useful first step when searching for near-exact
 matches.}
+
+\item{document_block_size}{Overrides other arguments, breaks up documents
+into `document_block_size` chunks to be compared. This argument is suggested
+if a large number of comparisons are to be completed. By only comparing
+subsets of documents at a time, the process is memory-optimized so that very
+large sets of documents can be compared. Automatically sets `prehash = TRUE`,
+`doc_pairs = NULL`, and suggests that `output_directory` be set (due to the
+large number of comparisons, it is likely the resulting data.frame will be
+too large to hold in memory). Defaults to NULL.}
+
+\item{add_ngram_comparisons}{Defaults to NULL, but can optionally be a
+numeric vector containing n-gram sizes on which to compare documents. If this
+argument is provided, then a_in_b and b_in_a comparisons will be appended to
+the output for each n-gram size.}
 }
 \value{
 A data.frame or NULL if output_directory is not NULL.
