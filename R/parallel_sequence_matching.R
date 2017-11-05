@@ -7,7 +7,8 @@ parallel_sequence_matching <- function(x,
                                        output_directory,
                                        documents,
                                        prehash,
-                                       ngram_match_only) {
+                                       ngram_match_only,
+                                       add_ngram_comparisons = NULL) {
 
     document_vector <- FALSE
     if (!is.null(documents[1])) {
@@ -235,6 +236,35 @@ parallel_sequence_matching <- function(x,
     if (!document_vector) {
         ret$doc_1_file <- filenames[doc_pairs[,1]]
         ret$doc_2_file <- filenames[doc_pairs[,2]]
+    }
+
+    # now if we want to tack on some n-gram comparisons:
+    if (!is.null(add_ngram_comparisons)) {
+        for (j in 1:length(add_ngram_comparisons)) {
+            cat("Adding n-gram comparison size:",add_ngram_comparisons[j],"\n")
+            results <- parallel_sequence_matching(x = x,
+                                                  start_stop_lookup = start_stop_lookup,
+                                                  input_directory = input_directory,
+                                                  filenames = filenames,
+                                                  doc_pairs = doc_pairs,
+                                                  ngram_size = ngram_size,
+                                                  output_directory = output_directory,
+                                                  documents = documents,
+                                                  prehash = prehash,
+                                                  ngram_match_only = TRUE,
+                                                  add_ngram_comparisons = NULL)
+
+            # get only the first two columns
+            results <- results[,1:2]
+            colnames(results) <- c(paste("ngram_",
+                                         add_ngram_comparisons[j],
+                                         "_prop_a_in_b",sep = ""),
+                                   paste("ngram_",
+                                         add_ngram_comparisons[j],
+                                         "_prop_b_in_a",sep = ""))
+
+            ret <- cbind(ret,results)
+        } # end of n-gram size loop.
     }
 
     # save or return
