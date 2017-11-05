@@ -8,7 +8,7 @@ test_that("make sure it handles weird cases", {
 
     str2 <- "One of the most common things we might want to do is"
 
-    str3<- "want to do is read in and clean a raw input text file. To do this, we will want to make use of two functions of"
+    str3 <- "want to do is read in and clean a raw input text file. To do this, we will want to make use of two functions of"
 
     str4 <- "One of the most common"
 
