@@ -2,7 +2,8 @@
 % Please edit documentation in R/contingency_table.R
 \name{contingency_table}
 \alias{contingency_table}
-\title{Generates a contingency table from user-specified document covariates and a document term matrix.}
+\title{Generates a contingency table from user-specified document covariates and a
+document term matrix.}
 \usage{
 contingency_table(metadata, document_term_matrix, vocabulary = NULL,
   variables_to_use = NULL, threshold = 0, force_dense = FALSE)
@@ -10,19 +11,29 @@ contingency_table(metadata, document_term_matrix, vocabulary = NULL,
 \arguments{
 \item{metadata}{A data.frame containing document covariates.}
 
-\item{document_term_matrix}{A documents x vocabulary matrix with counts of unique words in each document. Can be a dense or sparse matrix.}
+\item{document_term_matrix}{A documents x vocabulary matrix with counts of
+unique words in each document. Can be a dense or sparse matrix.}
 
-\item{vocabulary}{A character vector corresponding to the columns of the document word matrix. If NULL, the column names of doc_word_matrix will be used. Defaults to NULL.}
+\item{vocabulary}{A character vector corresponding to the columns of the
+document word matrix. If NULL, the column names of doc_word_matrix will be
+used. Defaults to NULL.}
 
-\item{variables_to_use}{Defaults to NULL in which case all columns of the metadata data frame will be used. Otherwise can be specified as a vector of column indexes or column names.}
+\item{variables_to_use}{Defaults to NULL in which case all columns of the
+metadata data frame will be used. Otherwise can be specified as a vector of
+column indexes or column names.}
 
-\item{threshold}{Defaults to 0, the number of times a unique value of a variable must appear in order to be included in the returned list object. Allows the user to ignore very infrequent values.}
+\item{threshold}{Defaults to 0, the number of times a unique value of a
+variable must appear in order to be included in the returned list object.
+Allows the user to ignore very infrequent values.}
 
-\item{force_dense}{Forces the contingency table returned to be a dense matrix. The function will automatically generate a sparse matrix contingency table if the contingency table would have more than 100,000 entries.}
+\item{force_dense}{Forces the contingency table returned to be a dense
+matrix. The function will automatically generate a sparse matrix contingency
+table if the contingency table would have more than 100,000 entries.}
 }
 \value{
 A contingency table.
 }
 \description{
-Generates a contingency table from user-specified document covariates and a document term matrix.
+Generates a contingency table from user-specified document covariates and a
+document term matrix.
 }
