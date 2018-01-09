@@ -51,6 +51,8 @@ feature_selection <- function(contingency_table,
         rows_to_compare <- 1:nrow(contingency_table)
     }
 
+    method <- method[1]
+
     if ((method == "TF-IDF" | method == "TF-IDF-log(tf)"| method ==
         "TF-IDF-augmented(tf)") & is.null(document_term_matrix)) {
         stop("You must provide a document_term_matrix if method == 'TF-IDF'")
@@ -344,5 +346,9 @@ feature_selection <- function(contingency_table,
         names(to_return) <- c(rownames(contingency_table)[rows_to_compare],
                               "Term_Ordering")
     }
+
+    # add in indicator for whether we are rank_by_log_odds
+    to_return$rank_by_log_odds <- rank_by_log_odds
+
     return(to_return)
 }
