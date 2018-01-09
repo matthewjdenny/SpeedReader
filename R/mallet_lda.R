@@ -24,6 +24,10 @@
 #' Defaults to '-Xmx10g', indicating 10GB of RAM will be allocated (at maximum).
 #' Users may increase this limit if they are working with an exceptionally large
 #' corpus.
+#' @param only_read_in Defaults to FALSE. If TRUE, then the function only
+#' attempts to read back in files from the completed MALLET run. This can be
+#' useful if there was an error reading back in the topic reports (usually
+#' due to some sort of weird symbols getting in).
 #' @return Returns a list object with the following fields: lda_trace_stats is a data frame reporting the beta hyperparameter value and model log likelihood per token every ten iterations, can be useful for assesing convergence; document_topic_proportions reports the document topic proportions for all topics; topic_metadata reports the alpha x basemeasure values for all topics, along with the total number of tokens assigned to each topic; topic_top_words reports the 'num_top_words' top words for each topic (in descending order); topic_top_word_counts reports the count of each top word in their respective topics; topic_top_phrases reports top phrases (as found post-hoc by MALLET) asscoiated with each topic; topic_top_phrase_counts reports the counts of these phrases in each topic.
 #' @examples
 #' \dontrun{
@@ -60,301 +64,310 @@ mallet_lda <- function(documents = NULL,
                        stopword_list = NULL,
                        cores = 1,
                        delete_intermediate_files = TRUE,
-                       memory = "-Xmx10g"){
+                       memory = "-Xmx10g",
+                       only_read_in = FALSE){
 
-    ###############################
-    #### Step 0: Preliminaries ####
-    ###############################
+    if (!only_read_in) {
+        ###############################
+        #### Step 0: Preliminaries ####
+        ###############################
 
-    #check to see that we have the selected version of corenlp installed
-    test1 <- system.file("extdata","mallet.jar", package = "SpeedReader")[1]
-    test2 <- system.file("extdata","mallet-deps.jar", package = "SpeedReader")[1]
+        #check to see that we have the selected version of corenlp installed
+        test1 <- system.file("extdata","mallet.jar", package = "SpeedReader")[1]
+        test2 <- system.file("extdata","mallet-deps.jar", package = "SpeedReader")[1]
 
-    if(test1 != "" & test2 != ""){
-        cat("Found MALLET JAR files...\n")
-    }else{
-        cat("MALLET Jar files not found, downloading...\n")
-        download_mallet()
-    }
+        if(test1 != "" & test2 != ""){
+            cat("Found MALLET JAR files...\n")
+        }else{
+            cat("MALLET Jar files not found, downloading...\n")
+            download_mallet()
+        }
 
-    if(hyperparameter_optimization_interval == 0 & is.null(vocabulary)){
-        stop("You must provide the vocabulary_size if you are not using hyperparameter optimization.")
-    }
+        if(hyperparameter_optimization_interval == 0 & is.null(vocabulary)){
+            stop("You must provide the vocabulary_size if you are not using hyperparameter optimization.")
+        }
 
-    if(hyperparameter_optimization_interval == 0){
-        beta <- beta * length(vocabulary)
-    }
+        if(hyperparameter_optimization_interval == 0){
+            beta <- beta * length(vocabulary)
+        }
 
-    if(burnin >= iterations){
-        burnin <- ceiling(iterations/2)
-        cat("Burnin selected was too large, setting burnin to:",burnin,"...\n")
-    }
+        if(burnin >= iterations){
+            burnin <- ceiling(iterations/2)
+            cat("Burnin selected was too large, setting burnin to:",burnin,"...\n")
+        }
 
-    # save the current working directory
-    currentwd <- getwd()
+        # save the current working directory
+        currentwd <- getwd()
 
-    USING_EXTERNAL_FILES <- FALSE
-    USING_CSV <- FALSE
-    #check to make sure that we have the right kind of input
-    if(!is.null(documents) & is.null(document_directory) & is.null(document_csv)){
-        if(class(documents) == "list" | class(documents) == "character"){
+        USING_EXTERNAL_FILES <- FALSE
+        USING_CSV <- FALSE
+        #check to make sure that we have the right kind of input
+        if(!is.null(documents) & is.null(document_directory) & is.null(document_csv)){
+            if(class(documents) == "list" | class(documents) == "character"){
 
-            if(class(documents) == "list"){
-                # deal with the case where we got a list of term vectors
-                temp <- rep("", length(documents))
-                for(i in 1:length(temp)){
-                    temp[i] <- paste0(documents[[i]],collapse = " ")
-                }
-                documents <- temp
-            }
-        }else if(class(documents) == "matrix"){
-            if(is.null(vocabulary)){
-                vocabulary <- colnames(documents)
-                cat("No vocabulary supplied, using column names of document term matrix...\n")
-            }
-            if(length(vocabulary) != ncol(documents)){
-                stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
-            }
-            vocabulary <- stringr::str_replace_all(vocabulary," ","_")
-
-            # optionally remove stopwords
-            if (!is.null(stopword_list)) {
-                remove <- which(vocabulary %in% stopword_list)
-                if (length(remove) > 0) {
-                    vocabulary <- vocabulary[-remove]
-                    documents <- documents[,-remove]
-                }
-            }
-
-            #populate a string vector of documents from dtm
-            cat("Populating document vector from document term matrix...\n")
-            printseq_counter <- 1
-            if(nrow(documents) > 9999){
-                printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
-            }else if(nrow(documents) > 199){
-                printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
-            }else{
-                printseq <- 1:nrow(documents)
-            }
-            temp_docs <- rep("",nrow(documents))
-            for(i in 1:length(temp_docs)){
-                if(printseq[printseq_counter] == i){
-                    cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
-                    printseq_counter <- printseq_counter +1
-                }
-                str <- NULL
-                colindexes <- which(documents[i,] > 0)
-                if(length(colindexes) > 0){
-                    for(k in 1:length(colindexes)){
-                        str <- c(str,
-                                 rep(vocabulary[colindexes[k]],
-                                     documents[i,colindexes[k]]))
+                if(class(documents) == "list"){
+                    # deal with the case where we got a list of term vectors
+                    temp <- rep("", length(documents))
+                    for(i in 1:length(temp)){
+                        temp[i] <- paste0(documents[[i]],collapse = " ")
                     }
-                    temp  <- paste0(str,collapse = " ")
+                    documents <- temp
+                }
+            }else if(class(documents) == "matrix"){
+                if(is.null(vocabulary)){
+                    vocabulary <- colnames(documents)
+                    cat("No vocabulary supplied, using column names of document term matrix...\n")
+                }
+                if(length(vocabulary) != ncol(documents)){
+                    stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
+                }
+                vocabulary <- stringr::str_replace_all(vocabulary," ","_")
+
+                # optionally remove stopwords
+                if (!is.null(stopword_list)) {
+                    remove <- which(vocabulary %in% stopword_list)
+                    if (length(remove) > 0) {
+                        vocabulary <- vocabulary[-remove]
+                        documents <- documents[,-remove]
+                    }
+                }
+
+                #populate a string vector of documents from dtm
+                cat("Populating document vector from document term matrix...\n")
+                printseq_counter <- 1
+                if(nrow(documents) > 9999){
+                    printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
+                }else if(nrow(documents) > 199){
+                    printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
                 }else{
-                    temp <- ""
+                    printseq <- 1:nrow(documents)
                 }
-                temp_docs[i] <- temp
-            }
-            documents <- temp_docs
-
-
-        } else if (class(documents) == "simple_triplet_matrix"){
-            if (is.null(vocabulary)){
-                vocabulary <- colnames(documents)
-                cat("No vocabulary supplied, using column names of document term matrix...\n")
-            }
-            if(length(vocabulary) != ncol(documents)){
-                stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
-            }
-            vocabulary <- stringr::str_replace_all(vocabulary," ","_")
-
-            # optionally remove stopwords
-            if (!is.null(stopword_list)) {
-                remove <- which(vocabulary %in% stopword_list)
-                if (length(remove) > 0) {
-                    vocabulary <- vocabulary[-remove]
-                    documents <- documents[,-remove]
-                }
-            }
-
-            cat("Making sure rows are properly ordered...\n")
-            ord <- order(documents$i,decreasing = FALSE)
-            documents$i <- documents$i[ord]
-            documents$j <- documents$j[ord]
-            documents$v <- documents$v[ord]
-
-            #populate a string vector of documents from dtm
-            cat("Populating document vector from document term matrix...\n")
-            printseq_counter <- 1
-            if (nrow(documents) > 9999){
-                printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
-            }else if(nrow(documents) > 199){
-                printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
-            }else{
-                printseq <- 1:nrow(documents)
-            }
-            temp_docs <- rep("",nrow(documents))
-
-            # we are going to loop through the document indices which we expect
-            # go up one at a time
-            start <- 1
-            stop <- 1
-            for(i in 1:length(temp_docs)){
-                if(printseq[printseq_counter] == i){
-                    cat(i,"/",length(temp_docs)," complete...\n",sep = "")
-                    printseq_counter <- printseq_counter +1
-                }
-                # if we are at less than the last document, do this
-                #
-                if (documents$i[stop] > i) {
-                    indexes <- NULL
-                } else {
-                    if (i < length(temp_docs)) {
-                        # precheck to deal with documents of length zero
-                        while (documents$i[stop] == i) {
-                            stop <- stop + 1
+                temp_docs <- rep("",nrow(documents))
+                for(i in 1:length(temp_docs)){
+                    if(printseq[printseq_counter] == i){
+                        cat(printseq_counter,"/",length(printseq)," complete...\n",sep = "")
+                        printseq_counter <- printseq_counter +1
+                    }
+                    str <- NULL
+                    colindexes <- which(documents[i,] > 0)
+                    if(length(colindexes) > 0){
+                        for(k in 1:length(colindexes)){
+                            str <- c(str,
+                                     rep(vocabulary[colindexes[k]],
+                                         documents[i,colindexes[k]]))
                         }
-                        indexes <- start:(stop - 1)
-                        start <- stop
+                        temp  <- paste0(str,collapse = " ")
+                    }else{
+                        temp <- ""
+                    }
+                    temp_docs[i] <- temp
+                }
+                documents <- temp_docs
+
+
+            } else if (class(documents) == "simple_triplet_matrix"){
+                if (is.null(vocabulary)){
+                    vocabulary <- colnames(documents)
+                    cat("No vocabulary supplied, using column names of document term matrix...\n")
+                }
+                if(length(vocabulary) != ncol(documents)){
+                    stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
+                }
+                vocabulary <- stringr::str_replace_all(vocabulary," ","_")
+
+                # optionally remove stopwords
+                if (!is.null(stopword_list)) {
+                    remove <- which(vocabulary %in% stopword_list)
+                    if (length(remove) > 0) {
+                        vocabulary <- vocabulary[-remove]
+                        documents <- documents[,-remove]
+                    }
+                }
+
+                cat("Making sure rows are properly ordered...\n")
+                ord <- order(documents$i,decreasing = FALSE)
+                documents$i <- documents$i[ord]
+                documents$j <- documents$j[ord]
+                documents$v <- documents$v[ord]
+
+                #populate a string vector of documents from dtm
+                cat("Populating document vector from document term matrix...\n")
+                printseq_counter <- 1
+                if (nrow(documents) > 9999){
+                    printseq <- round(seq(1,nrow(documents), length.out = 1001)[2:1001],0)
+                }else if(nrow(documents) > 199){
+                    printseq <- round(seq(1,nrow(documents), length.out = 101)[2:101],0)
+                }else{
+                    printseq <- 1:nrow(documents)
+                }
+                temp_docs <- rep("",nrow(documents))
+
+                # we are going to loop through the document indices which we expect
+                # go up one at a time
+                start <- 1
+                stop <- 1
+                for(i in 1:length(temp_docs)){
+                    if(printseq[printseq_counter] == i){
+                        cat(i,"/",length(temp_docs)," complete...\n",sep = "")
+                        printseq_counter <- printseq_counter +1
+                    }
+                    # if we are at less than the last document, do this
+                    #
+                    if (documents$i[stop] > i) {
+                        indexes <- NULL
                     } else {
-                        indexes <- start:length(documents$i)
-                    }
-                }
-                if (length(indexes) > 0) {
-                    colindexes <- documents$j[indexes]
-                    repeats <- documents$v[indexes]
-                    cur_vocab <- vocabulary[colindexes]
-                    # now allocate a vector to fill so we do not need to keep
-                    # concatenating
-                    this_doc <- rep("", sum(repeats))
-                    cur_counter <- 1
-                    for (k in 1:length(colindexes)) {
-                        # number of times to repeat the word
-                        for (l in 1:repeats[k]) {
-                            this_doc[cur_counter] <- cur_vocab[k]
-                            cur_counter <- cur_counter + 1
+                        if (i < length(temp_docs)) {
+                            # precheck to deal with documents of length zero
+                            while (documents$i[stop] == i) {
+                                stop <- stop + 1
+                            }
+                            indexes <- start:(stop - 1)
+                            start <- stop
+                        } else {
+                            indexes <- start:length(documents$i)
                         }
                     }
+                    if (length(indexes) > 0) {
+                        colindexes <- documents$j[indexes]
+                        repeats <- documents$v[indexes]
+                        cur_vocab <- vocabulary[colindexes]
+                        # now allocate a vector to fill so we do not need to keep
+                        # concatenating
+                        this_doc <- rep("", sum(repeats))
+                        cur_counter <- 1
+                        for (k in 1:length(colindexes)) {
+                            # number of times to repeat the word
+                            for (l in 1:repeats[k]) {
+                                this_doc[cur_counter] <- cur_vocab[k]
+                                cur_counter <- cur_counter + 1
+                            }
+                        }
 
-                    # for(k in 1:length(colindexes)){
-                    #     str <- c(str,
-                    #              rep(vocabulary[colindexes[k]],
-                    #                  repeats[k]))
-                    # }
-                    temp  <- paste0(this_doc,collapse = " ")
-                }else{
-                    temp <- ""
+                        # for(k in 1:length(colindexes)){
+                        #     str <- c(str,
+                        #              rep(vocabulary[colindexes[k]],
+                        #                  repeats[k]))
+                        # }
+                        temp  <- paste0(this_doc,collapse = " ")
+                    }else{
+                        temp <- ""
+                    }
+                    temp_docs[i] <- temp
                 }
-                temp_docs[i] <- temp
+                documents <- temp_docs
+
+
+            }else{
+                stop("You must provide a 'documents' object as either a vector of strings (one per document),a list of string vectors (one entry per document), or a dense (or sparse) document-term matrix...")
+            }
+        }else if(is.null(documents) & !is.null(document_directory) & is.null(document_csv)){
+            USING_EXTERNAL_FILES <- TRUE
+            substrRight <- function(x, n){
+                substr(x, nchar(x)-n+1, nchar(x))
+            }
+
+            # prepare text to be used
+            documents <- paste(check_directory_name(document_directory),
+                               list.files(path = document_directory), sep = "")
+            #only use files with a .txt ending
+            endings <- as.character(sapply(documents,substrRight,4))
+            txtfiles <- which(endings == ".txt")
+            if (length(txtfiles) > 0) {
+                documents <- documents[txtfiles]
+            }else{
+                stop("Did not find any valid .txt files in the specified directory...")
+            }
+            #read in documents
+            temp_docs <- rep("",length(documents))
+            for (i in 1:length(documents)) {
+                temp_docs[i] <- paste0(readLines(documents[i], warn = F),
+                                       collapse = " ")
             }
             documents <- temp_docs
-
-
-        }else{
-            stop("You must provide a 'documents' object as either a vector of strings (one per document),a list of string vectors (one entry per document), or a dense (or sparse) document-term matrix...")
-        }
-    }else if(is.null(documents) & !is.null(document_directory) & is.null(document_csv)){
-        USING_EXTERNAL_FILES <- TRUE
-        substrRight <- function(x, n){
-            substr(x, nchar(x)-n+1, nchar(x))
+        } else if (is.null(documents) & is.null(document_directory) & !is.null(document_csv)) {
+            USING_CSV <- TRUE
+        } else {
+            stop("You must specify either a valid documents object or a valid document_directory directory path (but not both)...")
         }
 
-        # prepare text to be used
-        documents <- paste(check_directory_name(document_directory),
-                           list.files(path = document_directory), sep = "")
-        #only use files with a .txt ending
-        endings <- as.character(sapply(documents,substrRight,4))
-        txtfiles <- which(endings == ".txt")
-        if (length(txtfiles) > 0) {
-            documents <- documents[txtfiles]
-        }else{
-            stop("Did not find any valid .txt files in the specified directory...")
+        directory <- system.file("extdata", package = "SpeedReader")[1]
+
+        ##############################################
+        #### Step 1: Output documents to tsv file ####
+        ##############################################
+        cat("Outputing documents in correct format for MALLET...\n")
+
+        # create an intermediate directory
+        success <- dir.create("mallet_intermediate_files",showWarnings = FALSE)
+        if (!success) {
+            file.remove("./mallet_intermediate_files")
+            success <- dir.create("mallet_intermediate_files")
         }
-        #read in documents
-        temp_docs <- rep("",length(documents))
-        for (i in 1:length(documents)) {
-            temp_docs[i] <- paste0(readLines(documents[i], warn = F),
-                                   collapse = " ")
+        if (!success) {
+            stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
         }
-        documents <- temp_docs
-    } else if (is.null(documents) & is.null(document_directory) & !is.null(document_csv)) {
-        USING_CSV <- TRUE
+        setwd("./mallet_intermediate_files")
+
+        if (!USING_CSV) {
+            num_docs <- length(documents)
+            # CSV format -- 1 line per document:
+            # doc_id\t\tdoc_text
+            data <- matrix("",nrow = num_docs,ncol = 3)
+            for(i in 1:num_docs){
+                data[i,1] <- i
+                data[i,2] <- ""
+                data[i,3] <- documents[i]
+            }
+            cat("Writing corpus to file...")
+
+            # write the data to file:
+            write.table(data, file = "mallet_input_corpus.csv", quote = FALSE,
+                        row.names = F,col.names = F, sep = "\t" )
+        }
+
+
+        ############################################
+        #### Step 2: Preprocess data for MALLET ####
+        ############################################
+
+        # ," --print-output > stdout_intake.txt" should add this as an option in the future
+        cat("Converting input to MALLET format...\n")
+        # prepare the data for use with Mallet's LDA routine
+        if (USING_CSV) {
+            prepare_data <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input ",document_csv, sep = "")
+        } else {
+            prepare_data <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv", sep = "")
+        }
+
+
+        #2>&1
+        #print(prepare_data)
+        p <- pipe(prepare_data,"r")
+        close(p)
+
+        ####################################
+        #### Step 3: Run LDA via MALLET ####
+        ####################################
+
+        cat("Fitting topic model. This may take anywhere from seconds to days depending on the size of your corpus. Check: ",getwd(),"/stdout.txt for estimation progress...\n", sep = "")
+        # Now run LDA
+        if (hyperparameter_optimization_interval != 0) {
+            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words, " --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+            # 2>&1&
+        } else {
+            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words," --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+            #  2>&1&
+        }
+        #print(run_mallet)
+        p <- pipe(run_mallet,"r")
+        close(p)
     } else {
-        stop("You must specify either a valid documents object or a valid document_directory directory path (but not both)...")
-    }
-
-    directory <- system.file("extdata", package = "SpeedReader")[1]
-
-    ##############################################
-    #### Step 1: Output documents to tsv file ####
-    ##############################################
-    cat("Outputing documents in correct format for MALLET...\n")
-
-    # create an intermediate directory
-    success <- dir.create("mallet_intermediate_files",showWarnings = FALSE)
-    if (!success) {
-        file.remove("./mallet_intermediate_files")
-        success <- dir.create("mallet_intermediate_files")
-    }
-    if (!success) {
-        stop("Could not create the intermdiate file directory necessary to use coreNLP. This is likely due to a file premission error. Make usre you have permission to create files or run your R session as root.")
-    }
-    setwd("./mallet_intermediate_files")
-
-    if (!USING_CSV) {
-        num_docs <- length(documents)
-        # CSV format -- 1 line per document:
-        # doc_id\t\tdoc_text
-        data <- matrix("",nrow = num_docs,ncol = 3)
-        for(i in 1:num_docs){
-            data[i,1] <- i
-            data[i,2] <- ""
-            data[i,3] <- documents[i]
-        }
-        cat("Writing corpus to file...")
-
-        # write the data to file:
-        write.table(data, file = "mallet_input_corpus.csv", quote = FALSE,
-                    row.names = F,col.names = F, sep = "\t" )
+        # if we are only reading back in the files, then just set the working
+        # directory:
+        setwd("./mallet_intermediate_files")
     }
 
 
-    ############################################
-    #### Step 2: Preprocess data for MALLET ####
-    ############################################
-
-    # ," --print-output > stdout_intake.txt" should add this as an option in the future
-    cat("Converting input to MALLET format...\n")
-    # prepare the data for use with Mallet's LDA routine
-    if (USING_CSV) {
-        prepare_data <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input ",document_csv, sep = "")
-    } else {
-        prepare_data <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.classify.tui.Csv2Vectors --keep-sequence --token-regex '",tokenization_regex,"' --output mallet_corpus.dat --input mallet_input_corpus.csv", sep = "")
-    }
-
-
-    #2>&1
-    #print(prepare_data)
-    p <- pipe(prepare_data,"r")
-    close(p)
-
-    ####################################
-    #### Step 3: Run LDA via MALLET ####
-    ####################################
-
-    cat("Fitting topic model. This may take anywhere from seconds to days depending on the size of your corpus. Check: ",getwd(),"/stdout.txt for estimation progress...\n", sep = "")
-    # Now run LDA
-    if (hyperparameter_optimization_interval != 0) {
-        run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words, " --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
-        # 2>&1&
-    } else {
-        run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words," --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
-        #  2>&1&
-    }
-    #print(run_mallet)
-    p <- pipe(run_mallet,"r")
-    close(p)
 
     #######################################
     #### Step 4: Read the data back in ####
@@ -511,8 +524,8 @@ mallet_lda <- function(documents = NULL,
                   round(coda::geweke.diag(
                       trace_stats$LL_Token[ceiling(burnin/10):length(trace_stats$LL_Token)])$z,
                       2)),
-              xlab = "Iteration",ylab = "Log Likelihood",
-              cex.lab=2, cex.axis=1.4, cex.main=1.4)
+              xlab = "Iteration", ylab = "Log Likelihood",
+              cex.lab = 2, cex.axis = 1.4, cex.main = 1.4)
     })
     # remove
     if(delete_intermediate_files){
