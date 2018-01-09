@@ -61,10 +61,97 @@ dtm <- convert_quanteda_to_slam(quanteda_dtm)
 ```
 
 
+## Term-category Associations
+
+A common task in text analysis is determining associations between terms (words, phrases, etc.) and categories (e.g. documents written by members of different political parties, at different times, etc.). The goal is often to find a set of terms that are highly associated with a particular category as compared to other categories. A related task is simply to find terms that are very informative about categories in general, versus those terms that do not distinguish between categories (boilerplate, stopwords, etc.). SpeedReader includes a number of functions to calculated different types of term-category associations, and I will discuss them in turn in this section. 
+
+All the methods included in this package for calculating term-category associations take as input a contingency table. A contingency table is a (sparse) matrix where each column represents a unique vocabulary term in the corpus, and each row represents the count of that term in a given category. SpeedReader includes the `contingency_table()` function to generate these tables. This function takes two objects as input: the first is a document-term matrix as generated in the example given in the previous section. The second is a data.frame of document covariates where each row of the data.frame corresponds to the same row in the document-term matrix, and each column records a numeric/categorical covariate for each document. Note that in creating a contingency table, all covariates will be treated as categorical, so be aware of this if you want to provide a numeric covariate for creating a contingency table. 
+Below is a toy example of a contingency table using the congressional bills example data. We start by loading in the raw documents and forming a document-term matrix. Next, we create some example covariate data (note that the covariate values have been fabricated for this example), and then we feed these two objects to the `contingency_table()` function:
+```{r eval=TRUE, fig.width=6, fig.height=4, fig.align ='center', message = FALSE, warning = FALSE, results="hide"}
+# load the package:
+library(SpeedReader)
+# Load in example data and form a dtm:
+data("congress_bills")
+# Only keep tokens that are all letters and of length 4 or greater:
+quanteda_dtm <- quanteda::dfm(congress_bills,
+                              select = "[a-zA-Z]{4,}",
+                              valuetype = "regex")
+dtm <- convert_quanteda_to_slam(quanteda_dtm)
+
+# Now create some fake covariate data
+doc_covariates <- data.frame(Chamber = c(rep("House",40), 
+                                         rep("Senate",39)),
+                             Party = c(rep("Democrat",20),
+                                       rep("Republican",20),
+                                       rep("Democrat",20),
+                                       rep("Republican",19)),
+                             Date = c(rep("Jan10",30),
+                                      rep("Jan11",29),
+                                      rep("Jan14",20)),
+                             stringsAsFactors = FALSE)
+
+# Create a contingency table with all possible covariate combinations:
+cont_table <- contingency_table(metadata = doc_covariates,
+                                document_term_matrix = dtm)
+
+# calculate PMI and display top terms:
+pmi_results <- pmi(contingency_table = cont_table,
+                   display_top_x_terms = 20,
+                   term_threshold = 5)
+```
+We may also want to only use certain covariates to form the contingency table. to do so, we specify the `variables_to_use` argument, which can be a vector of length one or greater containing either the column indices in the `metadata` data.frame or the column names of the variables we would like to use to form the contingency table. In the example above, we created a contingency table with 2 x 2 x 3 = 12 categories. Below, I will demonstrate examples creating contingency tables using smaller subsets of variables:
+```{r eval=TRUE, fig.width=6, fig.height=4, fig.align ='center', message = FALSE, warning = FALSE, results="hide"}
+# First, lets use numeric column indexing:
+cont_table <- contingency_table(metadata = doc_covariates,
+                                document_term_matrix = dtm,
+                                variables_to_use = c(1,2))
+
+# Next, lets use column names for indexing:
+cont_table <- contingency_table(metadata = doc_covariates,
+                                document_term_matrix = dtm,
+                                variables_to_use = "Chamber")
+```
+One final important point to note is that the `contingency_table()` function returns a `slam::simple_triplet_matrix` object except that it also contains a "document_indices" attribute which (in the example above, for example) can be accessed by using the `attr(cont_table,"document_indices")` R command. This attribute records the row indices in the original document-term matrix that are associated with each category and these are required by the `feature_selection()` function which we will discuss in more detail below. The "document_indices" attribute is a list object and can be saved independently for future use. It is important to note that if one subsets a sparse matrix returned by the `contingency_table()` function, it will remove the "document_indices" attribute, so you will have to manually save it an then re-assign it if you wish to do some custom subsetting before using the `feature_selection()` function. In general, it is recommended that the user do any subsetting before creating a contingency table, and then to plug the created table directly into the term-category association functions.
+
+### Pointwise Mutual Information
+
+Once we have created our contingency table, we can now calculate term-category associations using one of several functions provided by SpeedReader. We will start with the `pmi()` function, which calculates the [pointwise mutual information](https://en.wikipedia.org/wiki/Pointwise_mutual_information) of terms and categories, along with the most and least "distinctive" and "salient" terms. Distinctive terms are those that appear overwhelmingly in only a few categories, while non-distinctive terms appear relatively uniformly across all categories. Salient terms are those that are both distinctive, but also appear very frequently in the corpus, relative to other terms. The `pmi()` function takes a number of arguments which are documented, but I will discuss a few here. The first is `display_top_x_terms`, which defaults to 20 and determines how many top terms will be displayed to the user for each category. The second is `term_threshold`, which defaults to 5 and determines which terms are kept in the contingency table for the purposes of calculating PMI based on their frequency in the corpus. PMI term rankings are often very sensitive to infrequently appearing terms, so setting a reasonable threshold for the number of times a term must occur can be helpful.
+```{r eval=FALSE, fig.width=6, fig.height=4, fig.align ='center'}
+# calculate PMI and display top terms:
+pmi_results <- pmi(contingency_table = cont_table,
+                   display_top_x_terms = 20,
+                   term_threshold = 5)
+```
+The `pmi()` function returns a list object with 8 entries, in addition to printing out useful information to the screen. Of note, in the printed output, the "Local Count"" refers to the count of the term in the current category and the "Global Count" refers to the total count of the term in the contingency table. The "ePMI" is just the exponentiated PMI or "lift" of the term. The 8 entries in the list object are described below:
+
+* `$pmi_table` -- A (sparse) matrix object containing the PMI values for all terms with non-zero counts in each category. For those terms with zero counts, the PMI should be negative infinity, so you will need to manually adjust these values for comparison between sparse and dense representations.
+* `$pmi_ranked_terms` --  These are all terms that appear in each category ranked by their PMI score, for each category. This is stored as a list object with a vector corresponding to each row in the PMI table.
+* `$ranked_pmi` --  These are the PMI scores corresponding to the ranked terms in the previous list entry, and follow the same structure.          
+* `$distinctive_terms` --  This is a vector of all terms in the vocabulary ranked by their distinctiveness score.
+* `$non_distinctive_terms` -- This is a vector of all terms in the vocabulary ranked by the negative of their distinctiveness score.
+* `$salient_terms` -- This is a vector of all terms in the vocabulary ranked by their salience score.       
+* `$non_salient_terms` --  This is a vector of all terms in the vocabulary ranked by the negative of their salience score.     
+* `$contingency_table` -- This holds the contingency table used to calculate the PMI table. Can be useful for replicating results.
+
+### TF-IDF and Fightin' Words
+
+The other major function for calculating term-category associations is the `feature_selection()` function. This function implements three different variants of TF-IDF term scaling, as well as the informed Dirichlet feature selection model of [Monroe et al. (2008)](http://languagelog.ldc.upenn.edu/myl/Monroe.pdf). It also implements a novel correlation-based term subsumption algorithm for displaying more informative results when using n-grams/phrases as the unit of analysis. This algorithm along with the math behind all of the feature selection methods implemented in the function are documented extensively in a [tech report](http://www.mjdenny.com/files/Denny_Fightin_Words_2016.pdf). We can start with a simple example
 
 
+```{r eval=TRUE, fig.width=6, fig.height=4, fig.align ='center', message = FALSE, warning = FALSE}
+# Feature selection with informed Dirichlet model (Monroe et al., 2008):
+fw_results <- feature_selection(contingency_table = cont_table,
+                                method = "informed Dirichlet",
+                                rank_by_log_odds = TRUE)
+```
 
 
+```{r eval=TRUE, fig.width=6, fig.height=5, fig.align ='center', message = FALSE, warning = FALSE}
+# Create a funnel plot of feature selection results:
+fightin_words_plot(fw_results,
+                   right_margin = 9,
+                   display_top_words = 10)
+```
 
 
 ## Assessing Document Editing
