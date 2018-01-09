@@ -63,7 +63,7 @@ pmi <- function(contingency_table,
             }
         }
     }else{
-        if(is_sparse_matrix){
+        if (is_sparse_matrix) {
             colsums <- slam::col_sums(contingency_table)
         }else{
             colsums <- apply(contingency_table,2,sum)
@@ -77,16 +77,16 @@ pmi <- function(contingency_table,
     #allocate tables
     unique_terms <- ncol(contingency_table)
     table_sum <- sum(contingency_table)
-    if(is_sparse_matrix){
+    if (is_sparse_matrix) {
         colsums <- slam::col_sums(contingency_table)
         rowsums <- slam::row_sums(contingency_table)
-    }else{
+    } else {
         colsums <- apply(contingency_table,2,sum)
         rowsums <- apply(contingency_table,1,sum)
     }
 
     cat("Generating token PMI table...\n")
-    if(is_sparse_matrix){
+    if (is_sparse_matrix) {
         printseq <- round(seq(1,length(contingency_table$i), length.out = 11)[2:11],0)
         stats <- Sparse_PMI_Statistics(length(contingency_table$i),
             table_sum,
@@ -98,7 +98,7 @@ pmi <- function(contingency_table,
             printseq,
             length(printseq))
 
-        print(str(stats))
+        # print(str(stats))
         #now create the sparse matrix objects
         pmi_table <- contingency_table
         pmi_table$v <- stats[[1]]
@@ -150,7 +150,7 @@ pmi <- function(contingency_table,
             ranked_pmi[[i]] <- top_terms[[i]]$counts
         }
         cat("Top terms by category:\n\n")
-        print(str(top_terms))
+        # print(str(top_terms))
 
         for(i in 1:categories){
             cat("Category: ",Names[i], "\n")
