@@ -362,6 +362,8 @@ mallet_lda <- function(documents = NULL,
         p <- pipe(run_mallet,"r")
         close(p)
     } else {
+        # save the current working directory
+        currentwd <- getwd()
         # if we are only reading back in the files, then just set the working
         # directory:
         setwd("./mallet_intermediate_files")
@@ -528,7 +530,7 @@ mallet_lda <- function(documents = NULL,
               cex.lab = 2, cex.axis = 1.4, cex.main = 1.4)
     })
     # remove
-    if(delete_intermediate_files){
+    if (delete_intermediate_files) {
         setwd("..")
         unlink("./mallet_intermediate_files",recursive = T)
     }
