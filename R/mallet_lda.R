@@ -67,6 +67,8 @@ mallet_lda <- function(documents = NULL,
                        memory = "-Xmx10g",
                        only_read_in = FALSE){
 
+    docnames <- NULL
+
     if (!only_read_in) {
         ###############################
         #### Step 0: Preliminaries ####
@@ -106,12 +108,19 @@ mallet_lda <- function(documents = NULL,
             if(class(documents) == "list" | class(documents) == "character"){
 
                 if(class(documents) == "list"){
+
+                    # get the rownames
+                    if (!is.null(names(documents))) {
+                        docnames <- names(documents)
+                    }
+
                     # deal with the case where we got a list of term vectors
                     temp <- rep("", length(documents))
                     for(i in 1:length(temp)){
                         temp[i] <- paste0(documents[[i]],collapse = " ")
                     }
                     documents <- temp
+
                 }
             }else if(class(documents) == "matrix"){
                 if(is.null(vocabulary)){
@@ -130,6 +139,11 @@ mallet_lda <- function(documents = NULL,
                         vocabulary <- vocabulary[-remove]
                         documents <- documents[,-remove]
                     }
+                }
+
+                # get the rownames
+                if (!is.null(rownames(documents))) {
+                    docnames <- rownames(documents)
                 }
 
                 #populate a string vector of documents from dtm
@@ -174,6 +188,11 @@ mallet_lda <- function(documents = NULL,
                     stop(paste("Length of vocabulary:",length(vocabulary),"is not equal to the number of columns in the document term matrix:",ncol(documents)))
                 }
                 vocabulary <- stringr::str_replace_all(vocabulary," ","_")
+
+                # get the rownames
+                if (!is.null(rownames(documents))) {
+                    docnames <- rownames(documents)
+                }
 
                 # optionally remove stopwords
                 if (!is.null(stopword_list)) {
@@ -274,6 +293,7 @@ mallet_lda <- function(documents = NULL,
             txtfiles <- which(endings == ".txt")
             if (length(txtfiles) > 0) {
                 documents <- documents[txtfiles]
+                docnames <- documents
             }else{
                 stop("Did not find any valid .txt files in the specified directory...")
             }
@@ -309,12 +329,26 @@ mallet_lda <- function(documents = NULL,
         setwd("./mallet_intermediate_files")
 
         if (!USING_CSV) {
+
+            # make sure to remove all &:
             num_docs <- length(documents)
+            for (i in 1:num_docs) {
+                documents[i] <- stringr::str_replace_all(documents[i],"&","and")
+            }
+
+
             # CSV format -- 1 line per document:
             # doc_id\t\tdoc_text
             data <- matrix("",nrow = num_docs,ncol = 3)
-            for(i in 1:num_docs){
-                data[i,1] <- i
+            for (i in 1:num_docs) {
+
+                # set the document names
+                if (!is.null(docnames)) {
+                    data[i,1] <- docnames[i]
+                } else {
+                    data[i,1] <- i
+                }
+
                 data[i,2] <- ""
                 data[i,3] <- documents[i]
             }
@@ -352,10 +386,10 @@ mallet_lda <- function(documents = NULL,
         cat("Fitting topic model. This may take anywhere from seconds to days depending on the size of your corpus. Check: ",getwd(),"/stdout.txt for estimation progress...\n", sep = "")
         # Now run LDA
         if (hyperparameter_optimization_interval != 0) {
-            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words, " --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --inferencer-filename inferencer.mallet --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words, " --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --optimize-interval ",hyperparameter_optimization_interval," --optimize-burn-in ",hyperparameter_optimization_interval," ",optional_arguments," > stdout.txt 2>&1", sep = "")
             # 2>&1&
         } else {
-            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words," --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
+            run_mallet <- paste("java -server ",memory," -XX:-UseConcMarkSweepGC -XX:-UseGCOverheadLimit -classpath ",directory,"/mallet.jar:",directory,"/mallet-deps.jar cc.mallet.topics.tui.Vectors2Topics --input mallet_corpus.dat --output-state output_state.txt.gz --output-topic-keys topic-keys.txt --xml-topic-report topic-report.xml --xml-topic-phrase-report topic-phrase-report.xml --inferencer-filename inferencer.mallet --output-doc-topics doc-topics.txt --num-topics ",topics," --num-iterations ",iterations," --num-top-words ",num_top_words," --output-state-interval ",floor(iterations/2)," --num-threads ",cores," --beta ",beta," ",optional_arguments," > stdout.txt 2>&1", sep = "")
             #  2>&1&
         }
         #print(run_mallet)
@@ -399,6 +433,7 @@ mallet_lda <- function(documents = NULL,
     if(length(NA_columns) > 0){
         document_topics <- document_topics[,-NA_columns]
     }
+
     document_topics <- document_topics[,-c(1,2)]
     #create a populate a clean doc-topics table
     temp <- matrix(0,nrow = nrow(document_topics),ncol = topics)
@@ -416,8 +451,14 @@ mallet_lda <- function(documents = NULL,
         }
     }
     document_topics <- temp
-    rownames(document_topics) <- paste("document_",
-                                       1:nrow(document_topics), sep = "")
+
+    if (!is.null(docnames)) {
+        rownames(document_topics) <- docnames
+    } else {
+        rownames(document_topics) <- paste("document_",
+                                           1:nrow(document_topics), sep = "")
+    }
+
     colnames(document_topics) <- paste("topic_",
                                        1:topics, sep = "")
 
