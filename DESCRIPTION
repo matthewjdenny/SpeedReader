@@ -1,12 +1,12 @@
 Package: SpeedReader
 Type: Package
 Title: High Performance Text Analysis
-Version: 0.8.1
-Date: 2017-11-04
+Version: 0.9.1
+Date: 2018-01-28
 Author: Matthew J. Denny <mdenny@psu.edu>
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
 Description: A suite of functions for performing text analysis at scale. 
-	Wraps CoreNLP and Mallet libraries (unix/linux only).
+	Wraps CoreNLP and MALLET libraries (unix/linux only).
 URL: https://github.com/matthewjdenny/SpeedReader
 License: GPL-3
 Imports:
@@ -22,7 +22,8 @@ Imports:
     coda,
     snowfall,
 	proxy,
-	quanteda
+	quanteda,
+	data.table
 Depends:
     R (>= 3.2.1)
 LinkingTo: BH,

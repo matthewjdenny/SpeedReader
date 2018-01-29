@@ -35,6 +35,9 @@ NULL
 #' @importFrom quanteda dfm
 NULL
 
+#' @importFrom data.table fread
+NULL
+
 #' @useDynLib SpeedReader
 #' @importFrom Rcpp sourceCpp
 NULL
