@@ -28,7 +28,7 @@ test_that("MALLET LDA Works", {
                            optional_arguments = "",
                            tokenization_regex = '[\\p{L}\\p{N}\\p{P}]+',
                            cores = 1,
-                           delete_intermediate_files = TRUE)
+                           delete_intermediate_files = FALSE)
 
 
 })
