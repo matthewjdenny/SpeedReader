@@ -5,7 +5,8 @@
 \title{Reference distribtuion distances}
 \usage{
 reference_distribution_distance(category_reference_distribution,
-  document_term_matrix, inverse_frequency_weighting = TRUE)
+  document_term_matrix, inverse_frequency_weighting = TRUE,
+  large_matrix = FALSE)
 }
 \arguments{
 \item{category_reference_distribution}{A simple_triplet_matrix where each row
@@ -21,6 +22,10 @@ the inverse of the term's aggregate count in the document term
 matrix. This means that differences in more frequently occuring terms will
 have less weight than those for less frequently appearing terms. Defaults to
 TRUE.}
+
+\item{large_matrix}{Defaults to FALSE. If TRUE, then a method that is robust
+to large matrices will be used. Set this if you get an erro of the form:
+"'i, j, nrow, ncol' invalid type".}
 }
 \value{
 A dataframe with distances of each document to each reference

@@ -13,13 +13,17 @@
 #' matrix. This means that differences in more frequently occuring terms will
 #' have less weight than those for less frequently appearing terms. Defaults to
 #' TRUE.
+#' @param large_matrix Defaults to FALSE. If TRUE, then a method that is robust
+#' to large matrices will be used. Set this if you get an erro of the form:
+#' "'i, j, nrow, ncol' invalid type".
 #' @return A dataframe with distances of each document to each reference
 #' distribution. The last column indicates the closest reference distribtuion
 #' for each document.
 #' @export
 reference_distribution_distance <- function(category_reference_distribution,
                                            document_term_matrix,
-                                           inverse_frequency_weighting = TRUE) {
+                                           inverse_frequency_weighting = TRUE,
+                                           large_matrix = FALSE) {
 
     if (ncol(category_reference_distribution) != ncol(document_term_matrix)) {
         stop("category_reference_distribution and document_term_matrix must have the same vocabulary.")
@@ -28,7 +32,13 @@ reference_distribution_distance <- function(category_reference_distribution,
     # generate term weights (which are 1 if no weighting)
     term_weights <- rep(1,ncol(document_term_matrix))
     if (inverse_frequency_weighting) {
-        cs <- slam::col_sums(document_term_matrix)
+        if (large_matrix) {
+            counts <- table(document_term_matrix$j)
+            cs <- as.numeric(counts)
+        } else {
+            cs <- slam::col_sums(document_term_matrix)
+        }
+
         # replace any zero column sums with 1's so we don't get weird errors
         zeros <- which(cs == 0)
         if (length(zeros) > 0) {
@@ -47,7 +57,13 @@ reference_distribution_distance <- function(category_reference_distribution,
     }
 
     cat("Normalizing rows of document_term_matrix...\n")
-    rsums <- slam::row_sums(document_term_matrix)
+    if (large_matrix) {
+        counts <- table(document_term_matrix$i)
+        rsums <- as.numeric(counts)
+    } else {
+        rsums <- slam::row_sums(document_term_matrix)
+    }
+
     start <- 1
     end <- 1
     for (i in 1:nrow(document_term_matrix)) {
