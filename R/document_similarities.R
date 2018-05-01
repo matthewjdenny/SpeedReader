@@ -318,7 +318,7 @@ document_similarities <- function(filenames = NULL,
             ret <- NULL
             if (is.null(output_directory)){
                 for (i in 1:length(results)) {
-                    if (ncol(results[[i]]) > 0) {
+                    if (ncol(results[[i]]) > 0 & nrow(results[[i]]) > 0) {
                         if (i > 1) {
                             if (ncol(results[[i]]) == ncol(ret)) {
                                 ret <- rbind(ret,results[[i]])
