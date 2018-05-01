@@ -12,7 +12,7 @@ mallet_lda(documents = NULL, document_directory = NULL,
   tokenization_regex = "[\\\\p{L}\\\\p{N}\\\\p{P}]+", stopword_list = NULL,
   cores = 1, delete_intermediate_files = TRUE, memory = "-Xmx10g",
   only_read_in = FALSE, unzip_command = "gunzip -k",
-  return_predictive_distribution = TRUE)
+  return_predictive_distribution = TRUE, use_phrases = TRUE)
 }
 \arguments{
 \item{documents}{Optional argument for providing the documents we wish to run
@@ -101,6 +101,9 @@ as a backup, which is what the "-k" option does here.}
 
 \item{return_predictive_distribution}{Defaults to TRUE, but can be set to
 FALSE if using a large coprus on a computer with relatively less RAM.}
+
+\item{use_phrases}{Defaults to TRUE. When TRUE, the topic phrase reports are
+returned. If FALSE, they are excluded.}
 }
 \value{
 Returns a list object with the following fields: lda_trace_stats is a

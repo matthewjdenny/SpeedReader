@@ -67,6 +67,8 @@
 #' as a backup, which is what the "-k" option does here.
 #' @param return_predictive_distribution Defaults to TRUE, but can be set to
 #' FALSE if using a large coprus on a computer with relatively less RAM.
+#' @param use_phrases Defaults to TRUE. When TRUE, the topic phrase reports are
+#' returned. If FALSE, they are excluded.
 #' @return Returns a list object with the following fields: lda_trace_stats is a
 #' data frame reporting the beta hyperparameter value and model log likelihood
 #' per token every ten iterations, can be useful for assesing convergence;
@@ -116,7 +118,8 @@ mallet_lda <- function(documents = NULL,
                        memory = "-Xmx10g",
                        only_read_in = FALSE,
                        unzip_command = "gunzip -k",
-                       return_predictive_distribution = TRUE){
+                       return_predictive_distribution = TRUE,
+                       use_phrases = TRUE){
 
     docnames <- NULL
 
@@ -462,8 +465,10 @@ mallet_lda <- function(documents = NULL,
     cat("Reading MALLET output back into R...\n")
     topic_report <- XML::xmlParse("topic-report.xml")
     topic_report <- XML::xmlToList(topic_report)
-    topic_phrase_report <- XML::xmlParse("topic-phrase-report.xml")
-    topic_phrase_report <- XML::xmlToList(topic_phrase_report)
+    if (use_phrases) {
+        topic_phrase_report <- XML::xmlParse("topic-phrase-report.xml")
+        topic_phrase_report <- XML::xmlToList(topic_phrase_report)
+    }
     stdout <- readLines("stdout.txt",warn = FALSE)
     document_topics <- read.table(file = "doc-topics.txt",sep = "\t",header = FALSE)
 
@@ -568,37 +573,47 @@ mallet_lda <- function(documents = NULL,
         topic_data[i,2] <- as.numeric(cur[[length(cur)]][3])
     }
 
-    ###############################################################
-    # 4.4 Read in topic phrase report and put it in a nice format #
-    ###############################################################
+    if (use_phrases) {
+        ###############################################################
+        # 4.4 Read in topic phrase report and put it in a nice format #
+        ###############################################################
 
-    top_phrases <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
-                            stringsAsFactors = F)
-    rownames(top_phrases) <- paste("topic_",1:topics, sep = "")
-    colnames(top_phrases) <- paste("top_phrase_",1:num_top_words, sep = "")
-    top_phrase_counts <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
+        top_phrases <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
                                   stringsAsFactors = F)
-    rownames(top_phrase_counts) <- paste("topic_",1:topics, sep = "")
-    colnames(top_phrase_counts) <- paste("top_phrase_",1:num_top_words, sep = "")
+        rownames(top_phrases) <- paste("topic_",1:topics, sep = "")
+        colnames(top_phrases) <- paste("top_phrase_",1:num_top_words, sep = "")
+        top_phrase_counts <- data.frame(matrix(NA,nrow = topics, ncol = num_top_words),
+                                        stringsAsFactors = F)
+        rownames(top_phrase_counts) <- paste("topic_",1:topics, sep = "")
+        colnames(top_phrase_counts) <- paste("top_phrase_",1:num_top_words, sep = "")
 
 
-    for(i in 1:length(topic_phrase_report)){
-        cur2 <- topic_phrase_report[[i]]
-        if(length(cur2) == (2*num_top_words)+1){
-            for(j in 1:num_top_words){
-                top_phrases[i,j] <- cur2[[j+num_top_words]]$text
-                top_phrase_counts[i,j] <- as.numeric(cur2[[j+num_top_words]]$.attrs[2])
+        for(i in 1:length(topic_phrase_report)){
+            cur2 <- topic_phrase_report[[i]]
+            if(length(cur2) == (2*num_top_words)+1){
+                for(j in 1:num_top_words){
+                    top_phrases[i,j] <- cur2[[j+num_top_words]]$text
+                    top_phrase_counts[i,j] <- as.numeric(cur2[[j+num_top_words]]$.attrs[2])
+                }
             }
         }
+
+        LDA_Results <- list(lda_trace_stats = trace_stats,
+                            document_topic_proportions = document_topics,
+                            topic_metadata = topic_data,
+                            topic_top_words = top_words,
+                            topic_top_word_counts = top_word_counts,
+                            topic_top_phrases = top_phrases,
+                            topic_top_phrase_counts = top_phrase_counts)
+    } else {
+
+        LDA_Results <- list(lda_trace_stats = trace_stats,
+                            document_topic_proportions = document_topics,
+                            topic_metadata = topic_data,
+                            topic_top_words = top_words,
+                            topic_top_word_counts = top_word_counts)
     }
 
-    LDA_Results <- list(lda_trace_stats = trace_stats,
-                        document_topic_proportions = document_topics,
-                        topic_metadata = topic_data,
-                        topic_top_words = top_words,
-                        topic_top_word_counts = top_word_counts,
-                        topic_top_phrases = top_phrases,
-                        topic_top_phrase_counts = top_phrase_counts)
 
 
     #####################################################
