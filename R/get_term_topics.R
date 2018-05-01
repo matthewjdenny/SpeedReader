@@ -51,8 +51,6 @@ get_term_topics <- function(num_topics,
     # create a term-topic matrix
     term_topics <- matrix(0, nrow = num_terms, ncol = num_topics)
 
-
-
     # order the terms by type then by topic assignment
     ordering <- order(output$typeindex,
                       output$topic,
@@ -61,6 +59,7 @@ get_term_topics <- function(num_topics,
     output <- output[ordering,]
 
     utypes <- unique(output$typeindex)
+    cat("Number of unique types",length(utypes),"\n")
 
     starts <- match(utypes, output$typeindex)
     stops <- c(starts[-1]-1,length(output$typeindex))
