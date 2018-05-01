@@ -8,7 +8,8 @@ document_similarities(filenames = NULL, documents = NULL,
   input_directory = NULL, ngram_size = 10, output_directory = NULL,
   doc_pairs = NULL, cores = 1, max_block_size = NULL, prehash = FALSE,
   ngram_match_only = FALSE, document_block_size = NULL,
-  add_ngram_comparisons = NULL, unigram_similarity_threshold = NULL)
+  add_ngram_comparisons = NULL, unigram_similarity_threshold = NULL,
+  doc_lengths = NULL)
 }
 \arguments{
 \item{filenames}{An optional character vector of filenames (with .txt
@@ -74,6 +75,10 @@ unigrams in the other version. So for example if this argument were set to
 0.8, then only those documents with a unigram similarity of 0.8 would be
 given a full comparison. This approach is particularly useful if one is
 looking for very similar documents, such as hitchhiker bills.}
+
+\item{doc_lengths}{Defaults to NULL. If not NULL, then this must be a numeric
+vector of length equal to the number of input documents, giving the number of
+tokens in each.}
 }
 \value{
 A data.frame or NULL if output_directory is not NULL.

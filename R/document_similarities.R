@@ -53,6 +53,9 @@
 #' 0.8, then only those documents with a unigram similarity of 0.8 would be
 #' given a full comparison. This approach is particularly useful if one is
 #' looking for very similar documents, such as hitchhiker bills.
+#' @param doc_lengths Defaults to NULL. If not NULL, then this must be a numeric
+#' vector of length equal to the number of input documents, giving the number of
+#' tokens in each.
 #' @return A data.frame or NULL if output_directory is not NULL.
 #' @export
 document_similarities <- function(filenames = NULL,
@@ -67,7 +70,8 @@ document_similarities <- function(filenames = NULL,
                                   ngram_match_only = FALSE,
                                   document_block_size = NULL,
                                   add_ngram_comparisons = NULL,
-                                  unigram_similarity_threshold = NULL) {
+                                  unigram_similarity_threshold = NULL,
+                                  doc_lengths = NULL) {
 
     # start timing
     ptm <- proc.time()
@@ -192,7 +196,8 @@ document_similarities <- function(filenames = NULL,
                     ngram_match_only = ngram_match_only,
                     document_block_size = NULL,
                     add_ngram_comparisons = add_ngram_comparisons,
-                    unigram_similarity_threshold = unigram_similarity_threshold)
+                    unigram_similarity_threshold = unigram_similarity_threshold,
+                    doc_lengths = doc_lengths)
 
                 # now either rbind the results or
                 if (is.null(output_directory)) {
@@ -302,7 +307,8 @@ document_similarities <- function(filenames = NULL,
                 prehash = prehash,
                 ngram_match_only = ngram_match_only,
                 add_ngram_comparisons = add_ngram_comparisons,
-                unigram_similarity_threshold = unigram_similarity_threshold)
+                unigram_similarity_threshold = unigram_similarity_threshold,
+                doc_lengths = doc_lengths)
 
             # stop the cluster when we are done
             parallel::stopCluster(cl)
@@ -321,18 +327,20 @@ document_similarities <- function(filenames = NULL,
             #start_stop_lookup <- matrix(c(1,nrow(doc_pairs)),ncol = 2)
             for (i in 1:nrow(start_stop_lookup)) {
                 cat("Currently working on block:",i,"of",nrow(start_stop_lookup),"\n")
-                temp <- parallel_sequence_matching(i,
-                                                   start_stop_lookup,
-                                                   input_directory,
-                                                   filenames,
-                                                   doc_pairs,
-                                                   ngram_size,
-                                                   output_directory,
-                                                   documents,
-                                                   prehash,
-                                                   ngram_match_only,
-                                                   add_ngram_comparisons,
-                                                   unigram_similarity_threshold)
+                temp <- parallel_sequence_matching(
+                    x = i,
+                    start_stop_lookup = start_stop_lookup,
+                    input_directory = input_directory,
+                    filenames = filenames,
+                    doc_pairs = doc_pairs,
+                    ngram_size = ngram_size,
+                    output_directory = output_directory,
+                    documents = documents,
+                    prehash = prehash,
+                    ngram_match_only = ngram_match_only,
+                    add_ngram_comparisons = add_ngram_comparisons,
+                    unigram_similarity_threshold = unigram_similarity_threshold,
+                    doc_lengths = doc_lengths)
                 ret <- rbind(ret,temp)
             }
 

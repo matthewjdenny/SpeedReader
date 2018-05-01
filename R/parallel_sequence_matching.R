@@ -10,7 +10,8 @@ parallel_sequence_matching <- function(x,
                                        ngram_match_only,
                                        add_ngram_comparisons = NULL,
                                        unigram_similarity_threshold = NULL,
-                                       dont_use_lookup = FALSE) {
+                                       dont_use_lookup = FALSE,
+                                       doc_lengths = NULL) {
 
     document_vector <- FALSE
     if (!is.null(documents[1])) {
@@ -101,34 +102,41 @@ parallel_sequence_matching <- function(x,
     if (prehash) {
 
 
-        #docs <- vector(mode = "list", length = length(filenames))
-        docs2 <- rep("",length(filenames))
-        doc_lengths <- rep(0,length(filenames))
-        for (l in 1:length(filenames)) {
-            if (l %in% load_inds) {
-                if (document_vector) {
-                    # read in the documents
-                    temp <- documents[l]
-                } else {
-                    # read in the documents
-                    temp <- readLines(filenames[l])
-                }
-                if (length(temp) > 1) {
-                    doc <- paste0(temp,collapse = " ")
-                } else {
-                    doc <- temp
-                }
+        if (is.null(doc_lengths)) {
+            cat("Generating document lengths\n")
+            docs2 <- rep("",length(filenames))
+            doc_lengths <- rep(0,length(filenames))
+            for (l in 1:length(filenames)) {
+                if (l %in% load_inds) {
+                    if (document_vector) {
+                        # read in the documents
+                        temp <- documents[l]
+                    } else {
+                        # read in the documents
+                        temp <- readLines(filenames[l])
+                    }
+                    if (length(temp) > 1) {
+                        doc <- paste0(temp,collapse = " ")
+                    } else {
+                        doc <- temp
+                    }
 
-                doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
-                doc <- stringr::str_split(doc, " ")[[1]]
-                # docs[[l]] <- doc
-                doc_lengths[l] <- length(doc)
-                doc <- paste0(doc,collapse = " ")
-                docs2[l] <- doc
-            } else {
-                doc_lengths[l] <- 0
+                    doc <- stringr::str_replace_all(doc, "[\\s]+", " ")[[1]]
+                    doc <- stringr::str_split(doc, " ")[[1]]
+                    # docs[[l]] <- doc
+                    doc_lengths[l] <- length(doc)
+                    doc <- paste0(doc,collapse = " ")
+                    docs2[l] <- doc
+                } else {
+                    doc_lengths[l] <- 0
+                }
             }
+        } else {
+            cat("Document lengths provided\n")
+            docs2 <- documents
         }
+        #docs <- vector(mode = "list", length = length(filenames))
+
         cat("Summary of document lengths (unigrams):\n")
         print(summary(doc_lengths))
 
