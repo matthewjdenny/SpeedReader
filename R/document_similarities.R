@@ -316,10 +316,12 @@ document_similarities <- function(filenames = NULL,
             cat("Calculating similarities complete at:",proc.time(),"\n")
 
             ret <- NULL
+            # put in a whole bunch of checks to make sure we do not rbind
+            # together things with wrong number of columns or no rows:
             if (is.null(output_directory)){
                 for (i in 1:length(results)) {
                     if (ncol(results[[i]]) > 0 & nrow(results[[i]]) > 0) {
-                        if (i > 1) {
+                        if (i > 1 & !is.null(ret)) {
                             if (ncol(results[[i]]) == ncol(ret)) {
                                 ret <- rbind(ret,results[[i]])
                             }
