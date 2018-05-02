@@ -101,7 +101,6 @@ parallel_sequence_matching <- function(x,
 
     if (prehash) {
 
-
         if (is.null(doc_lengths)) {
             cat("Generating document lengths\n")
             docs2 <- rep("",length(filenames))
@@ -139,7 +138,6 @@ parallel_sequence_matching <- function(x,
 
         cat("Summary of document lengths (unigrams):\n")
         print(summary(doc_lengths))
-
 
         # if we are using a threshold, then do the unigram checking here:
         if (!is.null(unigram_similarity_threshold)) {
@@ -317,7 +315,7 @@ parallel_sequence_matching <- function(x,
                     input_directory = input_directory,
                     filenames = filenames,
                     doc_pairs = doc_pairs,
-                    ngram_size = ngram_size,
+                    ngram_size = add_ngram_comparisons[j],
                     output_directory = output_directory,
                     documents = documents,
                     prehash = prehash,

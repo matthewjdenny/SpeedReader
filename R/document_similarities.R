@@ -353,7 +353,6 @@ document_similarities <- function(filenames = NULL,
                     doc_lengths = doc_lengths)
                 ret <- rbind(ret,temp)
             }
-
         }
     }
 
