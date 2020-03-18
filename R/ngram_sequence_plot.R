@@ -12,6 +12,8 @@
 #' @param return_plot_object Logical defaults to FALSE. If TRUE, then the plot
 #' is not printed, only returned.
 #' @param custom_title Optional custom plot title.
+#' @param match_color Defaults to "#2B83BAC8" (light blue).
+#' @param non_match_color Defaults to "#FDAE61C8" (orange).
 #' @return A plot
 #' @export
 ngram_sequnce_plot <- function(ngram_sequnce_results,
@@ -19,7 +21,9 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
                                columns = NULL,
                                include_title_legend = TRUE,
                                return_plot_object = FALSE,
-                               custom_title = NULL) {
+                               custom_title = NULL,
+                               match_color = "#2B83BAC8",
+                               non_match_color = "#FDAE61C8") {
 
     # null out variables in DF
     col_number <-  row_number <- NULL
@@ -55,12 +59,14 @@ ngram_sequnce_plot <- function(ngram_sequnce_results,
     dat <- data.frame(match = matches,
                       col_number = cn,
                       row_number = rn)
-    orange <- rgb(red = 253, green = 174, blue = 97, alpha = 200, maxColorValue = 255)
-    blue <- rgb(red = 43, green = 131, blue = 186, alpha = 200, maxColorValue = 255)
+
+    # This is how we define the colors:
+    # orange <- rgb(red = 253, green = 174, blue = 97, alpha = 200, maxColorValue = 255)
+    # blue <- rgb(red = 43, green = 131, blue = 186, alpha = 200, maxColorValue = 255)
 
     p <- ggplot2::ggplot(dat, ggplot2::aes(col_number, row_number)) +
         ggplot2::geom_tile(ggplot2::aes(fill = match), colour = "white") +
-        ggplot2::scale_fill_manual(values = c(blue,orange))
+        ggplot2::scale_fill_manual(values = c(match_color,non_match_color))
     if (include_title_legend) {
         p <- p + ggplot2::theme(legend.position = "bottom",
                                 axis.ticks.y = ggplot2::element_blank(),

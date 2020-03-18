@@ -97,6 +97,7 @@ fightin_words_plot <- function(feature_selection_object,
   if (length(zeta) > max_terms_to_display) {
     tot <- length(zeta)
     bound <- floor(max_terms_to_display/2)
+    z_scores <- c(z_scores[1:bound], z_scores[(tot-bound+1):tot])
     zeta <- c(zeta[1:bound], zeta[(tot-bound+1):tot])
     y.tot <- c(y.tot[1:bound], y.tot[(tot-bound+1):tot])
     words <- c(words[1:bound], words[(tot-bound+1):tot])

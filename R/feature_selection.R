@@ -133,8 +133,10 @@ feature_selection <- function(contingency_table,
                 cat2 <- cat2[-remove]
                 all_c <- all_classes[-remove]
                 column_indicies <- column_indicies[-remove]
+                global_count <- colsums[-remove]
             } else {
                 all_c <- all_classes
+                global_count <- colsums
             }
 
 
@@ -174,6 +176,7 @@ feature_selection <- function(contingency_table,
                 z_scores = z_scores[inds],
                 count = cat1[inds],
                 other_count = cat2[inds],
+                global_count = global_count[inds],
                 term_indicies = column_indicies[inds],
                 stringsAsFactors = FALSE)
 
@@ -191,7 +194,7 @@ feature_selection <- function(contingency_table,
             #print out resutls
             cat("Top 20 terms for category:",
                 rownames(contingency_table)[rows_to_compare[i]], "...\n")
-            print(head(category_1_significant_words[,2:6],n = 20))
+            print(head(category_1_significant_words[,2:7],n = 20))
 
             # make sure we do not excede the max number of words
             if (nrow(category_1_significant_words) > maximum_top_words) {

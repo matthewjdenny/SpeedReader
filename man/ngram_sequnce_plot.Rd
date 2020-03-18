@@ -6,7 +6,8 @@
 \usage{
 ngram_sequnce_plot(ngram_sequnce_results, document = 1, columns = NULL,
   include_title_legend = TRUE, return_plot_object = FALSE,
-  custom_title = NULL)
+  custom_title = NULL, match_color = "#2B83BAC8",
+  non_match_color = "#FDAE61C8")
 }
 \arguments{
 \item{ngram_sequnce_results}{A List object produced by the
@@ -24,6 +25,10 @@ are include in the plot. Can be set to FALSE for multi-plotting.}
 is not printed, only returned.}
 
 \item{custom_title}{Optional custom plot title.}
+
+\item{match_color}{Defaults to "#2B83BAC8" (light blue).}
+
+\item{non_match_color}{Defaults to "#FDAE61C8" (orange).}
 }
 \value{
 A plot

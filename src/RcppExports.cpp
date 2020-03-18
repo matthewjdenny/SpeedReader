@@ -6,53 +6,6 @@
 
 using namespace Rcpp;
 
-// calculate_ACMI_contribution
-arma::vec calculate_ACMI_contribution(double dist_sum, arma::vec colsums, arma::vec rowsums, int num_cols, arma::vec column_contributions, arma::vec row_index_counts, arma::mat joint, int total_non_zeros, double full_MI);
-RcppExport SEXP _SpeedReader_calculate_ACMI_contribution(SEXP dist_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP column_contributionsSEXP, SEXP row_index_countsSEXP, SEXP jointSEXP, SEXP total_non_zerosSEXP, SEXP full_MISEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
-    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type column_contributions(column_contributionsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type row_index_counts(row_index_countsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
-    Rcpp::traits::input_parameter< int >::type total_non_zeros(total_non_zerosSEXP);
-    Rcpp::traits::input_parameter< double >::type full_MI(full_MISEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_ACMI_contribution(dist_sum, colsums, rowsums, num_cols, column_contributions, row_index_counts, joint, total_non_zeros, full_MI));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calculate_unique_MI_contribution
-arma::vec calculate_unique_MI_contribution(arma::vec colsums, arma::vec rowsums, int num_cols, int num_rows, arma::mat joint, arma::vec column_type_counts, double dist_sum);
-RcppExport SEXP _SpeedReader_calculate_unique_MI_contribution(SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP num_rowsSEXP, SEXP jointSEXP, SEXP column_type_countsSEXP, SEXP dist_sumSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
-    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
-    Rcpp::traits::input_parameter< int >::type num_rows(num_rowsSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type column_type_counts(column_type_countsSEXP);
-    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_unique_MI_contribution(colsums, rowsums, num_cols, num_rows, joint, column_type_counts, dist_sum));
-    return rcpp_result_gen;
-END_RCPP
-}
-// calculate_document_frequency
-arma::vec calculate_document_frequency(arma::mat document_word_matrix);
-RcppExport SEXP _SpeedReader_calculate_document_frequency(SEXP document_word_matrixSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type document_word_matrix(document_word_matrixSEXP);
-    rcpp_result_gen = Rcpp::wrap(calculate_document_frequency(document_word_matrix));
-    return rcpp_result_gen;
-END_RCPP
-}
 // Calculate_TFIDF
 List Calculate_TFIDF(arma::mat document_word_matrix);
 RcppExport SEXP _SpeedReader_Calculate_TFIDF(SEXP document_word_matrixSEXP) {
@@ -219,6 +172,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// Generate_Sparse_Document_Term_Matrix
+List Generate_Sparse_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms);
+RcppExport SEXP _SpeedReader_Generate_Sparse_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type number_of_documents(number_of_documentsSEXP);
+    Rcpp::traits::input_parameter< int >::type number_of_unique_words(number_of_unique_wordsSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type unique_words(unique_wordsSEXP);
+    Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
+    Rcpp::traits::input_parameter< List >::type Document_Word_Counts(Document_Word_CountsSEXP);
+    Rcpp::traits::input_parameter< int >::type total_terms(total_termsSEXP);
+    rcpp_result_gen = Rcpp::wrap(Generate_Sparse_Document_Term_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary
 List Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms, std::vector<std::string> stem_lookup, arma::vec starts, arma::vec ends, int lookup_size);
 RcppExport SEXP _SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP, SEXP stem_lookupSEXP, SEXP startsSEXP, SEXP endsSEXP, SEXP lookup_sizeSEXP) {
@@ -237,23 +207,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::vec >::type ends(endsSEXP);
     Rcpp::traits::input_parameter< int >::type lookup_size(lookup_sizeSEXP);
     rcpp_result_gen = Rcpp::wrap(Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms, stem_lookup, starts, ends, lookup_size));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Generate_Sparse_Document_Term_Matrix
-List Generate_Sparse_Document_Term_Matrix(int number_of_documents, int number_of_unique_words, std::vector<std::string> unique_words, List Document_Words, arma::vec Document_Lengths, List Document_Word_Counts, int total_terms);
-RcppExport SEXP _SpeedReader_Generate_Sparse_Document_Term_Matrix(SEXP number_of_documentsSEXP, SEXP number_of_unique_wordsSEXP, SEXP unique_wordsSEXP, SEXP Document_WordsSEXP, SEXP Document_LengthsSEXP, SEXP Document_Word_CountsSEXP, SEXP total_termsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type number_of_documents(number_of_documentsSEXP);
-    Rcpp::traits::input_parameter< int >::type number_of_unique_words(number_of_unique_wordsSEXP);
-    Rcpp::traits::input_parameter< std::vector<std::string> >::type unique_words(unique_wordsSEXP);
-    Rcpp::traits::input_parameter< List >::type Document_Words(Document_WordsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type Document_Lengths(Document_LengthsSEXP);
-    Rcpp::traits::input_parameter< List >::type Document_Word_Counts(Document_Word_CountsSEXP);
-    Rcpp::traits::input_parameter< int >::type total_terms(total_termsSEXP);
-    rcpp_result_gen = Rcpp::wrap(Generate_Sparse_Document_Term_Matrix(number_of_documents, number_of_unique_words, unique_words, Document_Words, Document_Lengths, Document_Word_Counts, total_terms));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -279,25 +232,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat >::type joint_dist(joint_distSEXP);
     rcpp_result_gen = Rcpp::wrap(Mutual_Information(joint_dist));
-    return rcpp_result_gen;
-END_RCPP
-}
-// reference_dist_distance
-arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents, arma::vec term_weights);
-RcppExport SEXP _SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP, SEXP term_weightsSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_i(ref_dist_iSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_j(ref_dist_jSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_v(ref_dist_vSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type target_dist_i(target_dist_iSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type target_dist_j(target_dist_jSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type target_dist_v(target_dist_vSEXP);
-    Rcpp::traits::input_parameter< int >::type num_ref_dists(num_ref_distsSEXP);
-    Rcpp::traits::input_parameter< int >::type num_documents(num_documentsSEXP);
-    Rcpp::traits::input_parameter< arma::vec >::type term_weights(term_weightsSEXP);
-    rcpp_result_gen = Rcpp::wrap(reference_dist_distance(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents, term_weights));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -389,11 +323,74 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calculate_ACMI_contribution
+arma::vec calculate_ACMI_contribution(double dist_sum, arma::vec colsums, arma::vec rowsums, int num_cols, arma::vec column_contributions, arma::vec row_index_counts, arma::mat joint, int total_non_zeros, double full_MI);
+RcppExport SEXP _SpeedReader_calculate_ACMI_contribution(SEXP dist_sumSEXP, SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP column_contributionsSEXP, SEXP row_index_countsSEXP, SEXP jointSEXP, SEXP total_non_zerosSEXP, SEXP full_MISEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type column_contributions(column_contributionsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type row_index_counts(row_index_countsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
+    Rcpp::traits::input_parameter< int >::type total_non_zeros(total_non_zerosSEXP);
+    Rcpp::traits::input_parameter< double >::type full_MI(full_MISEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_ACMI_contribution(dist_sum, colsums, rowsums, num_cols, column_contributions, row_index_counts, joint, total_non_zeros, full_MI));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calculate_unique_MI_contribution
+arma::vec calculate_unique_MI_contribution(arma::vec colsums, arma::vec rowsums, int num_cols, int num_rows, arma::mat joint, arma::vec column_type_counts, double dist_sum);
+RcppExport SEXP _SpeedReader_calculate_unique_MI_contribution(SEXP colsumsSEXP, SEXP rowsumsSEXP, SEXP num_colsSEXP, SEXP num_rowsSEXP, SEXP jointSEXP, SEXP column_type_countsSEXP, SEXP dist_sumSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type colsums(colsumsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type rowsums(rowsumsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_cols(num_colsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_rows(num_rowsSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type joint(jointSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type column_type_counts(column_type_countsSEXP);
+    Rcpp::traits::input_parameter< double >::type dist_sum(dist_sumSEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_unique_MI_contribution(colsums, rowsums, num_cols, num_rows, joint, column_type_counts, dist_sum));
+    return rcpp_result_gen;
+END_RCPP
+}
+// calculate_document_frequency
+arma::vec calculate_document_frequency(arma::mat document_word_matrix);
+RcppExport SEXP _SpeedReader_calculate_document_frequency(SEXP document_word_matrixSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type document_word_matrix(document_word_matrixSEXP);
+    rcpp_result_gen = Rcpp::wrap(calculate_document_frequency(document_word_matrix));
+    return rcpp_result_gen;
+END_RCPP
+}
+// reference_dist_distance
+arma::mat reference_dist_distance(arma::vec ref_dist_i, arma::vec ref_dist_j, arma::vec ref_dist_v, arma::vec target_dist_i, arma::vec target_dist_j, arma::vec target_dist_v, int num_ref_dists, int num_documents, arma::vec term_weights);
+RcppExport SEXP _SpeedReader_reference_dist_distance(SEXP ref_dist_iSEXP, SEXP ref_dist_jSEXP, SEXP ref_dist_vSEXP, SEXP target_dist_iSEXP, SEXP target_dist_jSEXP, SEXP target_dist_vSEXP, SEXP num_ref_distsSEXP, SEXP num_documentsSEXP, SEXP term_weightsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_i(ref_dist_iSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_j(ref_dist_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ref_dist_v(ref_dist_vSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_i(target_dist_iSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_j(target_dist_jSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type target_dist_v(target_dist_vSEXP);
+    Rcpp::traits::input_parameter< int >::type num_ref_dists(num_ref_distsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_documents(num_documentsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type term_weights(term_weightsSEXP);
+    rcpp_result_gen = Rcpp::wrap(reference_dist_distance(ref_dist_i, ref_dist_j, ref_dist_v, target_dist_i, target_dist_j, target_dist_v, num_ref_dists, num_documents, term_weights));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_SpeedReader_calculate_ACMI_contribution", (DL_FUNC) &_SpeedReader_calculate_ACMI_contribution, 9},
-    {"_SpeedReader_calculate_unique_MI_contribution", (DL_FUNC) &_SpeedReader_calculate_unique_MI_contribution, 7},
-    {"_SpeedReader_calculate_document_frequency", (DL_FUNC) &_SpeedReader_calculate_document_frequency, 1},
     {"_SpeedReader_Calculate_TFIDF", (DL_FUNC) &_SpeedReader_Calculate_TFIDF, 1},
     {"_SpeedReader_Col_and_Row_Sums", (DL_FUNC) &_SpeedReader_Col_and_Row_Sums, 1},
     {"_SpeedReader_Combine_Document_Term_Matrices", (DL_FUNC) &_SpeedReader_Combine_Document_Term_Matrices, 4},
@@ -405,17 +402,20 @@ static const R_CallMethodDef CallEntries[] = {
     {"_SpeedReader_Fast_Sparse_Mutual_Information", (DL_FUNC) &_SpeedReader_Fast_Sparse_Mutual_Information, 6},
     {"_SpeedReader_Fast_Sparse_Mutual_Information_Full", (DL_FUNC) &_SpeedReader_Fast_Sparse_Mutual_Information_Full, 6},
     {"_SpeedReader_Generate_Document_Term_Matrix", (DL_FUNC) &_SpeedReader_Generate_Document_Term_Matrix, 7},
-    {"_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary", (DL_FUNC) &_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary, 11},
     {"_SpeedReader_Generate_Sparse_Document_Term_Matrix", (DL_FUNC) &_SpeedReader_Generate_Sparse_Document_Term_Matrix, 7},
+    {"_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary", (DL_FUNC) &_SpeedReader_Generate_Sparse_Document_Term_Matrix_Stem_Vocabulary, 11},
     {"_SpeedReader_LineWise_Dice_Coefficients", (DL_FUNC) &_SpeedReader_LineWise_Dice_Coefficients, 4},
     {"_SpeedReader_Mutual_Information", (DL_FUNC) &_SpeedReader_Mutual_Information, 1},
-    {"_SpeedReader_reference_dist_distance", (DL_FUNC) &_SpeedReader_reference_dist_distance, 9},
     {"_SpeedReader_Sparse_Document_Frequencies", (DL_FUNC) &_SpeedReader_Sparse_Document_Frequencies, 5},
     {"_SpeedReader_Sparse_PMI_Statistics", (DL_FUNC) &_SpeedReader_Sparse_PMI_Statistics, 9},
     {"_SpeedReader_Sequential_Raw_Term_Dice_Matches", (DL_FUNC) &_SpeedReader_Sequential_Raw_Term_Dice_Matches, 3},
     {"_SpeedReader_Sequential_string_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_Sequential_string_Set_Hash_Comparison, 3},
     {"_SpeedReader_Sequential_Token_Set_Hash_Comparison", (DL_FUNC) &_SpeedReader_Sequential_Token_Set_Hash_Comparison, 2},
     {"_SpeedReader_Variable_Dice_Coefficients", (DL_FUNC) &_SpeedReader_Variable_Dice_Coefficients, 6},
+    {"_SpeedReader_calculate_ACMI_contribution", (DL_FUNC) &_SpeedReader_calculate_ACMI_contribution, 9},
+    {"_SpeedReader_calculate_unique_MI_contribution", (DL_FUNC) &_SpeedReader_calculate_unique_MI_contribution, 7},
+    {"_SpeedReader_calculate_document_frequency", (DL_FUNC) &_SpeedReader_calculate_document_frequency, 1},
+    {"_SpeedReader_reference_dist_distance", (DL_FUNC) &_SpeedReader_reference_dist_distance, 9},
     {NULL, NULL, 0}
 };
 
